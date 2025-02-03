@@ -87,13 +87,7 @@ const options = {
 
   return (
     <div>
-      <div className="flex justify-end">
-        <div className="flex items-center justify-center bg-white p-2 mb-6 w-80 gap-4 rounded-md">
-          <FaRegCalendarAlt className="" />
-          <p className="">01 Feb 2025 - 28 Apr 2025</p>
-          <IoIosArrowDown />
-        </div>
-      </div>
+      
       {/* card part  */}
       <div className="grid grid-cols-4 gap-6 h-[120px] mb-9">
         <div className="bg-white rounded-lg py-0 px-6 flex items-center justify-between gap-4">
