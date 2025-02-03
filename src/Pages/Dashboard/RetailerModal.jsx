@@ -5,7 +5,7 @@ import { FiUploadCloud } from "react-icons/fi";
 
 export const AddRetailerModal = ({ isOpen, onClose }) => {
   const [phone, setPhone] = useState("");
-   const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
 
   if (!isOpen) return null;
 
@@ -17,120 +17,125 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
     }
   };
 
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg w-3/4 md:w-1/2 relative flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-3/5">
-          <h2 className="text-xl font-semibold mb-4">Add Retailer</h2>
-          <form className="grid grid-cols-1 gap-4">
-            <div>
-              <label className="block text-sm font-medium">Name *</label>
-              <input
-                type="text"
-                placeholder="Enter Company name"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Store Name *</label>
-              <input
-                type="text"
-                placeholder="Enter Store name"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">
-                Company Email *
-              </label>
-              <input
-                type="email"
-                placeholder="Enter email"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">
-                Phone Number *
-              </label>
-              <PhoneInput
-                country={"us"}
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
-                inputClass="w-full border rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">
-                Company Address
-              </label>
-              <textarea
-                placeholder="Enter Address"
-                className="w-full border p-2 rounded"
-                rows="2"
-              ></textarea>
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Password *</label>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-          </form>
-        </div>
-
-        <div className="w-full md:w-2/5 flex flex-col justify-between">
-          <div className="border border-dashed p-4 h-60 flex flex-col items-center justify-center text-gray-500">
-            <div className="w-16 h-16 flex items-center justify-center rounded-full border border-gray-300 mb-2">
-              {image ? (
-                <img
-                  src={image}
-                  alt="Uploaded"
-                  className="w-full h-full rounded-full"
-                />
-              ) : (
-                <FiUploadCloud size={24} />
-              )}
-            </div>
-            <p className="text-center">
-              Drop your image here or{" "}
-              <label className="text-blue-500 cursor-pointer">
-                Click to upload
+      <div className="bg-white p-6 rounded-lg w-3/4 md:w-1/2  relative">
+        <h2 className="text-xl font-semibold mb-4">Add Retailer</h2>
+        <hr />
+        <div className=" flex flex-col md:flex-row gap-6 mt-2">
+          <div className="w-full md:w-3/5">
+            <form className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium">Name *</label>
                 <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageUpload}
+                  type="text"
+                  placeholder="Enter Company name"
+                  className="w-full border p-2 rounded"
                 />
-              </label>
-            </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Store Name *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Store name"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Company Email *
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter email"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Phone Number *
+                </label>
+                <PhoneInput
+                  country={"us"}
+                  value={phone}
+                  onChange={(phone) => setPhone(phone)}
+                  inputClass="w-full !w-full border p-2 rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Company Address
+                </label>
+                <textarea
+                  placeholder="Enter Address"
+                  className="w-full border p-2 rounded"
+                  rows="4"
+                ></textarea>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Password *</label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+            </form>
           </div>
-          <div className="flex gap-2 mt-4 self-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="border px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Save
-            </button>
-          </div>
-        </div>
 
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-red-500 text-lg"
-        >
-          ✖
-        </button>
+          <div className="w-full md:w-1/3 flex flex-col ">
+            <p className="text-[#242424] font-medium mb-4">Image</p>
+            <div className="border border-dashed p-4 h-48 flex flex-col items-center justify-center text-[#434447]">
+              <div className="w-16 h-16 flex items-center justify-center rounded-full border border-gray-300 mb-2">
+                {image ? (
+                  <img
+                    src={image}
+                    alt="Uploaded"
+                    className="w-full h-full rounded-full"
+                  />
+                ) : (
+                  <FiUploadCloud size={24} />
+                )}
+              </div>
+              <p className="text-center">
+                Drop your image here or{" "}
+                <label className="text-blue-500 cursor-pointer">
+                  Click to upload
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+                </label>
+              </p>
+            </div>
+            <div className="flex gap-2 mt-4 justify-between">
+              <button
+                type="button"
+                onClick={onClose}
+                className="border px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 text-red-500 text-lg"
+          >
+            ✖
+          </button>
+        </div>
       </div>
     </div>
   );
