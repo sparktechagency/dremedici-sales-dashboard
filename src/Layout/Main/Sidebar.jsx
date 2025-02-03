@@ -163,20 +163,22 @@ const Sidebar = () => {
     };
 
     return (
-        <div className='mt-5 mb-20 '>
-            <Link to={"/"} className=' flex items-center justify-center py-4'>
-            <p className="text-4xl font-semibold font-sans tracking-wider text-primary">TradCouples</p>
-            </Link>
-            <Menu
-                mode="inline"
-                selectedKeys={[selectedKey]}
-                openKeys={openKeys}
-                onOpenChange={handleOpenChange}
-                style={{ borderRightColor: "transparent", background: "transparent" }}
-                items={menuItems}
-            />
-        </div>
-    )
+      <div className=" mb-20 h-screen bg-[#3FC7EE]">
+        <Link to={"/"} className=" flex items-center justify-center py-4">
+          <p className="text-4xl font-semibold font-sans tracking-wider text-primary">
+            TradCouples
+          </p>
+        </Link>
+        <Menu
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          openKeys={openKeys}
+          onOpenChange={handleOpenChange}
+          style={{ borderRightColor: "transparent", background: "transparent" }}
+          items={menuItems}
+        />
+      </div>
+    );
 }
 
 export default Sidebar;
