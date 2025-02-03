@@ -18,7 +18,7 @@ const Events = () => {
 
     
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="flex items-center justify-center bg-gray-100 p-4">
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">
             Change Password
