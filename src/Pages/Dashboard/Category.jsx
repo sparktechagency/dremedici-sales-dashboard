@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import NotificationModal from "./NotificationModal";
 
 const subscribersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -18,6 +19,7 @@ const Category = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredSubscribers = subscribersData.filter(
     (subscriber) =>
@@ -121,7 +123,7 @@ const Category = () => {
 
   return (
     <div className="p-4">
-      <div className="mb-10">
+      {/* <div className="mb-10">
         <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-4">
             Send Message / Push Notification
@@ -167,24 +169,40 @@ const Category = () => {
             Send
           </button>
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex gap-6 justify-end items-center mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="border p-2 rounded w-1/4"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <select
-          className="border p-2 rounded w-1/4"
-          onChange={(e) => setFilterOption(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Email">Email</option>
-          <option value="Phone">Phone</option>
-        </select>
+      <div className="flex gap-6 justify-between items-center mb-4">
+        <div className="flex justify-center items-center">
+          <button
+            type="primary"
+            className="bg-[#3FC7EE] text-white"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Open Notification Modal
+          </button>
+
+          <NotificationModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="border p-2 rounded w-1/4"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            className="border p-2 rounded w-1/4"
+            onChange={(e) => setFilterOption(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Email">Email</option>
+            <option value="Phone">Phone</option>
+          </select>
+        </div>
       </div>
       <table className="w-full border-collapse text-center">
         <thead>
