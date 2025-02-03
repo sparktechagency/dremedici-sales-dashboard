@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AddWholesealerModal } from "./WholesealerModal";
 
 const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -12,21 +13,22 @@ const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
 }));
 
 const Artists = () => {
-   const [searchTerm, setSearchTerm] = useState("");
-   const [currentPage, setCurrentPage] = useState(1);
-   const itemsPerPage = 10;
- 
-   const filteredWholesealers = wholesealersData.filter(
-     (wholesealer) =>
-       wholesealer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       wholesealer.email.toLowerCase().includes(searchTerm.toLowerCase())
-   );
- 
-   const totalPages = Math.ceil(filteredWholesealers.length / itemsPerPage);
-   const displayedWholesealer = filteredWholesealers.slice(
-     (currentPage - 1) * itemsPerPage,
-     currentPage * itemsPerPage
-   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const filteredWholesealers = wholesealersData.filter(
+    (wholesealer) =>
+      wholesealer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      wholesealer.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredWholesealers.length / itemsPerPage);
+  const displayedWholesealer = filteredWholesealers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="p-4">
@@ -38,9 +40,22 @@ const Artists = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
-          + Add Retailer
-        </button>
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              + Add Retailer
+            </button>
+          </div>
+          {isModalOpen && (
+            <AddWholesealerModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
+        </div>
       </div>
       <table className="w-full border-collapse text-center">
         <thead>
