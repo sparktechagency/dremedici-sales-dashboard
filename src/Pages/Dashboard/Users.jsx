@@ -38,7 +38,6 @@ const Users = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-       
       </div>
       <table className="w-full border-collapse text-center">
         <thead>
@@ -84,7 +83,6 @@ const Users = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
           Previous
         </button>

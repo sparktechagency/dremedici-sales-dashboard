@@ -128,9 +128,9 @@ const Sidebar = () => {
       //   },
       {
         key: "/logout",
-        icon: <IoIosLogOut size={24} className="mt-10" />,
+        icon: <IoIosLogOut size={24} className="mt-6" />,
         label: (
-          <p onClick={handleLogout} className="mt-10">
+          <p onClick={handleLogout} className="mt-6">
             Logout
           </p>
         ),

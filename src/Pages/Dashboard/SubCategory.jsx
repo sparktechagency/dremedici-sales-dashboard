@@ -4,8 +4,8 @@ import { CiExport } from "react-icons/ci";
 const invoiceData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
   date: `2025-02-${String(i + 1).padStart(2, "0")}`,
-  name: `Customer ${i + 1}`,
-  invoice: `INV-${1000 + i + 1}`,
+  name: `Insert Customer name here ${i + 1}`,
+  invoice: `Invoice Number -${1000 + i + 1}`,
   amount: (Math.random() * 500 + 100).toFixed(2),
   status: ["Paid", "Pending", "Overdue"][i % 3],
   image:
@@ -60,15 +60,34 @@ const InvoiceTable = () => {
       <table className="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-gray-100 border-b border-gray-300 text-left">
-            <th className="p-2">
+            <th className="p-2 text-center">
+           
               <input type="checkbox" />
             </th>
-            <th className="p-2">Date</th>
-            <th className="p-2">Name</th>
-            <th className="p-2">Invoice</th>
-            <th className="p-2">Amount</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Actions</th>
+            <th className="p-2 text-center">
+              
+              Date
+            </th>
+            <th className="p-2 text-center">
+             
+              Name
+            </th>
+            <th className="p-2 text-center">
+             
+              Invoice
+            </th>
+            <th className="p-2 text-center">
+             
+              Amount
+            </th>
+            <th className="p-2 text-center">
+            
+              Status
+            </th>
+            <th className="p-2 text-center">
+             
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -114,6 +133,7 @@ const InvoiceTable = () => {
           ))}
         </tbody>
       </table>
+
       <div className="flex justify-center mt-4 gap-2">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
