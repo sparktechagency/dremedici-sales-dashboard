@@ -175,10 +175,10 @@ const Category = () => {
         <div className="flex justify-center items-center">
           <button
             type="primary"
-            className="bg-[#3FC7EE] text-white"
+            className="bg-[#3FC7EE] text-white py-1 px-3 rounded-md"
             onClick={() => setIsModalOpen(true)}
           >
-            Open Notification Modal
+            Send Message by modal
           </button>
 
           <NotificationModal
@@ -190,12 +190,12 @@ const Category = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="border p-2 rounded w-1/4"
+            className="border p-2 rounded "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select
-            className="border p-2 rounded w-1/4"
+            className="border p-2 rounded "
             onChange={(e) => setFilterOption(e.target.value)}
           >
             <option value="All">All</option>
