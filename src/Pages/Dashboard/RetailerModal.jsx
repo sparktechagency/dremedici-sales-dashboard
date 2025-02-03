@@ -26,7 +26,7 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
           <div className="w-full md:w-3/5">
             <form className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-sm font-medium">Name *</label>
+                <label className="block text-sm font-medium mb-1">Name *</label>
                 <input
                   type="text"
                   placeholder="Enter Company name"
@@ -34,7 +34,7 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1">
                   Store Name *
                 </label>
                 <input
@@ -44,7 +44,7 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1">
                   Company Email *
                 </label>
                 <input
@@ -54,7 +54,7 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1">
                   Phone Number *
                 </label>
                 <PhoneInput
@@ -65,7 +65,7 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1">
                   Company Address
                 </label>
                 <textarea
@@ -75,7 +75,9 @@ export const AddRetailerModal = ({ isOpen, onClose }) => {
                 ></textarea>
               </div>
               <div>
-                <label className="block text-sm font-medium">Password *</label>
+                <label className="block text-sm font-medium mb-1">
+                  Password *
+                </label>
                 <input
                   type="password"
                   placeholder="Enter Password"

@@ -70,66 +70,70 @@ const Sidebar = () => {
         icon: <BiLock size={24} />,
         label: <Link to="/events">Password</Link>,
       },
-    //   {
-    //     key: "subMenuSetting",
-    //     icon: <IoSettingsOutline size={24} />,
-    //     label: "Settings",
-    //     children: [
-    //       {
-    //         key: "/banner",
-    //         label: (
-    //           <Link to="/banner" className="text-white hover:text-white">
-    //             Banner
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/about-us",
-    //         label: (
-    //           <Link to="/about-us" className="text-white hover:text-white">
-    //             About Us
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/terms-and-conditions",
-    //         label: (
-    //           <Link
-    //             to="/terms-and-conditions"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Terms And Condition
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/privacy-policy",
-    //         label: (
-    //           <Link
-    //             to="/privacy-policy"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Privacy Policy
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/change-password",
-    //         label: (
-    //           <Link
-    //             to="/change-password"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Change Password
-    //           </Link>
-    //         ),
-    //       },
-    //     ],
-    //   },
+      //   {
+      //     key: "subMenuSetting",
+      //     icon: <IoSettingsOutline size={24} />,
+      //     label: "Settings",
+      //     children: [
+      //       {
+      //         key: "/banner",
+      //         label: (
+      //           <Link to="/banner" className="text-white hover:text-white">
+      //             Banner
+      //           </Link>
+      //         ),
+      //       },
+      //       {
+      //         key: "/about-us",
+      //         label: (
+      //           <Link to="/about-us" className="text-white hover:text-white">
+      //             About Us
+      //           </Link>
+      //         ),
+      //       },
+      //       {
+      //         key: "/terms-and-conditions",
+      //         label: (
+      //           <Link
+      //             to="/terms-and-conditions"
+      //             className="text-white hover:text-white"
+      //           >
+      //             Terms And Condition
+      //           </Link>
+      //         ),
+      //       },
+      //       {
+      //         key: "/privacy-policy",
+      //         label: (
+      //           <Link
+      //             to="/privacy-policy"
+      //             className="text-white hover:text-white"
+      //           >
+      //             Privacy Policy
+      //           </Link>
+      //         ),
+      //       },
+      //       {
+      //         key: "/change-password",
+      //         label: (
+      //           <Link
+      //             to="/change-password"
+      //             className="text-white hover:text-white"
+      //           >
+      //             Change Password
+      //           </Link>
+      //         ),
+      //       },
+      //     ],
+      //   },
       {
         key: "/logout",
-        icon: <IoIosLogOut size={24} />,
-        label: <p onClick={handleLogout}>Logout</p>,
+        icon: <IoIosLogOut size={24} className="mt-10" />,
+        label: (
+          <p onClick={handleLogout} className="mt-10">
+            Logout
+          </p>
+        ),
       },
     ];
 
@@ -159,7 +163,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className='mt-5'>
+        <div className='mt-5 mb-20 '>
             <Link to={"/"} className=' flex items-center justify-center py-4'>
             <p className="text-4xl font-semibold font-sans tracking-wider text-primary">TradCouples</p>
             </Link>
