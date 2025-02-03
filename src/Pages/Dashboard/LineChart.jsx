@@ -40,14 +40,14 @@ const LineChart = () => {
     datasets: [
       {
         label: "Wholesalers",
-        data: [100, 120, 90, 140, 130, 100, 150, 110, 155, 170, 150, 190],
+        data: [100, 120, 90, 140, 130, 100, 160, 110, 155, 170, 150, 210],
         borderColor: "#FF6384",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         tension: 0.4,
       },
       {
         label: "Retailers",
-        data: [110, 220, 210, 190, 240, 250, 260, 210, 280, 290, 270, 310],
+        data: [110, 220, 210, 190, 240, 250, 190, 230, 270, 260, 240, 310],
         borderColor: "#36A2EB",
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         tension: 0.4,

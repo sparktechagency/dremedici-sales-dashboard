@@ -165,9 +165,7 @@ const Sidebar = () => {
     return (
       <div className=" mb-20 h-screen bg-[#3FC7EE]">
         <Link to={"/"} className=" flex items-center justify-center py-4">
-          <p className="text-4xl font-semibold font-sans tracking-wider text-primary">
-            TradCouples
-          </p>
+          <img src="/src/assets/image4.png" alt="logo" />
         </Link>
         <Menu
           mode="inline"
