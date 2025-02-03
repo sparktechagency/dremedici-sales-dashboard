@@ -1,93 +1,136 @@
 import React, { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { FiUploadCloud } from "react-icons/fi";
 
 export const AddRetailerModal = ({ isOpen, onClose }) => {
+  const [phone, setPhone] = useState("");
+   const [image, setImage] = useState(null);
+
   if (!isOpen) return null;
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("File selected:", file);
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg w-1/2 relative">
+      <div className="bg-white p-6 rounded-lg w-3/4 md:w-1/2 relative flex flex-col md:flex-row gap-6">
+        <div className="w-full md:w-3/5">
+          <h2 className="text-xl font-semibold mb-4">Add Retailer</h2>
+          <form className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-medium">Name *</label>
+              <input
+                type="text"
+                placeholder="Enter Company name"
+                className="w-full border p-2 rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Store Name *</label>
+              <input
+                type="text"
+                placeholder="Enter Store name"
+                className="w-full border p-2 rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Company Email *
+              </label>
+              <input
+                type="email"
+                placeholder="Enter email"
+                className="w-full border p-2 rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Phone Number *
+              </label>
+              <PhoneInput
+                country={"us"}
+                value={phone}
+                onChange={(phone) => setPhone(phone)}
+                inputClass="w-full border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">
+                Company Address
+              </label>
+              <textarea
+                placeholder="Enter Address"
+                className="w-full border p-2 rounded"
+                rows="2"
+              ></textarea>
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Password *</label>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                className="w-full border p-2 rounded"
+              />
+            </div>
+          </form>
+        </div>
+
+        <div className="w-full md:w-2/5 flex flex-col justify-between">
+          <div className="border border-dashed p-4 h-60 flex flex-col items-center justify-center text-gray-500">
+            <div className="w-16 h-16 flex items-center justify-center rounded-full border border-gray-300 mb-2">
+              {image ? (
+                <img
+                  src={image}
+                  alt="Uploaded"
+                  className="w-full h-full rounded-full"
+                />
+              ) : (
+                <FiUploadCloud size={24} />
+              )}
+            </div>
+            <p className="text-center">
+              Drop your image here or{" "}
+              <label className="text-blue-500 cursor-pointer">
+                Click to upload
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+              </label>
+            </p>
+          </div>
+          <div className="flex gap-2 mt-4 self-end">
+            <button
+              type="button"
+              onClick={onClose}
+              className="border px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-red-500 text-lg"
         >
           ✖
         </button>
-        <h2 className="text-xl font-semibold mb-4">Add Retailer</h2>
-        <form className="grid grid-cols-2 gap-4">
-          <div className="col-span-1">
-            <label className="block text-sm font-medium">Name *</label>
-            <input
-              type="text"
-              placeholder="Enter Company name"
-              className="w-full border p-2 rounded"
-            />
-          </div>
-          <div className="col-span-1">
-            <label className="block text-sm font-medium">Store Name *</label>
-            <input
-              type="text"
-              placeholder="Enter Company name"
-              className="w-full border p-2 rounded"
-            />
-          </div>
-          <div className="col-span-1">
-            <label className="block text-sm font-medium">Company Email *</label>
-            <input
-              type="email"
-              placeholder="Enter email"
-              className="w-full border p-2 rounded"
-            />
-          </div>
-          <div className="col-span-1">
-            <label className="block text-sm font-medium">Phone Number</label>
-            <input
-              type="text"
-              placeholder="+23 | 316 123456"
-              className="w-full border p-2 rounded"
-            />
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium">Company Address</label>
-            <textarea
-              placeholder="Enter Address"
-              className="w-full border p-2 rounded"
-              rows="2"
-            ></textarea>
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium">Password *</label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="w-full border p-2 rounded"
-            />
-          </div>
-          <div className="col-span-2 flex justify-between items-center">
-            <div className="border border-dashed p-4 w-40 h-40 flex items-center justify-center text-gray-500">
-              <p>
-                Drop your image here or{" "}
-                <span className="text-blue-500 cursor-pointer">
-                  Click to upload
-                </span>
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="border px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
     </div>
   );
