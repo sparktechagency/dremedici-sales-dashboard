@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AddWholesealerModal } from "./WholesealerModal";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
 
 const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -88,10 +88,10 @@ const WholesealerTable = () => {
               <td className="p-2">{retailer.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  ✎
+                  <MdModeEditOutline className="text-xl" />
                 </button>
                 <button className="bg-red-500 text-white px-2 py-1 rounded">
-                  🗑
+                  <MdDelete className="text-xl" />
                 </button>
               </td>
             </tr>

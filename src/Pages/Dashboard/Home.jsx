@@ -144,7 +144,21 @@ const Home = () => {
 
       {/* Line Chart Section */}
       <div className="bg-white p-4 rounded-lg my-6">
-        <h2 className="font-semibold mb-4">Wholesalers & Retailers Growth</h2>
+        <div className="font-semibold mb-4 flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            <span className="h-4 w-4 bg-[#3FC7EE] rounded-sm"></span>
+            <span className="text-[#3FC7EE] text-sm font-medium">
+              Retailers
+            </span>
+          </div>
+          <span>&</span>
+          <div className="flex items-center gap-1">
+            <span className="h-4 w-4 bg-green-500 rounded-sm"></span>
+            <span className="text-green-500 text-sm font-medium">
+              Wholesalers
+            </span>
+          </div>
+        </div>
         <LineChart />
       </div>
 

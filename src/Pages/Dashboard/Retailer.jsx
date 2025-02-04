@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { AddRetailerModal } from "./RetailerModal";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
 
 const retailersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -18,8 +19,9 @@ const RetailerTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [retailers, setRetailers] = useState(retailersData);
 
-  const filteredRetailers = retailersData.filter(
+  const filteredRetailers = retailers.filter(
     (retailer) =>
       retailer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       retailer.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -30,6 +32,24 @@ const RetailerTable = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // Delete Handler with SweetAlert
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setRetailers(retailers.filter((retailer) => retailer.id !== id));
+        Swal.fire("Deleted!", "Retailer has been deleted.", "success");
+      }
+    });
+  };
 
   return (
     <div className="">
@@ -88,10 +108,13 @@ const RetailerTable = () => {
               <td className="p-2">{retailer.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  ✎
+                  <MdModeEditOutline className="text-xl"/>
                 </button>
-                <button className="bg-red-500 text-white px-2 py-1 rounded">
-                  🗑
+                <button
+                  onClick={() => handleDelete(retailer.id)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  <MdDelete className="text-xl" />
                 </button>
               </td>
             </tr>

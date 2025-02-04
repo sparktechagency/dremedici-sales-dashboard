@@ -12,7 +12,6 @@ import PrivacyPolicy from "../Pages/Dashboard/PrivacyPolicy";
 import TermsAndConditions from "../Pages/Dashboard/TermsAndCondition";
 import ChangePassword from "../Pages/Auth/ChangePassword";
 import Login from "../Pages/Auth/Login";
-import Subscription from "../Pages/Dashboard/Subscription";
 import ForgotPassword from "../Pages/Auth/ForgotPassword";
 import VerifyOtp from "../Pages/Auth/VerifyOtp";
 import ResetPassword from "../Pages/Auth/ResetPassword";
@@ -45,10 +44,7 @@ const router = createBrowserRouter([
         path: "/users",
         element: <Users />,
       },
-      {
-        path: "/subscription",
-        element: <Subscription />,
-      },
+      
       {
         path: "/admin",
         element: <Admin />,
