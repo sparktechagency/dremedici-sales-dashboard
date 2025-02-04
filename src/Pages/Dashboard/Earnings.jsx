@@ -102,7 +102,7 @@ const RetailerTable = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-[#3FC7EE] px-3 py-1 rounded disabled:opacity-50"
+          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
             <MdKeyboardArrowLeft className="text-3xl "/>
         </button>
@@ -122,7 +122,7 @@ const RetailerTable = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-[#3FC7EE] px-3 py-1 rounded disabled:opacity-50"
+          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
           <MdKeyboardArrowRight className="text-3xl"/>
         </button>

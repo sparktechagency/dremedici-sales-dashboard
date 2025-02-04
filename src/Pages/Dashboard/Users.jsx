@@ -84,15 +84,16 @@ const Users = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
+          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-             <MdKeyboardArrowLeft className="text-3xl "/>
+          <MdKeyboardArrowLeft className="text-3xl " />
         </button>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
             onClick={() => setCurrentPage(i + 1)}
             className={`px-3 py-1 rounded ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              currentPage === i + 1 ? "bg-[#3FC7EE] text-white" : "bg-gray-300"
             }`}
           >
             {i + 1}
@@ -105,7 +106,7 @@ const Users = () => {
           disabled={currentPage === totalPages}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-            <MdKeyboardArrowRight className="text-3xl"/>
+          <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
     </div>
