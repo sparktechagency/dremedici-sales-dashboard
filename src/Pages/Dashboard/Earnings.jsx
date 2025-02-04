@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AddRetailerModal } from "./RetailerModal";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const retailersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -31,7 +32,7 @@ const RetailerTable = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="flex justify-between items-center ">
         <input
           type="text"
@@ -44,7 +45,7 @@ const RetailerTable = () => {
           <div className="flex justify-between items-center">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-[#3FC7EE] text-white px-4 py-2 rounded"
             >
               + Add Retailer
             </button>
@@ -101,16 +102,16 @@ const RetailerTable = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+          className="bg-[#3FC7EE] px-3 py-1 rounded disabled:opacity-50"
         >
-          Previous
+            <MdKeyboardArrowLeft className="text-3xl "/>
         </button>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
             onClick={() => setCurrentPage(i + 1)}
             className={`px-3 py-1 rounded ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              currentPage === i + 1 ? "bg-[#3FC7EE] text-white" : "bg-gray-300"
             }`}
           >
             {i + 1}
@@ -121,9 +122,9 @@ const RetailerTable = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+          className="bg-[#3FC7EE] px-3 py-1 rounded disabled:opacity-50"
         >
-          Next
+          <MdKeyboardArrowRight className="text-3xl"/>
         </button>
       </div>
     </div>

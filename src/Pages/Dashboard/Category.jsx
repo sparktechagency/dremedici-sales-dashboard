@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NotificationModal from "./NotificationModal";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const subscribersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -122,7 +123,7 @@ const Category = () => {
   //   };
 
   return (
-    <div className="p-4">
+    <div className="">
       {/* <div className="mb-10">
         <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-4">
@@ -250,7 +251,7 @@ const Category = () => {
           disabled={currentPage === 1}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-          Previous
+          <MdKeyboardArrowLeft className="text-3xl " />
         </button>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
@@ -270,7 +271,7 @@ const Category = () => {
           disabled={currentPage === totalPages}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-          Next
+          <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
     </div>

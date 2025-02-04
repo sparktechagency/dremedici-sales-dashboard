@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AddWholesealerModal } from "./WholesealerModal";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -31,7 +32,7 @@ const Artists = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="flex justify-between items-center ">
         <input
           type="text"
@@ -44,7 +45,7 @@ const Artists = () => {
           <div className="flex justify-between items-center ">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-[#3FC7EE] text-white px-4 py-2 rounded"
             >
               + Add Wholesealer
             </button>
@@ -103,7 +104,7 @@ const Artists = () => {
           disabled={currentPage === 1}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-          Previous
+          <MdKeyboardArrowLeft className="text-3xl " />
         </button>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
@@ -123,7 +124,7 @@ const Artists = () => {
           disabled={currentPage === totalPages}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-          Next
+          <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
     </div>

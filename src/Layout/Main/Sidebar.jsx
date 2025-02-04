@@ -60,11 +60,11 @@ const Sidebar = () => {
         icon: <IoNotificationsOutline size={24} />,
         label: <Link to="/category">Push Notification</Link>,
       },
-      {
-        key: "/sub-category",
-        icon: <RiMoneyDollarBoxLine size={24} />,
-        label: <Link to="/sub-category">Billing</Link>,
-      },
+      // {
+      //   key: "/sub-category",
+      //   icon: <RiMoneyDollarBoxLine size={24} />,
+      //   label: <Link to="/sub-category">Billing</Link>,
+      // },
       {
         key: "/events",
         icon: <BiLock size={24} />,

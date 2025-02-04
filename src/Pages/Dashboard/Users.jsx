@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const subscribersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -29,7 +30,7 @@ const Users = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="flex justify-end items-center mb-4">
         <input
           type="text"
@@ -84,7 +85,7 @@ const Users = () => {
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
-          Previous
+             <MdKeyboardArrowLeft className="text-3xl "/>
         </button>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
@@ -104,7 +105,7 @@ const Users = () => {
           disabled={currentPage === totalPages}
           className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
         >
-          Next
+            <MdKeyboardArrowRight className="text-3xl"/>
         </button>
       </div>
     </div>
