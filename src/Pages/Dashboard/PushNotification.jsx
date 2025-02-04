@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import NotificationModal from "./NotificationModal";
-import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
+import {
+  MdDelete,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdModeEditOutline,
+} from "react-icons/md";
 import Swal from "sweetalert2";
 import UpdateModal from "../../components/common/UpdateModal";
-
 
 const notificationData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -24,28 +28,43 @@ const Category = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notifications, setNotifications]=useState(notificationData)
-  
+  const [notifications, setNotifications] = useState(notificationData);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-   const handleDelete = (id) => {
-      console.log(id)
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setNotifications(
-            notifications.filter((notification) => notification.id !== id)
-          );
-          Swal.fire("Deleted!", "notification has been deleted.", "success");
-        }
-      });
-    };
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setIsUpdateModalOpen(true);
+  };
+
+  // Update Retailer Handler
+  const handleUpdate = (updatedUserData) => {
+    setNotifications(
+      notifications.map((notification) =>
+        notification.id === updatedUserData.id ? updatedUserData : notification
+      )
+    );
+  };
+
+  const handleDelete = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setNotifications(
+          notifications.filter((notification) => notification.id !== id)
+        );
+        Swal.fire("Deleted!", "notification has been deleted.", "success");
+      }
+    });
+  };
 
   const filteredSubscribers = notifications.filter(
     (subscriber) =>
@@ -260,12 +279,16 @@ const Category = () => {
               <td className="p-2">{notification.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  <MdModeEditOutline className="text-xl" />
+                  <MdModeEditOutline
+                    onClick={() => handleEdit(notification)}
+                    className="text-xl"
+                  />
                 </button>
                 <button className="bg-red-500 text-white px-2 py-1 rounded">
-                  <MdDelete 
-                  onClick={()=>handleDelete(notification.id)}
-                  className="text-xl" />
+                  <MdDelete
+                    onClick={() => handleDelete(notification.id)}
+                    className="text-xl"
+                  />
                 </button>
               </td>
             </tr>
@@ -301,6 +324,16 @@ const Category = () => {
           <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
+
+      {/* Update Modal */}
+      {isUpdateModalOpen && selectedUser && (
+        <UpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSave={handleUpdate}
+          userData={selectedUser}
+        />
+      )}
     </div>
   );
 };

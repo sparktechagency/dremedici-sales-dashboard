@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { AddRetailerModal } from "./RetailerModal";
-import UpdateModal from "../../components/common/UpdateModal"; // Import the UpdateModal
+import UpdateModal from "../../components/common/UpdateModal"; 
 import {
   MdDelete,
   MdKeyboardArrowLeft,
@@ -186,8 +186,8 @@ const RetailerTable = () => {
         <UpdateModal
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
-          onSave={handleUpdate} // Handle the save operation after update
-          userData={selectedUser} // Pass the selected user data to the modal
+          onSave={handleUpdate} 
+          userData={selectedUser} 
         />
       )}
     </div>

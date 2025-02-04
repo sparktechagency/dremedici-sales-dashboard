@@ -6,6 +6,7 @@ import {
   MdModeEditOutline,
 } from "react-icons/md";
 import Swal from "sweetalert2";
+import UpdateModal from "../../components/common/UpdateModal";
 
 const subscribersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -23,6 +24,23 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [subscribers, setSubscribers] = useState(subscribersData);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+
+    const handleEdit = (user) => {
+      setSelectedUser(user); 
+      setIsUpdateModalOpen(true); 
+    };
+
+    // Update Retailer Handler
+    const handleUpdate = (updatedUserData) => {
+      setSubscribers(
+        subscribers.map((subscriber) =>
+          subscriber.id === updatedUserData.id ? updatedUserData : subscriber
+        )
+      );
+    };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -96,7 +114,9 @@ const Users = () => {
               <td className="p-2">{subscriber.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  <MdModeEditOutline className="text-xl" />
+                  <MdModeEditOutline 
+                  onClick={()=>handleEdit(subscriber)}
+                  className="text-xl" />
                 </button>
                 <button
                   onClick={() => handleDelete(subscriber.id)}
@@ -138,6 +158,16 @@ const Users = () => {
           <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
+
+      {/* Update Modal */}
+      {isUpdateModalOpen && selectedUser && (
+        <UpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSave={handleUpdate}
+          userData={selectedUser}
+        />
+      )}
     </div>
   );
 };
