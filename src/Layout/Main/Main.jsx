@@ -8,7 +8,7 @@ const Main = () => {
         <div className='grid grid-cols-12'>
 
             {/* side bar */}
-            <div className='col-span-2 h-screen bg-white'>
+            <div className='col-span-2 h-screen '>
                 <Sidebar/>
             </div>
 

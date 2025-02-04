@@ -172,11 +172,11 @@ const Category = () => {
         </div>
       </div> */}
 
-      <div className="flex gap-6 justify-between items-center mb-4">
+      <div className="flex gap-6 justify-end items-center mb-4">
         <div className="flex justify-center items-center">
           <button
             type="primary"
-            className="bg-[#3FC7EE] text-white py-1 px-3 rounded-md"
+            className="bg-[#3FC7EE] text-white py-2 px-3 rounded-md"
             onClick={() => setIsModalOpen(true)}
           >
             Send Message by modal

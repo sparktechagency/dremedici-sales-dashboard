@@ -11,6 +11,9 @@ const Header = () => {
   const { user } = useUser();
   const [selectedLanguage, setSelectedLanguage] = useState("eng-us");
 
+  console.log(selectedLanguage)
+  console.log(user)
+
   const src = user?.image?.startsWith("https")
     ? user?.image
     : `${imageUrl}/${user?.image}`;
@@ -20,11 +23,8 @@ const Header = () => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-5 w-full px-4 lg:px-10">
-      <div>
-        <h2 className="text-3xl lg:text-5xl">Dashboard</h2>
-      </div>
-      <div className="flex items-center gap-6">
+    <div className="flex items-center justify-end gap-5 w-full px-4 lg:px-10">
+      <div className="flex items-center gap-10">
         <Select
           value={selectedLanguage}
           onChange={handleLanguageChange}
@@ -40,8 +40,8 @@ const Header = () => {
           }))}
         />
         <Link to="/notification" className="h-fit mt-[10px]">
-          <Badge count={5}>
-            <FaRegBell color="#6C57EC" size={24} />
+          <Badge count={5} backgroundcolor="#3FC7EE">
+            <FaRegBell color="#3FC7EE" size={24} />
           </Badge>
         </Link>
         <Link to="/profile" className="flex items-center gap-3">
