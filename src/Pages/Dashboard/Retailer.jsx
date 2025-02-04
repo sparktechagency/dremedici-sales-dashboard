@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { AddRetailerModal } from "./RetailerModal";
-import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
+import UpdateModal from "../../components/common/UpdateModal"; // Import the UpdateModal
+import {
+  MdDelete,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdModeEditOutline,
+} from "react-icons/md";
 
+// Existing retailersData
 const retailersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
   name: `Retailer ${i + 1}`,
@@ -20,6 +27,8 @@ const RetailerTable = () => {
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [retailers, setRetailers] = useState(retailersData);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const filteredRetailers = retailers.filter(
     (retailer) =>
@@ -33,7 +42,20 @@ const RetailerTable = () => {
     currentPage * itemsPerPage
   );
 
-  // Delete Handler with SweetAlert
+  const handleEdit = (user) => {
+    setSelectedUser(user); // Set the selected retailer
+    setIsUpdateModalOpen(true); // Open the update modal
+  };
+
+  // Update Retailer Handler
+  const handleUpdate = (updatedUserData) => {
+    setRetailers(
+      retailers.map((retailer) =>
+        retailer.id === updatedUserData.id ? updatedUserData : retailer
+      )
+    );
+  };
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -52,7 +74,8 @@ const RetailerTable = () => {
   };
 
   return (
-    <div className="">
+    <div>
+      {/* Existing code for search input and Add Retailer button */}
       <div className="flex justify-between items-center ">
         <input
           type="text"
@@ -78,6 +101,8 @@ const RetailerTable = () => {
           )}
         </div>
       </div>
+
+      {/* Retailer Table */}
       <table className="w-full border-collapse text-center">
         <thead>
           <tr className="bg-gray-200 border-b border-gray-300">
@@ -107,8 +132,11 @@ const RetailerTable = () => {
               <td className="p-2">{retailer.phone}</td>
               <td className="p-2">{retailer.address}</td>
               <td className="p-2 flex gap-2 justify-center">
-                <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  <MdModeEditOutline className="text-xl"/>
+                <button
+                  onClick={() => handleEdit(retailer)} 
+                  className="bg-green-500 text-white px-2 py-1 rounded"
+                >
+                  <MdModeEditOutline className="text-xl" />
                 </button>
                 <button
                   onClick={() => handleDelete(retailer.id)}
@@ -121,6 +149,8 @@ const RetailerTable = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
       <div className="flex justify-center mt-4 gap-2">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -150,6 +180,16 @@ const RetailerTable = () => {
           <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
+
+      {/* Update Modal */}
+      {isUpdateModalOpen && selectedUser && (
+        <UpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSave={handleUpdate} // Handle the save operation after update
+          userData={selectedUser} // Pass the selected user data to the modal
+        />
+      )}
     </div>
   );
 };

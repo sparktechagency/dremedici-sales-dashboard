@@ -7,6 +7,7 @@ import {
   MdModeEditOutline,
 } from "react-icons/md";
 import Swal from "sweetalert2";
+import UpdateModal from "../../components/common/UpdateModal";
 
 const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -25,9 +26,25 @@ const WholesealerTable = () => {
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [wholesealers, setWholesealers] = useState(wholesealersData);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleEdit = (user) => {
+    setSelectedUser(user); 
+    setIsUpdateModalOpen(true); 
+  };
+
+  // Update Retailer Handler
+  const handleUpdate = (updatedUserData) => {
+    setWholesealers(
+      wholesealers.map((wholesealer) =>
+        wholesealer.id === updatedUserData.id ? updatedUserData : wholesealer
+      )
+    );
+  };
 
   const handleDelete = (id) => {
-    console.log(id)
+    console.log(id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -115,7 +132,10 @@ const WholesealerTable = () => {
               <td className="p-2">{wholesealer.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                  <MdModeEditOutline className="text-xl" />
+                  <MdModeEditOutline
+                    onClick={() => handleEdit(wholesealer)}
+                    className="text-xl"
+                  />
                 </button>
                 <button
                   onClick={() => handleDelete(wholesealer.id)}
@@ -157,6 +177,16 @@ const WholesealerTable = () => {
           <MdKeyboardArrowRight className="text-3xl" />
         </button>
       </div>
+
+      {/* Update Modal */}
+      {isUpdateModalOpen && selectedUser && (
+        <UpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          onSave={handleUpdate} // Handle the save operation after update
+          userData={selectedUser} // Pass the selected user data to the modal
+        />
+      )}
     </div>
   );
 };

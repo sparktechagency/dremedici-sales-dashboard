@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import NotificationModal from "./NotificationModal";
 import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
 import Swal from "sweetalert2";
+import UpdateModal from "../../components/common/UpdateModal";
+
 
 const notificationData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -23,6 +25,7 @@ const Category = () => {
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notifications, setNotifications]=useState(notificationData)
+  
 
    const handleDelete = (id) => {
       console.log(id)
