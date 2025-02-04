@@ -126,9 +126,9 @@ const Sidebar = () => {
     //   },
     {
       key: "/logout",
-      icon: <IoIosLogOut size={24} className="mt-6" />,
+      icon: <IoIosLogOut size={24}  />,
       label: (
-        <p onClick={handleLogout} className="mt-6">
+        <p onClick={handleLogout} >
           Logout
         </p>
       ),
@@ -163,8 +163,8 @@ const Sidebar = () => {
 
   return (
     <div className="mb-20 h-screen bg-[#3FC7EE] text-white">
-      <Link to={"/"} className="flex items-center justify-center py-4">
-        <img src="/src/assets/image4.png" alt="logo" />
+      <Link to={"../../assets/image4.png"} className="flex items-center justify-center py-4">
+        <img src="" alt="logo" />
       </Link>
       <Menu
         mode="inline"

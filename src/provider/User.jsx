@@ -4,9 +4,6 @@ export const UserContext = React.createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // যদি `profile` API থেকে আসে:
-  // const { data: profile } = useProfileQuery({});
-
   const profile = {
     firstName: "Test",
     lastName: "User",
@@ -19,10 +16,10 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (profile && !user) {
-      // ✅ শুধুমাত্র `user` না থাকলে `setUser` করবে
+     
       setUser(profile);
     }
-  }, [profile, user]); // ✅ `user` চেক করা হচ্ছে যেন ইনফিনিট লুপ না হয়
+  }, [profile, user]); 
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
