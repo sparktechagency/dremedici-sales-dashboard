@@ -9,6 +9,8 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { PiHouseLine, PiSquaresFourLight } from "react-icons/pi";
 import { BiLock } from "react-icons/bi";
+import image4 from "../../assets/image4.png";
+
 
 const Sidebar = () => {
   const location = useLocation();
@@ -163,8 +165,8 @@ const Sidebar = () => {
 
   return (
     <div className="mb-20 h-screen bg-[#3FC7EE] text-white">
-      <Link to={"../../assets/image4.png"} className="flex items-center justify-center py-4">
-        <img src="" alt="logo" />
+      <Link to={"/"} className="flex items-center justify-center py-4">
+        <img src={image4} alt="logo" />
       </Link>
       <Menu
         mode="inline"
