@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { AddWholesealerModal } from "./WholesealerModal";
+import { AddRetailerModal } from "./RetailerModal";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
-const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
+const retailersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
-  name: `Wholesealer ${i + 1}`,
-  email: `wholesealer${i + 1}@gmail.com`,
+  name: `Retailer ${i + 1}`,
+  email: `retailer${i + 1}@gmail.com`,
   phone: `+23191633389${i + 1}`,
   address: `Address ${i + 1}, City`,
   image: `https://img.freepik.com/free-photo/portrait-handsome-young-man-with-arms-crossed-holding-white-headphone-around-his-neck_23-2148096439.jpg?semt=ais_hybrid/50?text=R${
@@ -13,20 +13,20 @@ const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   }`,
 }));
 
-const Artists = () => {
+const RetailerTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredWholesealers = wholesealersData.filter(
-    (wholesealer) =>
-      wholesealer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      wholesealer.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRetailers = retailersData.filter(
+    (retailer) =>
+      retailer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      retailer.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalPages = Math.ceil(filteredWholesealers.length / itemsPerPage);
-  const displayedWholesealer = filteredWholesealers.slice(
+  const totalPages = Math.ceil(filteredRetailers.length / itemsPerPage);
+  const displayedRetailers = filteredRetailers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -42,16 +42,16 @@ const Artists = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="p-4">
-          <div className="flex justify-between items-center ">
+          <div className="flex justify-between items-center">
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-[#3FC7EE] text-white px-4 py-2 rounded"
             >
-              + Add Wholesealer
+              + Add Retailer
             </button>
           </div>
           {isModalOpen && (
-            <AddWholesealerModal
+            <AddRetailerModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
             />
@@ -70,7 +70,7 @@ const Artists = () => {
           </tr>
         </thead>
         <tbody>
-          {displayedWholesealer.map((retailer, index) => (
+          {displayedRetailers.map((retailer, index) => (
             <tr key={retailer.id} className="border-b border-gray-300">
               <td className="p-2">
                 {(currentPage - 1) * itemsPerPage + index + 1}
@@ -131,4 +131,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default RetailerTable;

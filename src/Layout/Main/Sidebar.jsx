@@ -29,14 +29,14 @@ const Sidebar = () => {
       label: <Link to="/">Overview</Link>,
     },
     {
-      key: "/earnings",
+      key: "/retailer",
       icon: <PiHouseLine size={24} />,
-      label: <Link to="/earnings">Retailer</Link>,
+      label: <Link to="/retailer">Retailer</Link>,
     },
     {
-      key: "/artists",
+      key: "/wholesealer",
       icon: <MdOutlineHome size={24} />,
-      label: <Link to="/artists">WholeSealer</Link>,
+      label: <Link to="/wholesealer">WholeSealer</Link>,
     },
     {
       key: "/users",
