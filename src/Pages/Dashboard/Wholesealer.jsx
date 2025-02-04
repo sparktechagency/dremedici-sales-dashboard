@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { AddWholesealerModal } from "./WholesealerModal";
-import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
+import {
+  MdDelete,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdModeEditOutline,
+} from "react-icons/md";
+import Swal from "sweetalert2";
 
 const wholesealersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -18,8 +24,29 @@ const WholesealerTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wholesealers, setWholesealers] = useState(wholesealersData);
 
-  const filteredWholesealers = wholesealersData.filter(
+  const handleDelete = (id) => {
+    console.log(id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setWholesealers(
+          wholesealers.filter((wholesealer) => wholesealer.id !== id)
+        );
+        Swal.fire("Deleted!", "Wholesealer has been deleted.", "success");
+      }
+    });
+  };
+
+  const filteredWholesealers = wholesealers.filter(
     (wholesealer) =>
       wholesealer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       wholesealer.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -70,27 +97,30 @@ const WholesealerTable = () => {
           </tr>
         </thead>
         <tbody>
-          {displayedWholesealer.map((retailer, index) => (
-            <tr key={retailer.id} className="border-b border-gray-300">
+          {displayedWholesealer.map((wholesealer, index) => (
+            <tr key={wholesealer.id} className="border-b border-gray-300">
               <td className="p-2">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
               <td className="flex items-center gap-2 p-2 justify-center">
                 <img
-                  src={retailer.image}
-                  alt={retailer.name}
+                  src={wholesealer.image}
+                  alt={wholesealer.name}
                   className="w-10 h-10 rounded-full"
                 />
-                <p>{retailer.name}</p>
+                <p>{wholesealer.name}</p>
               </td>
-              <td className="p-2">{retailer.email}</td>
-              <td className="p-2">{retailer.phone}</td>
-              <td className="p-2">{retailer.address}</td>
+              <td className="p-2">{wholesealer.email}</td>
+              <td className="p-2">{wholesealer.phone}</td>
+              <td className="p-2">{wholesealer.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
                   <MdModeEditOutline className="text-xl" />
                 </button>
-                <button className="bg-red-500 text-white px-2 py-1 rounded">
+                <button
+                  onClick={() => handleDelete(wholesealer.id)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
                   <MdDelete className="text-xl" />
                 </button>
               </td>

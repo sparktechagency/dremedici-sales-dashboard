@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import NotificationModal from "./NotificationModal";
 import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 
-const subscribersData = Array.from({ length: 25 }, (_, i) => ({
+const notificationData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
   name: `Subscribers ${i + 1}`,
   email: `subscribers${i + 1}@gmail.com`,
@@ -21,8 +22,29 @@ const Category = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notifications, setNotifications]=useState(notificationData)
 
-  const filteredSubscribers = subscribersData.filter(
+   const handleDelete = (id) => {
+      console.log(id)
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setNotifications(
+            notifications.filter((notification) => notification.id !== id)
+          );
+          Swal.fire("Deleted!", "notification has been deleted.", "success");
+        }
+      });
+    };
+
+  const filteredSubscribers = notifications.filter(
     (subscriber) =>
       subscriber.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       subscriber.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -217,28 +239,30 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {displayedSubscribers.map((retailer, index) => (
-            <tr key={retailer.id} className="border-b border-gray-300">
+          {displayedSubscribers.map((notification, index) => (
+            <tr key={notification.id} className="border-b border-gray-300">
               <td className="p-2">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
               <td className="flex items-center gap-2 p-2 justify-center">
                 <img
-                  src={retailer.image}
-                  alt={retailer.name}
+                  src={notification.image}
+                  alt={notification.name}
                   className="w-10 h-10 rounded-full"
                 />
-                <p>{retailer.name}</p>
+                <p>{notification.name}</p>
               </td>
-              <td className="p-2">{retailer.email}</td>
-              <td className="p-2">{retailer.phone}</td>
-              <td className="p-2">{retailer.address}</td>
+              <td className="p-2">{notification.email}</td>
+              <td className="p-2">{notification.phone}</td>
+              <td className="p-2">{notification.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
                   <MdModeEditOutline className="text-xl" />
                 </button>
                 <button className="bg-red-500 text-white px-2 py-1 rounded">
-                  <MdDelete className="text-xl" />
+                  <MdDelete 
+                  onClick={()=>handleDelete(notification.id)}
+                  className="text-xl" />
                 </button>
               </td>
             </tr>

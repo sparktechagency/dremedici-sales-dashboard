@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { MdDelete, MdKeyboardArrowLeft, MdKeyboardArrowRight, MdModeEditOutline } from "react-icons/md";
+import {
+  MdDelete,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdModeEditOutline,
+} from "react-icons/md";
+import Swal from "sweetalert2";
 
 const subscribersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -16,8 +22,28 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [subscribers, setSubscribers] = useState(subscribersData);
 
-  const filteredSubscribers = subscribersData.filter(
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSubscribers(
+          subscribers.filter((subscriber) => subscriber.id !== id)
+        );
+        Swal.fire("Deleted!", "subscriber has been deleted.", "success");
+      }
+    });
+  };
+
+  const filteredSubscribers = subscribers.filter(
     (subscriber) =>
       subscriber.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       subscriber.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -52,27 +78,30 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {displayedSubscribers.map((retailer, index) => (
-            <tr key={retailer.id} className="border-b border-gray-300">
+          {displayedSubscribers.map((subscriber, index) => (
+            <tr key={subscriber.id} className="border-b border-gray-300">
               <td className="p-2">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
               <td className="flex items-center gap-2 p-2 justify-center">
                 <img
-                  src={retailer.image}
-                  alt={retailer.name}
+                  src={subscriber.image}
+                  alt={subscriber.name}
                   className="w-10 h-10 rounded-full"
                 />
-                <p>{retailer.name}</p>
+                <p>{subscriber.name}</p>
               </td>
-              <td className="p-2">{retailer.email}</td>
-              <td className="p-2">{retailer.phone}</td>
-              <td className="p-2">{retailer.address}</td>
+              <td className="p-2">{subscriber.email}</td>
+              <td className="p-2">{subscriber.phone}</td>
+              <td className="p-2">{subscriber.address}</td>
               <td className="p-2 flex gap-2 justify-center">
                 <button className="bg-green-500 text-white px-2 py-1 rounded">
-                   <MdModeEditOutline className="text-xl"/>
+                  <MdModeEditOutline className="text-xl" />
                 </button>
-                <button className="bg-red-500 text-white px-2 py-1 rounded">
+                <button
+                  onClick={() => handleDelete(subscriber.id)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
                   <MdDelete className="text-xl" />
                 </button>
               </td>
