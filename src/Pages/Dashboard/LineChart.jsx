@@ -1,3 +1,4 @@
+// LineChart.jsx
 import React from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -11,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 
+// Registering chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -18,10 +20,10 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
 );
 
 const LineChart = () => {
+  // Data for the line chart
   const data = {
     labels: [
       "Jan",
@@ -36,47 +38,80 @@ const LineChart = () => {
       "Oct",
       "Nov",
       "Dec",
-    ],
+    ], // Months
     datasets: [
       {
-        label: "Wholesalers",
-        data: [100, 120, 90, 140, 130, 100, 160, 110, 155, 170, 150, 210],
-        borderColor: "#FF6384",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        tension: 0.4,
-      },
-      {
-        label: "Retailers",
-        data: [110, 220, 210, 190, 240, 250, 190, 230, 270, 260, 240, 310],
-        borderColor: "#36A2EB",
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        tension: 0.4,
+        label: "Total Revenue",
+        data: [150, 120, 145, 160, 180, 387, 225, 210, 230, 126, 250, 300],
+        fill: false, 
+        borderColor: "#ffffff",
+        backgroundColor: "transparent", 
+        tension: 0.4, 
+        borderWidth: 2, 
+        pointBorderColor: "#ffffff", 
+        pointBackgroundColor: "#ffffff", 
+        pointRadius: 4, 
       },
     ],
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
+  // Options for the chart
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+      labels: {
+        color: "#ffffff",
+      },
+    },
+    tooltip: {
+      titleColor: "#ffffff",
+      bodyColor: "#ffffff",
+      borderColor: "#ffffff",
+      borderWidth: 2,
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
+      padding: 15, // ✅ More padding to increase overall size
+      cornerRadius: 8,
+      displayColors: false,
+      bodyFont: {
+        size: 16, // ✅ Increase font size to make tooltip wider
+      },
+      boxPadding: 10, // ✅ Extra padding around content
+      callbacks: {
+        label: (context) => `$${context.raw.toLocaleString()}`.padEnd(15, " "), // ✅ Add spaces to expand width
+      },
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: true,
+        color: "rgba(255, 255, 255, 0.2)", // Light white grid lines
+      },
+      ticks: {
+        color: "#ffffff", // White text for X-axis labels
+      },
+    },
+    y: {
+      grid: {
         display: false,
       },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
+      beginAtZero: false,
+      ticks: {
+        color: "#ffffff", // White text for Y-axis labels
+        callback: function (value) {
+          return `$${value.toLocaleString()}`;
         },
       },
-      y: {
-        beginAtZero: true,
-      },
     },
-  };
+  },
+};
+
 
   return (
-    <div style={{ height: "300px" }}>
+    <div style={{ width: "100%", height: "250px" }} className="text-white">
       <Line data={data} options={options} />
     </div>
   );

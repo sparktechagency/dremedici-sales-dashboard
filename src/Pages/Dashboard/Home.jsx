@@ -1,10 +1,10 @@
 import React from "react";
 import { FaCalendarDay, FaDollarSign } from "react-icons/fa";
 import { HiMiniUsers } from "react-icons/hi2";
-import { MdOutlineHome } from "react-icons/md";
+import { MdArrowUpward, MdOutlineHome } from "react-icons/md";
 import { PiHouseLine } from "react-icons/pi";
 import { Bar } from "react-chartjs-2";
-import LineChart from "./LineChart"; // Importing LineChart Component
+import LineChart from "./LineChart"; 
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import OrderTable from "../../components/home/OrderTable";
+import SalesLeaderBoard from "../../components/home/SalesLeaderBoard";
 
 ChartJS.register(
   CategoryScale,
@@ -84,92 +86,72 @@ const Home = () => {
   };
 
   return (
-    <div>
-      {/* Card Section */}
-      <div className="grid grid-cols-4 gap-6 h-[120px] mb-9">
-        <div className="bg-white rounded-lg py-0 px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#EFEFEF] flex items-center justify-center">
-              <MdOutlineHome color="#007BA5" size={24} />
-            </div>
-            <div>
-              <h3 className="text-primary text-[32px] font-semibold">100</h3>
-              <h2 className="text-center text-2xl text-base">
-                Total Wholesalers
-              </h2>
+    <div className="">
+      <div className="flex gap-6   rounded-lg">
+        {/* Line Chart Section */}
+        <div className=" flex-1 w-2/3 bg-gradient-to-r from-primary  to-secondary p-6 rounded-lg ">
+          <h2 className="text-xl font-bold text-white mb-4">Total Revenue</h2>
+          <LineChart />
+        </div>
+        {/* Card Section */}
+        <div className="grid grid-cols-2 w-1/3 gap-6 h-[340px] bg-gradient-to-r from-primary  to-secondary p-6 rounded-lg">
+          <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div>
+                <h2 className="text-center text-xl font-bold">Total Sales</h2>
+                <h3 className="text-primary text-xl font-bold">$12100</h3>
+              </div>
+              <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
+                <MdArrowUpward color="" size={24} />
+                <p>12%</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg py-0 px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#EFEFEF] flex items-center justify-center">
-              <PiHouseLine color="#007BA5" size={24} />
-            </div>
-            <div>
-              <h3 className="text-primary text-[32px] font-semibold">12k</h3>
-              <h2 className="text-center text-2xl text-base">
-                Total Retailers
-              </h2>
+          <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div>
+                <h2 className="text-center text-xl font-bold">Total Sales</h2>
+                <h3 className="text-primary text-xl font-bold">$12100</h3>
+              </div>
+              <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
+                <MdArrowUpward color="" size={24} />
+                <p>12%</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg py-0 px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#EFEFEF] flex items-center justify-center">
-              <HiMiniUsers color="#007BA5" size={24} />
-            </div>
-            <div>
-              <h3 className="text-primary text-[32px] font-semibold">500</h3>
-              <h2 className="text-center text-2xl text-base">
-                Total Subscribers
-              </h2>
+          <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div>
+                <h2 className="text-center text-xl font-bold">Total Sales</h2>
+                <h3 className="text-primary text-xl font-bold">$12100</h3>
+              </div>
+              <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
+                <MdArrowUpward color="" size={24} />
+                <p>12%</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg py-0 px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#EFEFEF] flex items-center justify-center">
-              <FaDollarSign color="#007BA5" size={24} />
-            </div>
-            <div>
-              <h3 className="text-primary text-[32px] font-semibold">$3049</h3>
-              <h2 className="text-center text-2xl text-base">Total Revenue</h2>
+          <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div>
+                <h2 className="text-center text-xl font-bold">Total Sales</h2>
+                <h3 className="text-primary text-xl font-bold">$12100</h3>
+              </div>
+              <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
+                <MdArrowUpward color="" size={24} />
+                <p>12%</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Line Chart Section */}
-      <div className="bg-white p-4 rounded-lg my-6">
-        <div className="font-semibold mb-4 flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <span className="h-4 w-4 bg-[#3FC7EE] rounded-sm"></span>
-            <span className="text-[#3FC7EE] text-sm font-medium">
-              Retailers
-            </span>
-          </div>
-          <span>&</span>
-          <div className="flex items-center gap-1">
-            <span className="h-4 w-4 bg-green-500 rounded-sm"></span>
-            <span className="text-green-500 text-sm font-medium">
-              Wholesalers
-            </span>
-          </div>
-        </div>
-        <LineChart />
-      </div>
-
-      {/* Subscription Section */}
-      <div className="bg-white p-4 rounded-lg">
-        <h2 className="font-semibold mb-4">Subscription</h2>
-
-        {/* Bar Chart */}
-        <div className="mt-6" style={{ height: "200px" }}>
-          <Bar data={data} options={options} />
-        </div>
+      <div className="grid grid-cols-2 gap-x-10 mt-10">
+        <OrderTable />
+        <SalesLeaderBoard />
       </div>
     </div>
   );
