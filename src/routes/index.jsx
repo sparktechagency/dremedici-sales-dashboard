@@ -21,6 +21,8 @@ import SubCategory from "../Pages/Dashboard/SubCategory";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
 import RetailerTable from "../Pages/Dashboard/Retailer";
 import WholesealerTable from "../Pages/Dashboard/Wholesealer";
+import SalesManagement from "../Pages/Dashboard/SalesManagement";
+import Retailer from "../Pages/Dashboard/Retailer";
 
 const router = createBrowserRouter([
   {
@@ -33,12 +35,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/retailer",
-        element: <RetailerTable />,
+        path: "/salesManagement",
+        element: <SalesManagement />,
       },
       {
-        path: "/wholesealer",
-        element: <WholesealerTable />,
+        path: "/retailer",
+        element: <Retailer />,
       },
       {
         path: "/users",

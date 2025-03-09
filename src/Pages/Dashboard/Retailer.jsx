@@ -1,13 +1,9 @@
 import React, { useState } from "react";
+import { Table, Button, Modal, Input, Space, ConfigProvider } from "antd";
+import { MdDelete, MdModeEditOutline } from "react-icons/md";
 import Swal from "sweetalert2";
 import { AddRetailerModal } from "./RetailerModal";
-import UpdateModal from "../../components/common/UpdateModal"; 
-import {
-  MdDelete,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdModeEditOutline,
-} from "react-icons/md";
+import UpdateModal from "../../components/common/UpdateModal";
 
 // Existing retailersData
 const retailersData = Array.from({ length: 25 }, (_, i) => ({
@@ -21,39 +17,107 @@ const retailersData = Array.from({ length: 25 }, (_, i) => ({
   }`,
 }));
 
-const RetailerTable = () => {
+const Retailer = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [retailers, setRetailers] = useState(retailersData);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const filteredRetailers = retailers.filter(
-    (retailer) =>
-      retailer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      retailer.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredRetailers.length / itemsPerPage);
-  const displayedRetailers = filteredRetailers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "id",
+      key: "id",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Retailer Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => (
+        <div className="flex items-center">
+          <img
+            src={record.image}
+            alt={record.name}
+            className="w-10 h-10 rounded-full mr-3"
+          />
+          {record.name}
+        </div>
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Assigned Sales Rep",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Total Order",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Total Sales",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Account Status",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#0090B9", // Sets primary color
+                colorPrimaryHover: "#336C79", // Sets hover background color
+              },
+            }}
+          >
+            <Button
+              onClick={() => handleEdit(record)}
+              type="primary"
+              size="large"
+              className="text-white"
+            >
+              Edit
+            </Button>
+          </ConfigProvider>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#FF4D4F", // Change primary color to red for delete
+                colorPrimaryHover: "#FF7875", // Sets hover background color for delete
+              },
+            }}
+          >
+            <Button
+              onClick={() => handleDelete(record.id)}
+              type="primary" // Change type to primary for better styling
+              danger 
+              size="large"
+            >
+              Delete
+            </Button>
+          </ConfigProvider>
+        </Space>
+      ),
+    },
+  ];
 
   const handleEdit = (user) => {
     setSelectedUser(user); // Set the selected retailer
     setIsUpdateModalOpen(true); // Open the update modal
-  };
-
-  // Update Retailer Handler
-  const handleUpdate = (updatedUserData) => {
-    setRetailers(
-      retailers.map((retailer) =>
-        retailer.id === updatedUserData.id ? updatedUserData : retailer
-      )
-    );
   };
 
   const handleDelete = (id) => {
@@ -74,111 +138,44 @@ const RetailerTable = () => {
   };
 
   return (
-    <div>
-      {/* Existing code for search input and Add Retailer button */}
-      <div className="flex justify-between items-center ">
-        <input
-          type="text"
+    <div className="">
+      {/* Search and Add Retailer Button */}
+      <div className="flex justify-between items-center mb-4">
+        <Input
           placeholder="Search..."
-          className="border p-2 rounded w-1/3"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: 300 }}
         />
-        <div className="p-4">
-          <div className="flex justify-between items-center">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-[#3FC7EE] text-white px-4 py-2 rounded"
-            >
-              + Add Retailer
-            </button>
-          </div>
-          {isModalOpen && (
-            <AddRetailerModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-            />
-          )}
-        </div>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          type="primary"
+          className="bg-gradient-to-r from-primary  to-secondary text-white"
+        >
+          + Add Retailer
+        </Button>
+        {isModalOpen && (
+          <AddRetailerModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
       </div>
 
-      {/* Retailer Table */}
-      <table className="w-full border-collapse text-center">
-        <thead>
-          <tr className="bg-gray-200 border-b border-gray-300">
-            <th className="p-2">#</th>
-            <th className="p-2">Retailer Name</th>
-            <th className="p-2">Email</th>
-            <th className="p-2">Phone</th>
-            <th className="p-2">Address</th>
-            <th className="p-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedRetailers.map((retailer, index) => (
-            <tr key={retailer.id} className="border-b border-gray-300">
-              <td className="p-2">
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </td>
-              <td className="flex items-center gap-2 p-2 justify-center">
-                <img
-                  src={retailer.image}
-                  alt={retailer.name}
-                  className="w-10 h-10 rounded-full"
-                />
-                <p>{retailer.name}</p>
-              </td>
-              <td className="p-2">{retailer.email}</td>
-              <td className="p-2">{retailer.phone}</td>
-              <td className="p-2">{retailer.address}</td>
-              <td className="p-2 flex gap-2 justify-center">
-                <button
-                  onClick={() => handleEdit(retailer)} 
-                  className="bg-green-500 text-white px-2 py-1 rounded"
-                >
-                  <MdModeEditOutline className="text-xl" />
-                </button>
-                <button
-                  onClick={() => handleDelete(retailer.id)}
-                  className="bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  <MdDelete className="text-xl" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      <div className="flex justify-center mt-4 gap-2">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-        >
-          <MdKeyboardArrowLeft className="text-3xl " />
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 rounded ${
-              currentPage === i + 1 ? "bg-[#3FC7EE] text-white" : "bg-gray-300"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-        >
-          <MdKeyboardArrowRight className="text-3xl" />
-        </button>
+      {/* Table */}
+      <div className="bg-gradient-to-r from-primary  to-secondary p-6">
+        <Table
+          dataSource={retailers.filter(
+            (retailer) =>
+              retailer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              retailer.email.toLowerCase().includes(searchTerm.toLowerCase())
+          )}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          bordered
+          size="middle"
+          rowClassName="custom-row" // Adding custom row class
+        />
       </div>
 
       {/* Update Modal */}
@@ -186,12 +183,18 @@ const RetailerTable = () => {
         <UpdateModal
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
-          onSave={handleUpdate} 
-          userData={selectedUser} 
+          onSave={(updatedUserData) => {
+            setRetailers(
+              retailers.map((retailer) =>
+                retailer.id === updatedUserData.id ? updatedUserData : retailer
+              )
+            );
+          }}
+          userData={selectedUser}
         />
       )}
     </div>
   );
 };
 
-export default RetailerTable;
+export default Retailer;

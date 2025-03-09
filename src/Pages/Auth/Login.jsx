@@ -53,7 +53,7 @@ const Login = () => {
           </Form.Item>
 
           <a
-            className="login-form-forgot text-primary font-semibold"
+            className="login-form-forgot bg-gradient-to-r from-primary  to-secondary px-4 py-1 text-white rounded-md font-semibold"
             href="/auth/forgot-password"
           >
             Forgot password
@@ -73,9 +73,9 @@ const Login = () => {
 
               marginTop: 20,
             }}
-            className="flex items-center justify-center bg-primary rounded-lg"
+            className="flex items-center justify-center bg-gradient-to-r from-primary  to-secondary rounded-lg"
           >
-            {/* {isLoading? < Spinner/> : "Sign in"} */} Sign in
+            Sign in
           </button>
         </Form.Item>
       </Form>

@@ -10,6 +10,7 @@ import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { PiHouseLine, PiSquaresFourLight } from "react-icons/pi";
 import { BiLock } from "react-icons/bi";
 import image4 from "../../assets/image4.png";
+import { LuChartNoAxesCombined } from "react-icons/lu";
 
 
 const Sidebar = () => {
@@ -31,14 +32,14 @@ const Sidebar = () => {
       label: <Link to="/">Overview</Link>,
     },
     {
-      key: "/retailer",
-      icon: <PiHouseLine size={24} />,
-      label: <Link to="/retailer">Retailer</Link>,
+      key: "/salesManagement",
+      icon: <LuChartNoAxesCombined  size={24} className="text-black"/>,
+      label: <Link to="/salesManagement">Sales Management</Link>,
     },
     {
-      key: "/wholesealer",
+      key: "/retailer",
       icon: <MdOutlineHome size={24} />,
-      label: <Link to="/wholesealer">WholeSealer</Link>,
+      label: <Link to="/retailer">Retailer</Link>,
     },
     {
       key: "/users",
@@ -128,12 +129,8 @@ const Sidebar = () => {
     //   },
     {
       key: "/logout",
-      icon: <IoIosLogOut size={24}  />,
-      label: (
-        <p onClick={handleLogout} >
-          Logout
-        </p>
-      ),
+      icon: <IoIosLogOut size={24} />,
+      label: <p onClick={handleLogout}>Logout</p>,
     },
   ];
 
@@ -164,7 +161,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mb-20 h-screen bg-[#3FC7EE] text-white">
+    <div className="mb-20 h-screen 
+     ">
       <Link to={"/"} className="flex items-center justify-center py-4">
         <img src={image4} alt="logo" />
       </Link>
@@ -173,7 +171,7 @@ const Sidebar = () => {
         selectedKeys={[selectedKey]}
         openKeys={openKeys}
         onOpenChange={handleOpenChange}
-        className="font-poppins text-white"
+        className="font-poppins text-black"
         style={{
           borderRightColor: "transparent",
           background: "transparent",
@@ -181,7 +179,7 @@ const Sidebar = () => {
         theme="dark" // Ensures a dark mode where text remains white
         items={menuItems.map((item) => ({
           ...item,
-          label: <span className="text-white">{item.label}</span>, // Forces white text color
+          label: <span className="text-black">{item.label}</span>, // Forces white text color
         }))}
       />
     </div>
