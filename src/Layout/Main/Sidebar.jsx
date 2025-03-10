@@ -1,6 +1,6 @@
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdOutlineCategory, MdOutlineHome } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineHome, MdOutlineInventory2 } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HiMiniUsers, HiUserGroup } from "react-icons/hi2";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -33,19 +33,24 @@ const Sidebar = () => {
     },
     {
       key: "/salesManagement",
-      icon: <LuChartNoAxesCombined  size={24} className="text-black"/>,
+      icon: <LuChartNoAxesCombined size={24} className="text-black" />,
       label: <Link to="/salesManagement">Sales Management</Link>,
     },
     {
       key: "/retailer",
       icon: <MdOutlineHome size={24} />,
-      label: <Link to="/retailer">Retailer</Link>,
+      label: <Link to="/retailer">Retailer Management</Link>,
     },
     {
-      key: "/users",
+      key: "/salesRepsManage",
       icon: <HiMiniUsers size={24} />,
-      label: <Link to="/users">Subscribe</Link>,
+      label: <Link to="/salesRepsManage">SalesRepsManagement</Link>,
     },
+    // {
+    //   key: "/salesRepsManage/:id",
+    //   icon: <HiMiniUsers size={24} />,
+    //   label: <Link to="/salesRepsManage/id">Subscribe</Link>,
+    // },
     /* {
             key: "/subscription",
             icon: <MdOutlineAdminPanelSettings size={24} />,
@@ -57,9 +62,9 @@ const Sidebar = () => {
             label: <Link to="/admin">Make Admin</Link>
         }, */
     {
-      key: "/category",
-      icon: <IoNotificationsOutline size={24} />,
-      label: <Link to="/category">Push Notification</Link>,
+      key: "/inventory",
+      icon: <MdOutlineInventory2 size={24} />,
+      label: <Link to="/inventory">Inventory</Link>,
     },
     // {
     //   key: "/sub-category",

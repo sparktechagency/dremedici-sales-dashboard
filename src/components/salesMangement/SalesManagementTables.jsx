@@ -139,12 +139,6 @@ const SalesManagementTable = () => {
    const [orders, setOrders] = useState([]);
   
 
-  // Define handleOpenModal function
-//   const handleOpenModal = (orderData) => {
-//     setSelectedOrderData(orderData);
-//     setIsModalVisible(true); // Show modal
-//   };
-
   const handleCloseModal = () => {
     setIsModalVisible(false); // Hide modal
   };
@@ -179,49 +173,57 @@ const SalesManagementTable = () => {
       title: "OrderId",
       dataIndex: "orderId",
       key: "orderId",
+      align: "center",
       render: (text) => <span className="text-black">{text}</span>,
     },
     {
       title: "Retailer Name",
       dataIndex: "retailerName",
       key: "retailerName",
+      align: "center",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Sales Rep",
       dataIndex: "salesRep",
       key: "salesRep",
+      align: "center",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Order Box",
       dataIndex: "orderBox",
       key: "orderBox",
+      align: "center",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Free Box",
       dataIndex: "freeBox",
       key: "freeBox",
+      align: "center",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      align: "center",
       render: (text) => <span>${text}</span>,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
-        <div className="flex gap-2">
+        <div className="flex justify-center gap-2">
           <Button
             type="primary"
             className="bg-gradient-to-r from-primary to-secondary"
@@ -248,14 +250,13 @@ const SalesManagementTable = () => {
   ];
 
 
-
   return (
     <div className="p-4 rounded-lg bg-gradient-to-r from-primary to-secondary">
       <Table
         dataSource={data}
         columns={columns}
         pagination={{ pageSize: 10 }}
-        bordered={false} // Remove all borders
+        bordered={false} 
         size="middle"
         className="custom-table" // Custom class for adding borders
       />

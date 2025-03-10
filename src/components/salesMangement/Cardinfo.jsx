@@ -1,11 +1,9 @@
 import React from "react";
-import { MdOutlineHome } from "react-icons/md";
-import { PiHouseLine } from "react-icons/pi";
-import { FaDollarSign } from "react-icons/fa";
-import InfoCard from "./InfoCard";
+// import InfoCard from "./InfoCard";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import { RiBox3Fill } from "react-icons/ri";
 import { TbProgressAlert, TbTruckLoading } from "react-icons/tb";
+import InfoCard from "./InfoCard";
 
 const CardInfo = () => {
   // Data for cards

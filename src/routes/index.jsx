@@ -23,6 +23,10 @@ import RetailerTable from "../Pages/Dashboard/Retailer";
 import WholesealerTable from "../Pages/Dashboard/Wholesealer";
 import SalesManagement from "../Pages/Dashboard/SalesManagement";
 import Retailer from "../Pages/Dashboard/Retailer";
+import SaleRepsManagement from "../Pages/Dashboard/SaleRepsManagement";
+import ViewSalesReps from "../components/SalesRepsManagement/detailsSalesReps/ViewSalesReps";
+import Products from "../Pages/Dashboard/Products";
+// import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
   {
@@ -43,10 +47,17 @@ const router = createBrowserRouter([
         element: <Retailer />,
       },
       {
-        path: "/users",
-        element: <Users />,
+        path: "/salesRepsManage",
+        element: <SaleRepsManagement />,
       },
-      
+      {
+        path: "/inventory",
+        element: <Products />,
+      },
+      {
+        path: "/salesRepsManage/:id",
+        element: <ViewSalesReps />,
+      },
       {
         path: "/admin",
         element: <Admin />,
