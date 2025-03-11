@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Modal, Button, Input, Form, Space } from "antd";
 import GradientButton from "../../common/GradiantButton";
+import DetailsModal from "../../salesMangement/DetailsModal";
 
 const RetailerInfo = ({ salesRep }) => {
   console.log(salesRep.name); // Check the value of salesRep.name
@@ -47,6 +48,8 @@ const RetailerInfo = ({ salesRep }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [isTargetModalVisible, setIsTargetModalVisible] = useState(false);
+  const [isModalDetailsVisible, setIsModalDetailsVisible] = useState(false);
+  const [selectedOrderData, setSelectedOrderData] = useState(null);
 
   // Set the initial targetSalesRep state using the salesRep prop (if available)
   const [targetSalesRep, setTargetSalesRep] = useState({
@@ -110,6 +113,11 @@ const RetailerInfo = ({ salesRep }) => {
     setData(data.filter((item) => item.key !== key));
   };
 
+   const handleCloseModal = () => {
+     setIsModalDetailsVisible(false); // Hide modal
+   };
+
+
   const columns = [
     { title: "SL", dataIndex: "sl", align: "center" },
     { title: "Retailer Name", dataIndex: "retailerName", align: "center" },
@@ -124,8 +132,14 @@ const RetailerInfo = ({ salesRep }) => {
       render: (_, record) => (
         <Space>
           <GradientButton
-            onClick={() => showModal(record)}
+            onClick={() => {
+              setSelectedOrderData(record);
+              setIsModalDetailsVisible(true);
+            }}
           >
+            Details
+          </GradientButton>
+          <GradientButton onClick={() => showModal(record)}>
             Edit
           </GradientButton>
           <Button
@@ -145,14 +159,10 @@ const RetailerInfo = ({ salesRep }) => {
       <div className="flex justify-between mb-10 mt-16">
         <h1 className="text-2xl font-bold">Sales Rep Details</h1>
         <div className="flex gap-4">
-          <GradientButton
-            onClick={showTargetModal} 
-          >
+          <GradientButton onClick={showTargetModal}>
             Set Target Sales Reps
           </GradientButton>
-          <GradientButton
-            onClick={() => showModal()} 
-          >
+          <GradientButton onClick={() => showModal()}>
             Add New Entry
           </GradientButton>
         </div>
@@ -273,6 +283,13 @@ const RetailerInfo = ({ salesRep }) => {
           </Form.Item>
         </Form>
       </Modal>
+
+      {/* Render the modal with the selected order data */}
+      <DetailsModal
+        isVisible={isModalDetailsVisible}
+        onClose={handleCloseModal}
+        orderData={selectedOrderData}
+      />
     </div>
   );
 };

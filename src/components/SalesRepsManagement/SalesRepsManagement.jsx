@@ -131,6 +131,7 @@ const SalesRepsManagementTable = () => {
   const [editingId, setEditingId] = useState(null);
   const [form] = Form.useForm();
   const navigate=useNavigate()
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -214,17 +215,16 @@ const SalesRepsManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex gap-2 justify-center">
+         
           <GradientButton
             onClick={() =>
-              navigate(`/salesRepsManage/${record.id}`, { state: record })
+              navigate(`/retailer/${record.id}`, { state: record })
             }
           >
             Details
           </GradientButton>
-          
-          <GradientButton
-            onClick={() => showModal(record)}
-          >
+
+          <GradientButton onClick={() => showModal(record)}>
             Edit
           </GradientButton>
           <button

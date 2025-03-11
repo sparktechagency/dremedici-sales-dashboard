@@ -45,7 +45,7 @@ const Sidebar = () => {
           className="icon-image"
         />
       ),
-      label: <Link to="/">Overview</Link>,
+      label: <Link to="/">Dashboard Overview</Link>,
     },
     {
       key: "/salesManagement",
@@ -79,25 +79,25 @@ const Sidebar = () => {
           className="icon-image"
         />
       ),
-      label: <Link to="/retailer">Retailer Management</Link>,
+      label: <Link to="/retailer">My Retailer</Link>,
     },
-    {
-      key: "/salesRepsManage",
-      icon: (
-        <img
-          src={Frame4}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
-          }}
-          className="icon-image"
-        />
-      ),
-      label: <Link to="/salesRepsManage">Sales Reps Management</Link>,
-    },
+    // {
+    //   key: "/salesRepsManage",
+    //   icon: (
+    //     <img
+    //       src={Frame4}
+    //       alt="Retailer Icon"
+    //       style={{
+    //         width: "24px",
+    //         height: "24px",
+    //         filter: "invert(1) grayscale(1)", // Black by default
+    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
+    //       }}
+    //       className="icon-image"
+    //     />
+    //   ),
+    //   label: <Link to="/salesRepsManage">Sales Reps Management</Link>,
+    // },
 
     {
       key: "/inventory",

@@ -45,19 +45,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/retailer",
-        element: <Retailer />,
-      },
-      {
-        path: "/salesRepsManage",
         element: <SaleRepsManagement />,
       },
       {
+        path: "/retailer/:id",
+        element: <ViewSalesReps />,
+      },
+      // {
+      //   path: "/salesRepsManage",
+      //   element: <SaleRepsManagement />,
+      // },
+
+      {
         path: "/inventory",
         element: <Products />,
-      },
-      {
-        path: "/salesRepsManage/:id",
-        element: <ViewSalesReps />,
       },
       {
         path: "/loyaltyProgram",

@@ -2,96 +2,106 @@ import React, { useState } from "react";
 import { Table, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
-// Sample Data with Unique Keys
 const dataSource = [
   {
-    key: "1",
-    orderId: "#123456",
+    sl: 1,
     retailerName: "Alice Johnson",
-    salesName: "Alice Johnson",
-    amount: "$2500",
-    status: "Pending",
+    email: "alice@example.com",
+    totalSales: "$5000",
+    tier: "Gold",
+    status: "Active",
   },
   {
-    key: "2",
-    orderId: "#123457",
-    retailerName: "Alice Johnson",
-    salesName: "Alice Johnson",
-    amount: "$2500",
-    status: "Pending",
-  },
-  {
-    key: "3",
-    orderId: "#123458",
-    retailerName: "Alice Johnson",
-    salesName: "Alice Johnson",
-    amount: "$2500",
-    status: "Completed",
-  },
-  {
-    key: "4",
-    orderId: "#123459",
-    retailerName: "Alice Jowel",
-    salesName: "Alice Johnson",
-    amount: "$2500",
-    status: "Completed",
-  },
-  {
-    key: "5",
-    orderId: "#123460",
+    sl: 2,
     retailerName: "John Doe",
-    salesName: "Alice Johnson",
-    amount: "$3200",
-    status: "Pending",
+    email: "john@example.com",
+    totalSales: "$3200",
+    tier: "Silver",
+    status: "Inactive",
   },
   {
-    key: "6",
-    orderId: "#123461",
+    sl: 3,
     retailerName: "Emma Watson",
-    salesName: "Alice Johnson",
-    amount: "$4100",
-    status: "Completed",
+    email: "emma@example.com",
+    totalSales: "$4100",
+    tier: "Gold",
+    status: "Active",
   },
   {
-    key: "7",
-    orderId: "#123462",
+    sl: 4,
     retailerName: "Robert Brown",
-    salesName: "Alice Johnson",
-    amount: "$1800",
+    email: "robert@example.com",
+    totalSales: "$1800",
+    tier: "Bronze",
     status: "Pending",
   },
   {
-    key: "8",
-    orderId: "#123463",
+    sl: 5,
     retailerName: "Sophia Lee",
-    salesName: "Alice Johnson",
-    amount: "$2250",
-    status: "Completed",
+    email: "sophia@example.com",
+    totalSales: "$2250",
+    tier: "Silver",
+    status: "Active",
   },
   {
-    key: "9",
-    orderId: "#123464",
+    sl: 6,
     retailerName: "Michael Clark",
-    salesName: "Alice Johnson",
-    amount: "$2750",
+    email: "michael@example.com",
+    totalSales: "$2750",
+    tier: "Bronze",
+    status: "Inactive",
+  },
+  {
+    sl: 7,
+    retailerName: "David Miller",
+    email: "david@example.com",
+    totalSales: "$3900",
+    tier: "Gold",
+    status: "Active",
+  },
+  {
+    sl: 8,
+    retailerName: "Olivia Wilson",
+    email: "olivia@example.com",
+    totalSales: "$4600",
+    tier: "Platinum",
+    status: "Active",
+  },
+  {
+    sl: 9,
+    retailerName: "William Taylor",
+    email: "william@example.com",
+    totalSales: "$1500",
+    tier: "Bronze",
     status: "Pending",
   },
   {
-    key: "10",
-    orderId: "#123465",
-    retailerName: "David Miller",
-    salesName: "Alice Johnson",
-    amount: "$3900",
-    status: "Completed",
+    sl: 10,
+    retailerName: "Liam Johnson",
+    email: "liam@example.com",
+    totalSales: "$5100",
+    tier: "Platinum",
+    status: "Active",
   },
 ];
 
 const columns = [
-  { title: "Order ID", dataIndex: "orderId", key: "orderId" },
-  { title: "Retailer Name", dataIndex: "retailerName", key: "retailerName" },
-  { title: "Sales Name", dataIndex: "salesName", key: "salesName" },
-  { title: "Amount", dataIndex: "amount", key: "amount" },
-  { title: "Status", dataIndex: "status", key: "status" },
+  { title: "SL", dataIndex: "sl", key: "sl", align: "center" },
+  {
+    title: "Retailer Name",
+    dataIndex: "retailerName",
+    key: "retailerName",
+    align: "center",
+  },
+  { title: "Email", dataIndex: "email", key: "email", align: "center" },
+  {
+    title: "Total Sales",
+    dataIndex: "totalSales",
+    key: "totalSales",
+    align: "center",
+  },
+  { title: "Tier", dataIndex: "tier", key: "tier", align: "center" },
+  { title: "Status", dataIndex: "status", key: "status", align: "center" },
 ];
 
 const SalesLeaderBoard = () => {
@@ -103,9 +113,7 @@ const SalesLeaderBoard = () => {
   // Filtering the data based on the search text
   const filteredData = dataSource.filter(
     (item) =>
-      item.orderId.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.retailerName.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.salesName.toLowerCase().includes(searchText.toLowerCase())
+      item.retailerName.toLowerCase().includes(searchText.toLowerCase()) 
   );
 
   return (

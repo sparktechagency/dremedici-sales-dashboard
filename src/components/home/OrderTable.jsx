@@ -89,7 +89,7 @@ const dataSource = [
 const columns = [
   { title: "Order ID", dataIndex: "orderId", key: "orderId" },
   { title: "Retailer Name", dataIndex: "retailerName", key: "retailerName" },
-  { title: "Sales Name", dataIndex: "salesName", key: "salesName" },
+  // { title: "Sales Name", dataIndex: "salesName", key: "salesName" },
   { title: "Amount", dataIndex: "amount", key: "amount" },
   { title: "Status", dataIndex: "status", key: "status" },
 ];
@@ -111,7 +111,7 @@ const OrderTable = () => {
   return (
     <div>
       <div className="flex justify-between mb-4 items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Order Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Sales Retailer</h1>
         <Input
           placeholder="Search Order, Retailer, Sales"
           value={searchText}
