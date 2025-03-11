@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Select } from "antd";
+import GradientButton from "../common/GradiantButton";
 
 const StatusUpdateModal = ({ isVisible, onClose, orderData, onUpdateStatus }) => {
   const [status, setStatus] = useState(orderData?.status || "Pending");
@@ -10,17 +11,16 @@ const StatusUpdateModal = ({ isVisible, onClose, orderData, onUpdateStatus }) =>
       visible={isVisible}
       onCancel={onClose}
       footer={[
-        <Button key="cancel" onClick={onClose}>
-          Cancel
-        </Button>,
-        <Button
-          key="update"
-          type="primary"
-          className="bg-gradient-to-r from-primary to-secondary"
-          onClick={() => onUpdateStatus(status)}
+        <button
+          key="cancel"
+          onClick={onClose}
+          className="bg-gray-300 px-4 py-2 rounded"
         >
-          Confirm
-        </Button>,
+          Cancel
+        </button>,
+        <GradientButton key="update" onClick={() => onUpdateStatus(status)}>
+          Update Status
+        </GradientButton>,
       ]}
     >
       <Select

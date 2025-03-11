@@ -26,6 +26,7 @@ import Retailer from "../Pages/Dashboard/Retailer";
 import SaleRepsManagement from "../Pages/Dashboard/SaleRepsManagement";
 import ViewSalesReps from "../components/SalesRepsManagement/detailsSalesReps/ViewSalesReps";
 import Products from "../Pages/Dashboard/Products";
+import LoyaltyProgram from "../Pages/Dashboard/LoyaltyProgram";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
@@ -59,8 +60,8 @@ const router = createBrowserRouter([
         element: <ViewSalesReps />,
       },
       {
-        path: "/admin",
-        element: <Admin />,
+        path: "/loyaltyProgram",
+        element: <LoyaltyProgram />,
       },
       {
         path: "/category",

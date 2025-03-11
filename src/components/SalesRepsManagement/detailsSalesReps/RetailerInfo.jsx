@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Modal, Button, Input, Form, Space } from "antd";
+import GradientButton from "../../common/GradiantButton";
 
 const RetailerInfo = ({ salesRep }) => {
   console.log(salesRep.name); // Check the value of salesRep.name
@@ -122,17 +123,15 @@ const RetailerInfo = ({ salesRep }) => {
       align: "center",
       render: (_, record) => (
         <Space>
-          <Button
+          <GradientButton
             onClick={() => showModal(record)}
-            type="primary"
-            className="bg-gradient-to-r from-primary to-secondary"
           >
             Edit
-          </Button>
+          </GradientButton>
           <Button
             onClick={() => handleDelete(record.key)}
             type="danger"
-            className="bg-red-500 text-white"
+            className="bg-red-500 text-white py-[18px]"
           >
             Delete
           </Button>
@@ -143,24 +142,19 @@ const RetailerInfo = ({ salesRep }) => {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-10 mt-16">
         <h1 className="text-2xl font-bold">Sales Rep Details</h1>
         <div className="flex gap-4">
-          <Button
-            onClick={showTargetModal} // Show Target Modal
-            type="primary"
-            className="bg-gradient-to-r from-primary to-secondary py-5 font-bold"
+          <GradientButton
+            onClick={showTargetModal} 
           >
             Set Target Sales Reps
-          </Button>
-          <Button
-            onClick={() => showModal()} // Trigger Add modal
-            type="primary"
-            style={{ marginBottom: 16 }}
-            className="bg-gradient-to-r from-primary to-secondary py-5 font-bold"
+          </GradientButton>
+          <GradientButton
+            onClick={() => showModal()} 
           >
             Add New Entry
-          </Button>
+          </GradientButton>
         </div>
       </div>
 
@@ -170,7 +164,7 @@ const RetailerInfo = ({ salesRep }) => {
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered
-          size="middle"
+          size="small"
           rowClassName="custom-row"
         />
       </div>
@@ -228,9 +222,9 @@ const RetailerInfo = ({ salesRep }) => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <GradientButton type="primary" htmlType="submit">
               {isEditing ? "Save Changes" : "Add Entry"}
-            </Button>
+            </GradientButton>
           </Form.Item>
         </Form>
       </Modal>

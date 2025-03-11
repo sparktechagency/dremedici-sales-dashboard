@@ -1,15 +1,19 @@
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdOutlineCategory, MdOutlineHome, MdOutlineInventory2 } from "react-icons/md";
+import {  MdOutlineInventory2 } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiMiniUsers, HiUserGroup } from "react-icons/hi2";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { HiMiniUsers, } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { RiMoneyDollarBoxLine } from "react-icons/ri";
-import { PiHouseLine, PiSquaresFourLight } from "react-icons/pi";
-import { BiLock } from "react-icons/bi";
+import { PiSquaresFourLight } from "react-icons/pi";
 import image4 from "../../assets/image4.png";
+import Frame1 from "../../assets/Frame1.png";
+import Frame2 from "../../assets/Frame2.png";
+import Frame3 from "../../assets/Frame3.png";
+import Frame4 from "../../assets/Frame4.png";
+import Frame5 from "../../assets/Frame5.png";
+import Frame6 from "../../assets/Frame6.png";
+import Frame7 from "../../assets/Frame7.png";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 
 
@@ -28,110 +32,135 @@ const Sidebar = () => {
   const menuItems = [
     {
       key: "/",
-      icon: <PiSquaresFourLight size={24} />,
+      icon: (
+        <img
+          src={Frame1}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
       label: <Link to="/">Overview</Link>,
     },
     {
       key: "/salesManagement",
-      icon: <LuChartNoAxesCombined size={24} className="text-black" />,
+      icon: (
+        <img
+          src={Frame2}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
       label: <Link to="/salesManagement">Sales Management</Link>,
     },
     {
       key: "/retailer",
-      icon: <MdOutlineHome size={24} />,
+      icon: (
+        <img
+          src={Frame3}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
       label: <Link to="/retailer">Retailer Management</Link>,
     },
     {
       key: "/salesRepsManage",
-      icon: <HiMiniUsers size={24} />,
-      label: <Link to="/salesRepsManage">SalesRepsManagement</Link>,
+      icon: (
+        <img
+          src={Frame4}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
+      label: <Link to="/salesRepsManage">Sales Reps Management</Link>,
     },
-    // {
-    //   key: "/salesRepsManage/:id",
-    //   icon: <HiMiniUsers size={24} />,
-    //   label: <Link to="/salesRepsManage/id">Subscribe</Link>,
-    // },
-    /* {
-            key: "/subscription",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/subscription">Subscription</Link>
-        }, */
-    /* {
-            key: "/admin",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/admin">Make Admin</Link>
-        }, */
+
     {
       key: "/inventory",
-      icon: <MdOutlineInventory2 size={24} />,
-      label: <Link to="/inventory">Inventory</Link>,
+      icon: (
+        <img
+          src={Frame5}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
+      label: <Link to="/inventory">Inventory Management</Link>,
     },
-    // {
-    //   key: "/sub-category",
-    //   icon: <RiMoneyDollarBoxLine size={24} />,
-    //   label: <Link to="/sub-category">Billing</Link>,
-    // },
     {
-      key: "/events",
-      icon: <BiLock size={24} />,
-      label: <Link to="/events">Password</Link>,
+      key: "/loyaltyProgram",
+      icon: (
+        <img
+          src={Frame6}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
+      label: <Link to="/loyaltyProgram">Loyalty Program</Link>,
     },
-    //   {
-    //     key: "subMenuSetting",
-    //     icon: <IoSettingsOutline size={24} />,
-    //     label: "Settings",
-    //     children: [
-    //       {
-    //         key: "/banner",
-    //         label: (
-    //           <Link to="/banner" className="text-white hover:text-white">
-    //             Banner
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/about-us",
-    //         label: (
-    //           <Link to="/about-us" className="text-white hover:text-white">
-    //             About Us
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/terms-and-conditions",
-    //         label: (
-    //           <Link
-    //             to="/terms-and-conditions"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Terms And Condition
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/privacy-policy",
-    //         label: (
-    //           <Link
-    //             to="/privacy-policy"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Privacy Policy
-    //           </Link>
-    //         ),
-    //       },
-    //       {
-    //         key: "/change-password",
-    //         label: (
-    //           <Link
-    //             to="/change-password"
-    //             className="text-white hover:text-white"
-    //           >
-    //             Change Password
-    //           </Link>
-    //         ),
-    //       },
-    //     ],
-    //   },
+
+    {
+      key: "subMenuSetting",
+      icon: (
+        <img
+          src={Frame7}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", 
+            transition: "filter 0.3s ease", 
+          }}
+          className="icon-image"
+        />
+      ),
+      label: "Settings",
+      children: [
+        {
+          key: "/profile",
+          label: (
+            <Link to="/profile" className="  ">
+              Update Profile
+            </Link>
+          ),
+        },
+      ],
+    },
     {
       key: "/logout",
       icon: <IoIosLogOut size={24} />,
@@ -166,10 +195,15 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mb-20 h-screen 
-     ">
-      <Link to={"/"} className="flex items-center justify-center py-4">
-        <img src={image4} alt="logo" />
+    <div
+      className="mb-20 h-screen 
+     "
+    >
+      <Link
+        to={"/"}
+        className="flex items-center justify-center py-4 border-b-2 border-primary"
+      >
+        <img src={image4} alt="logo" className="w-40 h-40" />
       </Link>
       <Menu
         mode="inline"
@@ -180,11 +214,17 @@ const Sidebar = () => {
         style={{
           borderRightColor: "transparent",
           background: "transparent",
+          marginTop: "30px",
         }}
-        theme="dark" // Ensures a dark mode where text remains white
         items={menuItems.map((item) => ({
           ...item,
-          label: <span className="text-black">{item.label}</span>, // Forces white text color
+          label: <span className="">{item.label}</span>, // Ensures text remains black
+          children: item.children
+            ? item.children.map((subItem) => ({
+                ...subItem,
+                label: <span className="">{subItem.label}</span>, // Ensures submenu text remains black
+              }))
+            : undefined,
         }))}
       />
     </div>

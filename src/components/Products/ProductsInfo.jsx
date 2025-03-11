@@ -12,6 +12,7 @@ import {
   message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import GradientButton from "../common/GradiantButton";
 
 const { Option } = Select;
 
@@ -165,20 +166,16 @@ const ProductInfo = () => {
       align: "center",
       render: (_, record) => (
         <Space>
-          <Button
+          <GradientButton
             onClick={() => showDetailModal(record)}
-            type="default"
-            className="bg-gradient-to-r from-primary  to-secondary  text-white"
           >
             Details
-          </Button>
-          <Button
+          </GradientButton>
+          <GradientButton
             onClick={() => showModal(record)}
-            type="primary"
-            className="bg-gradient-to-r from-primary  to-secondary"
           >
             Edit
-          </Button>
+          </GradientButton>
           {/* <Button
             onClick={() => showStockModal(record)}
             type="primary"
@@ -189,7 +186,7 @@ const ProductInfo = () => {
           <Button
             onClick={() => handleDelete(record.key)}
             type="danger"
-            className="bg-red-500 text-white"
+            className="bg-red-500 text-white py-[18px]"
           >
             Delete
           </Button>
@@ -210,23 +207,21 @@ const ProductInfo = () => {
             onChange={(e) => setSearchText(e.target.value)}
             className="w-60 py-2"
           />
-          <Button
+          <GradientButton
             onClick={() => showModal()}
-            type="primary"
-            className="bg-gradient-to-r from-primary  to-secondary py-5 font-bold"
           >
             Add Product
-          </Button>
+          </GradientButton>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 font-bold">
+      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 font-bold rounded-xl">
         <Table
           dataSource={filteredData}
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered={false}
-          size="middle"
+          size="small"
           rowClassName="custom-row"
         />
       </div>
@@ -302,9 +297,9 @@ const ProductInfo = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <GradientButton type="primary" htmlType="submit">
               {editingId ? "Update Product" : "Add Product"}
-            </Button>
+            </GradientButton>
           </Form.Item>
         </Form>
       </Modal>
@@ -362,16 +357,14 @@ const ProductInfo = () => {
             </p>
 
             <div className="flex justify-end">
-              <Button
+              <GradientButton
                 onClick={() => {
                   setIsDetailModalVisible(false);
                   showStockModal(currentProduct);
                 }}
-                type="primary"
-                className="bg-orange-500 text-white"
               >
                 Stock Update
-              </Button>
+              </GradientButton>
             </div>
           </div>
         )}
@@ -393,9 +386,9 @@ const ProductInfo = () => {
             <Input type="number" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <GradientButton type="primary" htmlType="submit">
               Update Quantity
-            </Button>
+            </GradientButton>
           </Form.Item>
         </Form>
       </Modal>

@@ -15,10 +15,11 @@
   margin-top: 0 !important;
 }
 
-/* Ant Design menu items - set icon color to black by default */
-.ant-menu-item-icon {
-  color: black !important;
+/* Ensure selected route icon is white */
+.ant-menu-item-selected .ant-menu-item-icon {
+  color: white !important;
 }
+
 
 /* Ant Design menu item text color - default */
 .ant-menu-item {
@@ -72,4 +73,13 @@
 
 .custom-table .ant-table-thead > tr > th {
   border-bottom: 2px solid #ddd; 
+}
+
+
+
+/* Hide number input arrows in WebKit browsers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

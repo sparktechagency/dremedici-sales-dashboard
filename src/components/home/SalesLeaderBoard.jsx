@@ -111,24 +111,24 @@ const SalesLeaderBoard = () => {
   return (
     <div>
       <div className="flex justify-between mb-4 items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Order Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Sales Leaderboard</h1>
         <Input
           placeholder="Search Order, Retailer, Sales"
           value={searchText}
           onChange={(e) => handleSearch(e.target.value)}
           prefix={<SearchOutlined />}
-          className="w-1/3"
+          className="w-1/3 py-2"
         />
       </div>
       {/* Table Container with Gradient Background */}
-      <div className="p-4 rounded-lg bg-gradient-to-r from-primary to-secondary">
+      <div className="px-6 pt-6 rounded-lg bg-gradient-to-r from-primary to-secondary">
         <Table
           dataSource={filteredData}
           columns={columns}
-          pagination={{ pageSize: 7 }}
+          pagination={{ pageSize: 5 }}
           bordered
           size="middle"
-          className="rounded-lg shadow-lg"
+          rowClassName="custom-row" // Adding custom row class
         />
       </div>
     </div>

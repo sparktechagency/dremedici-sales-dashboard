@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
+import GradientButton from "../common/GradiantButton";
 
 const SalesRepsManagementTable = () => {
   const [data, setData] = useState([
@@ -213,31 +214,28 @@ const SalesRepsManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex gap-2 justify-center">
-          <Button
-            type="primary"
+          <GradientButton
             onClick={() =>
               navigate(`/salesRepsManage/${record.id}`, { state: record })
             }
-            className="bg-gradient-to-r from-primary to-secondary"
           >
             Details
-          </Button>
+          </GradientButton>
           
-          <Button
+          <GradientButton
             onClick={() => showModal(record)}
-            className="bg-gradient-to-r from-primary  to-secondary text-white"
           >
             Edit
-          </Button>
-          <Button
+          </GradientButton>
+          <button
             // danger
             onClick={() =>
               setData(data.filter((item) => item.id !== record.id))
             }
-            className="bg-red-500 text-white"
+            className="bg-red-500 text-white py-[5px] w-20 rounded-md hover:bg-red-400"
           >
             Delete
-          </Button>
+          </button>
         </div>
       ),
     },
@@ -315,10 +313,10 @@ const SalesRepsManagementTable = () => {
         <Table
           dataSource={data}
           columns={columns}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 7 }}
           bordered={false}
-          size="middle"
-          rowClassName="custom-row" 
+          size="small"
+          rowClassName="custom-row"
         />
       </div>
 
@@ -328,6 +326,21 @@ const SalesRepsManagementTable = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={() => form.submit()}
+        okText={editingId ? "Save Changes" : "Add Sales Rep"} // Change button text
+        okButtonProps={{
+          style: {
+            background: "linear-gradient(to right, #4E9DAB, #336C79)",
+            border: "none",
+            color: "white",
+          },
+        }}
+        cancelButtonProps={{
+          style: {
+            background: "#D32F2F", // Custom red for cancel
+            border: "none",
+            color: "white",
+          },
+        }}
       >
         <Form form={form} layout="vertical" onFinish={handleSave}>
           <Form.Item

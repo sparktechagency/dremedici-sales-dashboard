@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Table, Button, message } from "antd";
 import DetailsModal from "./DetailsModal";
 import StatusUpdateModal from "./StatusUpdateModal";
+import GradientButton from "../common/GradiantButton";
 
 // Sample data for the table
 const data = [
@@ -224,26 +225,22 @@ const SalesManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex justify-center gap-2">
-          <Button
-            type="primary"
-            className="bg-gradient-to-r from-primary to-secondary"
+          <GradientButton
             onClick={() => {
               setSelectedOrderData(record);
               setIsModalVisible(true);
             }}
           >
             Details
-          </Button>
-          <Button
-            type="default"
-            className="bg-gradient-to-r from-primary to-secondary text-white"
+          </GradientButton>
+          <GradientButton
             onClick={() => {
               setSelectedOrderData(record);
               setIsStatusModalVisible(true);
             }}
           >
             Status Update
-          </Button>
+          </GradientButton>
         </div>
       ),
     },
@@ -251,31 +248,34 @@ const SalesManagementTable = () => {
 
 
   return (
-    <div className="p-4 rounded-lg bg-gradient-to-r from-primary to-secondary">
-      <Table
-        dataSource={data}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-        bordered={false} 
-        size="middle"
-        className="custom-table" // Custom class for adding borders
-      />
-      {/* Render the modal with the selected order data */}
-      <DetailsModal
-        isVisible={isModalVisible}
-        onClose={handleCloseModal}
-        orderData={selectedOrderData}
-      />
-
-      {/* Status Update Modal */}
-      {selectedOrderData && (
-        <StatusUpdateModal
-          isVisible={isStatusModalVisible}
-          onClose={() => setIsStatusModalVisible(false)}
-          orderData={selectedOrderData}
-          onUpdateStatus={handleUpdateStatus}
+    <div className="">
+      <h2 className="text-2xl font-bold my-6">All Sales </h2>
+      <div className="px-6 pt-6 rounded-lg bg-gradient-to-r from-primary to-secondary">
+        <Table
+          dataSource={data}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          bordered={false}
+          size="small"
+          className="custom-table" // Custom class for adding borders
         />
-      )}
+        {/* Render the modal with the selected order data */}
+        <DetailsModal
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+          orderData={selectedOrderData}
+        />
+
+        {/* Status Update Modal */}
+        {selectedOrderData && (
+          <StatusUpdateModal
+            isVisible={isStatusModalVisible}
+            onClose={() => setIsStatusModalVisible(false)}
+            orderData={selectedOrderData}
+            onUpdateStatus={handleUpdateStatus}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Table, Button, Input, Space, ConfigProvider } from "antd";
 import Swal from "sweetalert2";
 import UpdateModal from "../common/UpdateModal";
+import GradientButton from "../common/GradiantButton";
 
 const retailersData = Array.from({ length: 25 }, (_, i) => ({
   id: i + 1,
@@ -89,23 +90,12 @@ const RetailerManageTable = () => {
      align: "center",
      render: (_, record) => (
        <Space>
-         <ConfigProvider
-           theme={{
-             token: {
-               colorPrimary: "#0090B9",
-               colorPrimaryHover: "#336C79",
-             },
-           }}
-         >
-           <Button
+           <GradientButton
              onClick={() => handleEdit(record)}
-             type="primary"
-             size="large"
-             className="text-white"
            >
              Edit
-           </Button>
-         </ConfigProvider>
+           </GradientButton>
+         
          <ConfigProvider
            theme={{
              token: {
@@ -191,16 +181,14 @@ const RetailerManageTable = () => {
             style={{ width: 300 }}
             className="py-2.5"
           />
-          <Button
+          <GradientButton
             onClick={() => {
               setSelectedUser(null);
               setIsModalOpen(true);
             }}
-            type="primary"
-            className="bg-gradient-to-r from-primary  to-secondary text-white py-5"
           >
-            + Add Retailer
-          </Button>
+            Add Retailer
+          </GradientButton>
         </div>
       </div>
       {/* Table */}
@@ -214,7 +202,7 @@ const RetailerManageTable = () => {
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered={false}
-          size="middle"
+          size="small"
           rowClassName="custom-row"
           className="custom-table"
         />
