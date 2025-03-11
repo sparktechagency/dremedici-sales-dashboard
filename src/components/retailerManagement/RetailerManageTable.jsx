@@ -38,11 +38,11 @@ const RetailerManageTable = () => {
      align: "center",
      render: (text, record) => (
        <div className="flex items-center justify-center">
-         <img
+         {/* <img
            src={record.image}
            alt={record.name}
            className="w-10 h-10 rounded-full mr-3"
-         />
+         /> */}
          {record.name}
        </div>
      ),

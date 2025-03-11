@@ -143,8 +143,8 @@ const Sidebar = () => {
           style={{
             width: "24px",
             height: "24px",
-            filter: "invert(1) grayscale(1)", 
-            transition: "filter 0.3s ease", 
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
           }}
           className="icon-image"
         />

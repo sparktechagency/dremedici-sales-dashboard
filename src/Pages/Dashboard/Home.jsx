@@ -87,7 +87,7 @@ const Home = () => {
 
   return (
     <div className="">
-      <div className="flex gap-6   rounded-lg">
+      <div className="flex gap-10   rounded-lg">
         {/* Line Chart Section */}
         <div className=" flex-1 w-2/3 bg-gradient-to-r from-primary  to-secondary p-6 rounded-lg ">
           <h2 className="text-xl font-bold text-white mb-4">Total Revenue</h2>

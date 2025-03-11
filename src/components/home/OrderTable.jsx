@@ -125,10 +125,10 @@ const OrderTable = () => {
         <Table
           dataSource={filteredData}
           columns={columns}
-          pagination={{ pageSize: 5 }}
-          bordered
-          size="middle"
-          rowClassName="custom-row" // Adding custom row class
+          pagination={{ pageSize: 7 }}
+          bordered={false}
+          size="small"
+          rowClassName="custom-table" 
         />
       </div>
     </div>

@@ -224,7 +224,7 @@ const LoyalityProgramTable = () => {
           </ConfigProvider>
         </div>
       </div>
-      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 font-bold rounded-xl">
+      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6  rounded-xl">
         <Table
           dataSource={data}
           columns={columns}

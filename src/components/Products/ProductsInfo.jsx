@@ -150,7 +150,7 @@ const ProductInfo = () => {
   };
 
   const columns = [
-    { title: "Product Name", dataIndex: "productName", align: "center" },
+    { title: "Product Name", dataIndex: "productName", align: "center", },
     { title: "Category", dataIndex: "category", align: "center" },
     { title: "Total Boxes", dataIndex: "totalBoxes", align: "center" },
     { title: "Free Boxes", dataIndex: "freeBoxes", align: "center" },
@@ -215,7 +215,7 @@ const ProductInfo = () => {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 font-bold rounded-xl">
+      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 rounded-xl">
         <Table
           dataSource={filteredData}
           columns={columns}

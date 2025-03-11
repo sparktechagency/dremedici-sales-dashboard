@@ -313,7 +313,7 @@ const SalesRepsManagementTable = () => {
         <Table
           dataSource={data}
           columns={columns}
-          pagination={{ pageSize: 7 }}
+          pagination={{ pageSize: 10 }}
           bordered={false}
           size="small"
           rowClassName="custom-row"
