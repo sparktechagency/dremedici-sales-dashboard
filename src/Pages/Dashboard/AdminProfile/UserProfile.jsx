@@ -1,20 +1,53 @@
-import React from "react";
-import { Form, Input, Button, Switch, Select, notification } from "antd";
+import React, { useState } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Switch,
+  Select,
+  notification,
+  Upload,
+  Avatar,
+} from "antd";
 import GradientButton from "../../../components/common/GradiantButton";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
 const UserProfile = () => {
   const [form] = Form.useForm();
+  const [imageUrl, setImageUrl] = useState(null);
+  const [fileList, setFileList] = useState([]); // State to handle file list
 
   const handleUpdate = async (values) => {
     console.log("Updated Values: ", values);
+    console.log("Profile Image: ", imageUrl);
     // Here, you can add the logic to update the user data to the server
     // If it's successful, show a success notification
     notification.success({
       message: "Profile Updated Successfully!",
       description: "Your profile information has been updated.",
     });
+  };
+
+  const handleImageChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList); // Update the file list when a new file is selected
+    if (newFileList.length > 0) {
+      setImageUrl(URL.createObjectURL(newFileList[0].originFileObj)); // Show preview of the image
+    } else {
+      setImageUrl(null); // Clear image if no file selected
+    }
+  };
+
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      notification.error({
+        message: "Invalid File Type",
+        description: "Please upload an image file.",
+      });
+    }
+    return isImage;
   };
 
   return (
@@ -26,17 +59,26 @@ const UserProfile = () => {
         onFinish={handleUpdate}
       >
         <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-x-16 w-full gap-y-7">
-          {/* Business Name */}
-          <Form.Item
-            name="businessName"
-            label="Business Name"
-            style={{ marginBottom: 0 }}
-            rules={[
-              { required: true, message: "Please enter your business name" },
-            ]}
-          >
-            <Input placeholder="Enter your Business Name" />
-          </Form.Item>
+          {/* Profile Image */}
+          <div className="col-span-2 flex justify-center">
+            <Form.Item label="Profile Image" style={{ marginBottom: 0 }}>
+              <Upload
+                name="avatar"
+                showUploadList={false}
+                action="/upload" // Adjust this to your server's upload endpoint
+                onChange={handleImageChange}
+                beforeUpload={beforeUpload} // Validate file before upload
+                fileList={fileList} // Bind file list to the Upload component
+                listType="picture-card"
+              >
+                {imageUrl ? (
+                  <Avatar size={100} src={imageUrl} />
+                ) : (
+                  <Avatar size={100} icon={<UploadOutlined />} />
+                )}
+              </Upload>
+            </Form.Item>
+          </div>
 
           {/* Username */}
           <Form.Item
@@ -71,21 +113,6 @@ const UserProfile = () => {
             <Input placeholder="Enter your Address" />
           </Form.Item>
 
-          {/* Region */}
-          <Form.Item
-            name="region"
-            label="Region"
-            style={{ marginBottom: 0 }}
-            rules={[{ required: true, message: "Please select your region" }]}
-          >
-            <Select placeholder="Select your Region">
-              <Option value="north">North</Option>
-              <Option value="south">South</Option>
-              <Option value="east">East</Option>
-              <Option value="west">West</Option>
-            </Select>
-          </Form.Item>
-
           {/* Language */}
           <Form.Item
             name="language"
@@ -105,7 +132,7 @@ const UserProfile = () => {
             name="notifications"
             label="Enable Notifications"
             valuePropName="checked"
-            style={{ marginBottom: 0,  }}
+            style={{ marginBottom: 0 }}
           >
             <Switch defaultChecked className="bg-primary" />
           </Form.Item>

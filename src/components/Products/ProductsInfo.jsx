@@ -207,9 +207,7 @@ const ProductInfo = () => {
             onChange={(e) => setSearchText(e.target.value)}
             className="w-60 py-2"
           />
-          <GradientButton
-            onClick={() => showModal()}
-          >
+          <GradientButton onClick={() => showModal()}>
             Add Product
           </GradientButton>
         </div>
@@ -317,11 +315,37 @@ const ProductInfo = () => {
             <div className="flex flex-col  gap-2 my-4">
               {currentProduct.images && currentProduct.images.length > 0 && (
                 <>
-                  <img
-                    src={currentProduct.images[1]}
-                    alt="Product"
-                    className="w-80 h-60 object-cover rounded-lg shadow-md mx-auto"
-                  />
+                  <div className="flex gap-10">
+                    <img
+                      src={currentProduct.images[1]}
+                      alt="Product"
+                      className="w-60 h-48 object-cover rounded-lg shadow-md "
+                    />
+                    <div>
+                      <p>
+                        <span className="mr-2">Name:</span>{" "}
+                        <p className="font-bold">
+                          {currentProduct.productName}
+                        </p>
+                      </p>
+                      <p>
+                        <span className="mr-2">Category:</span>{" "}
+                        <>{currentProduct.category}</>
+                      </p>
+                      <p>
+                        <span className="mr-2">Total Boxes:</span>{" "}
+                        <>{currentProduct.totalBoxes}</>
+                      </p>
+                      <p>
+                        <span className="mr-2">Free Boxes:</span>{" "}
+                        <>{currentProduct.freeBoxes}</>
+                      </p>
+                      <p>
+                        <span className="mr-2">Price:</span>{" "}
+                        <>${currentProduct.price}</>
+                      </p>
+                    </div>
+                  </div>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {currentProduct.images.slice(1).map((img, index) => (
                       <img
@@ -335,26 +359,6 @@ const ProductInfo = () => {
                 </>
               )}
             </div>
-
-            <p>
-              <span className="mr-2">Name:</span>{" "}
-              <p className="font-bold">{currentProduct.productName}</p>
-            </p>
-            <p>
-              <span className="mr-2">Category:</span>{" "}
-              <>{currentProduct.category}</>
-            </p>
-            <p>
-              <span className="mr-2">Total Boxes:</span>{" "}
-              <>{currentProduct.totalBoxes}</>
-            </p>
-            <p>
-              <span className="mr-2">Free Boxes:</span>{" "}
-              <>{currentProduct.freeBoxes}</>
-            </p>
-            <p>
-              <span className="mr-2">Price:</span> <>${currentProduct.price}</>
-            </p>
 
             <div className="flex justify-end">
               <GradientButton

@@ -42,28 +42,28 @@ const Sidebar = () => {
             filter: "invert(1) grayscale(1)", // Black by default
             transition: "filter 0.3s ease", // Smooth transition for hover effect
           }}
-          className="icon-image"
+          className="icon-image  text-white"
         />
       ),
       label: <Link to="/">Dashboard Overview</Link>,
     },
-    {
-      key: "/salesManagement",
-      icon: (
-        <img
-          src={Frame2}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
-          }}
-          className="icon-image"
-        />
-      ),
-      label: <Link to="/salesManagement">Sales Management</Link>,
-    },
+    // {
+    //   key: "/salesManagement",
+    //   icon: (
+    //     <img
+    //       src={Frame2}
+    //       alt="Retailer Icon"
+    //       style={{
+    //         width: "24px",
+    //         height: "24px",
+    //         filter: "invert(1) grayscale(1)", // Black by default
+    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
+    //       }}
+    //       className="icon-image"
+    //     />
+    //   ),
+    //   label: <Link to="/salesManagement">Sales Management</Link>,
+    // },
     {
       key: "/retailer",
       icon: (
@@ -81,23 +81,23 @@ const Sidebar = () => {
       ),
       label: <Link to="/retailer">My Retailer</Link>,
     },
-    // {
-    //   key: "/salesRepsManage",
-    //   icon: (
-    //     <img
-    //       src={Frame4}
-    //       alt="Retailer Icon"
-    //       style={{
-    //         width: "24px",
-    //         height: "24px",
-    //         filter: "invert(1) grayscale(1)", // Black by default
-    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
-    //       }}
-    //       className="icon-image"
-    //     />
-    //   ),
-    //   label: <Link to="/salesRepsManage">Sales Reps Management</Link>,
-    // },
+    {
+      key: "/salesRepsManage",
+      icon: (
+        <img
+          src={Frame4}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)", // Black by default
+            transition: "filter 0.3s ease", // Smooth transition for hover effect
+          }}
+          className="icon-image"
+        />
+      ),
+      label: <Link to="/salesRepsManage">Commission Tracking</Link>,
+    },
 
     {
       key: "/inventory",
@@ -114,7 +114,7 @@ const Sidebar = () => {
           className="icon-image"
         />
       ),
-      label: <Link to="/inventory">Inventory Management</Link>,
+      label: <Link to="/inventory">Inventory</Link>,
     },
     {
       key: "/loyaltyProgram",
@@ -156,6 +156,25 @@ const Sidebar = () => {
           label: (
             <Link to="/profile" className="  ">
               Update Profile
+            </Link>
+          ),
+        },
+        {
+          key: "/terms-and-conditions",
+          label: (
+            <Link
+              to="/terms-and-conditions"
+              className="text-white hover:text-white"
+            >
+              Terms And Condition
+            </Link>
+          ),
+        },
+        {
+          key: "/privacy-policy",
+          label: (
+            <Link to="/privacy-policy" className="text-white hover:text-white">
+              Privacy Policy
             </Link>
           ),
         },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Form, Space } from "antd";
+import { Table, Modal, Button, Input, Form, Space, Select } from "antd";
 import GradientButton from "../../common/GradiantButton";
 import DetailsModal from "../../salesMangement/DetailsModal";
 
@@ -47,7 +47,7 @@ const RetailerInfo = ({ salesRep }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
-  const [isTargetModalVisible, setIsTargetModalVisible] = useState(false);
+  const [isRetailerModalVisible, setIsRetailerModalVisible] = useState(false);
   const [isModalDetailsVisible, setIsModalDetailsVisible] = useState(false);
   const [selectedOrderData, setSelectedOrderData] = useState(null);
 
@@ -78,13 +78,13 @@ const RetailerInfo = ({ salesRep }) => {
     }
   };
 
-  const showTargetModal = () => {
-    setIsTargetModalVisible(true);
+  const showRetailerModal = () => {
+    setIsRetailerModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setIsTargetModalVisible(false);
+    setIsRetailerModalVisible(false);
     setIsEditing(false);
     setCurrentRecord(null);
     setTargetSalesRep({ name: "", amount: "" });
@@ -159,11 +159,11 @@ const RetailerInfo = ({ salesRep }) => {
       <div className="flex justify-between mb-10 mt-16">
         <h1 className="text-2xl font-bold">Sales Rep Details</h1>
         <div className="flex gap-4">
-          <GradientButton onClick={showTargetModal}>
+          {/* <GradientButton onClick={showTargetModal}>
             Set Target Sales Reps
-          </GradientButton>
-          <GradientButton onClick={() => showModal()}>
-            Add New Entry
+          </GradientButton> */}
+          <GradientButton onClick={() => showRetailerModal()}>
+            Edit profile
           </GradientButton>
         </div>
       </div>
@@ -239,50 +239,7 @@ const RetailerInfo = ({ salesRep }) => {
         </Form>
       </Modal>
 
-      {/* Set Target Modal */}
-      <Modal
-        title="Set Target Sales Reps"
-        visible={isTargetModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form layout="vertical" onFinish={handleTargetSave}>
-          <Form.Item
-            name="name"
-            label="Sales Rep Name"
-            rules={[{ required: true, message: "Please input the name!" }]}
-          >
-            <Input
-              value={targetSalesRep.name}
-              onChange={(e) =>
-                setTargetSalesRep({ ...targetSalesRep, name: e.target.value })
-              }
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="amount"
-            label="Target Amount"
-            rules={[
-              { required: true, message: "Please input the target amount!" },
-            ]}
-          >
-            <Input
-              type="number"
-              value={targetSalesRep.amount}
-              onChange={(e) =>
-                setTargetSalesRep({ ...targetSalesRep, amount: e.target.value })
-              }
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Set Target
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+     
 
       {/* Render the modal with the selected order data */}
       <DetailsModal
@@ -290,6 +247,77 @@ const RetailerInfo = ({ salesRep }) => {
         onClose={handleCloseModal}
         orderData={selectedOrderData}
       />
+
+      {/* Edit Profile Modal */}
+      <Modal
+        title="Edit Profile"
+        visible={isRetailerModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          initialValues={{
+            retailerName: salesRep?.name || "",
+            email: salesRep?.email || "",
+            assignReps: salesRep?.assignReps || "",
+            status: salesRep?.status || "Active",
+          }}
+          onFinish={handleSave}
+        >
+          {/* Retailer Name */}
+          <Form.Item
+            name="retailerName"
+            label="Retailer Name"
+            rules={[{ required: true, message: "Please input retailer name!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          {/* Email */}
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please input email!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          {/* Assign Reps Dropdown */}
+          <Form.Item
+            name="assignReps"
+            label="Assign Reps"
+            rules={[
+              { required: true, message: "Please select an assign rep!" },
+            ]}
+          >
+            <Select>
+              <Select.Option value="Rep 1">Rep 1</Select.Option>
+              <Select.Option value="Rep 2">Rep 2</Select.Option>
+              <Select.Option value="Rep 3">Rep 3</Select.Option>
+            </Select>
+          </Form.Item>
+
+          {/* Status Dropdown */}
+          <Form.Item
+            name="status"
+            label="Status"
+            rules={[{ required: true, message: "Please select a status!" }]}
+          >
+            <Select>
+              <Select.Option value="Active">Active</Select.Option>
+              <Select.Option value="Inactive">Inactive</Select.Option>
+            </Select>
+          </Form.Item>
+
+          {/* Submit Button */}
+          <Form.Item>
+            <GradientButton type="primary" htmlType="submit">
+              Save Changes
+            </GradientButton>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

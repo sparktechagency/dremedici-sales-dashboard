@@ -1,322 +1,112 @@
-import React, { useState } from "react";
-import { Table, Button, Modal, Input, Select, Form, ConfigProvider } from "antd";
+import { Progress, Card, Checkbox, Button } from "antd";
+import { CrownFilled, StarFilled, GiftFilled } from "@ant-design/icons";
 import GradientButton from "../common/GradiantButton";
 
-const { Option } = Select;
-
 const LoyalityProgramTable = () => {
-  const [isAddTierModalOpen, setIsAddTierModalOpen] = useState(false);
-  const [isManageEligibilityModalOpen, setIsManageEligibilityModalOpen] =
-    useState(false);
-  const [form] = Form.useForm();
-
-  
-  const data = [
-    {
-      key: "1",
-      rank: 1,
-      retailer: "Retailer A",
-      email: "retailerA@example.com",
-      totalSales: "$50,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-    {
-      key: "2",
-      rank: 2,
-      retailer: "Retailer B",
-      email: "retailerB@example.com",
-      totalSales: "$30,000",
-      tier: "Silver",
-      eligibility: "No",
-    },
-    {
-      key: "3",
-      rank: 3,
-      retailer: "Retailer C",
-      email: "retailerC@example.com",
-      totalSales: "$70,000",
-      tier: "Platinum",
-      eligibility: "Yes",
-    },
-    {
-      key: "4",
-      rank: 4,
-      retailer: "Retailer D",
-      email: "retailerD@example.com",
-      totalSales: "$20,000",
-      tier: "Bronze",
-      eligibility: "No",
-    },
-    {
-      key: "5",
-      rank: 5,
-      retailer: "Retailer E",
-      email: "retailerE@example.com",
-      totalSales: "$40,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-    {
-      key: "6",
-      rank: 6,
-      retailer: "Retailer F",
-      email: "retailerF@example.com",
-      totalSales: "$90,000",
-      tier: "Platinum",
-      eligibility: "Yes",
-    },
-    {
-      key: "7",
-      rank: 7,
-      retailer: "Retailer G",
-      email: "retailerG@example.com",
-      totalSales: "$35,000",
-      tier: "Silver",
-      eligibility: "No",
-    },
-    {
-      key: "8",
-      rank: 8,
-      retailer: "Retailer H",
-      email: "retailerH@example.com",
-      totalSales: "$55,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-    {
-      key: "9",
-      rank: 9,
-      retailer: "Retailer I",
-      email: "retailerI@example.com",
-      totalSales: "$65,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-    {
-      key: "10",
-      rank: 10,
-      retailer: "Retailer J",
-      email: "retailerJ@example.com",
-      totalSales: "$45,000",
-      tier: "Silver",
-      eligibility: "No",
-    },
-    {
-      key: "11",
-      rank: 11,
-      retailer: "Retailer K",
-      email: "retailerK@example.com",
-      totalSales: "$80,000",
-      tier: "Platinum",
-      eligibility: "Yes",
-    },
-    {
-      key: "12",
-      rank: 12,
-      retailer: "Retailer L",
-      email: "retailerL@example.com",
-      totalSales: "$28,000",
-      tier: "Bronze",
-      eligibility: "No",
-    },
-    {
-      key: "13",
-      rank: 13,
-      retailer: "Retailer M",
-      email: "retailerM@example.com",
-      totalSales: "$75,000",
-      tier: "Platinum",
-      eligibility: "Yes",
-    },
-    {
-      key: "14",
-      rank: 14,
-      retailer: "Retailer N",
-      email: "retailerN@example.com",
-      totalSales: "$38,000",
-      tier: "Silver",
-      eligibility: "No",
-    },
-    {
-      key: "15",
-      rank: 15,
-      retailer: "Retailer O",
-      email: "retailerO@example.com",
-      totalSales: "$42,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-    {
-      key: "16",
-      rank: 16,
-      retailer: "Retailer P",
-      email: "retailerP@example.com",
-      totalSales: "$95,000",
-      tier: "Platinum",
-      eligibility: "Yes",
-    },
-    {
-      key: "17",
-      rank: 17,
-      retailer: "Retailer Q",
-      email: "retailerQ@example.com",
-      totalSales: "$22,000",
-      tier: "Bronze",
-      eligibility: "No",
-    },
-    {
-      key: "18",
-      rank: 18,
-      retailer: "Retailer R",
-      email: "retailerR@example.com",
-      totalSales: "$60,000",
-      tier: "Gold",
-      eligibility: "Yes",
-    },
-  ];
-
-  const columns = [
-    { title: "Rank", dataIndex: "rank", key: "rank", align: "center" },
-    {
-      title: "Retailer Name",
-      dataIndex: "retailer",
-      key: "retailer",
-      align: "center",
-    },
-    { title: "Email", dataIndex: "email", key: "email", align: "center" },
-    {
-      title: "Total Sales",
-      dataIndex: "totalSales",
-      key: "totalSales",
-      align: "center",
-    },
-    { title: "Tier", dataIndex: "tier", key: "tier", align: "center" },
-    {
-      title: "Eligibility",
-      dataIndex: "eligibility",
-      key: "eligibility",
-      align: "center",
-    },
-  ];
+const subscriptionPlans = [
+  {
+    id: 1,
+    tier: "Silver Tier",
+    icon: (
+      <StarFilled className="text-white text-3xl bg-primary p-2 rounded-full  mr-2" />
+    ),
+    benefits: [
+      "Subscription – 3 boxes per month",
+      "Free Shipping – Included with subscription orders",
+      "No Credit Card Fee – No 3% fee on any order",
+      "Exclusive Products – Access to subscription-only items",
+      "Flash Discounts – Special exclusive offers",
+      "Limited Releases – Priority access with a larger allocation",
+    ],
+  },
+  {
+    id: 2,
+    tier: "Gold Tier",
+    icon: (
+      <StarFilled className="text-white text-3xl bg-primary p-2 rounded-full  mr-2" />
+    ),
+    benefits: [
+      "Gold Tier – 4 boxes per month + 1 free box per quarter",
+      "Free Shipping – Included with subscription orders",
+      "No Credit Card Fee – No 3% fee on any order",
+      "Exclusive Products – Access to subscription-only items",
+      "Flash Discounts – Special exclusive offers",
+      "Limited Releases – Priority access with a larger allocation",
+    ],
+  },
+  {
+    id: 3,
+    tier: "Platinum Tier",
+    icon: (
+      <StarFilled className="text-white text-3xl bg-primary p-2 rounded-full  mr-2" />
+    ),
+    benefits: [
+      "Platinum Tier – 5 boxes per month + 2 free boxes per quarter",
+      "Free Shipping – Included with subscription orders",
+      "No Credit Card Fee – No 3% fee on any order",
+      "Exclusive Products – Access to subscription-only items",
+      "Flash Discounts – Special exclusive offers",
+      "Limited Releases – Priority access with a larger allocation",
+    ],
+  },
+];
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="text-2xl font-bold">LeaderBoard</h2>
-        <div>
-          <GradientButton onClick={() => setIsAddTierModalOpen(true)}>
-            Add Tier
-          </GradientButton>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#0090B9",
-                colorPrimaryHover: "#336C79",
-              },
-            }}
-          >
-            <GradientButton
-              onClick={() => setIsManageEligibilityModalOpen(true)}
-            >
-              Manage Tier & Eligibility
-            </GradientButton>
-          </ConfigProvider>
+    <div className="">
+      {/* Loyalty Program Section */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold mb-4">Loyalty Program Tier: Gold</h1>
+        <div className=" ">
+          <h2 className=" font-bold mb-2">Loyalty Progress</h2>
+          <div className="w-1/2 h-4 bg-gray-200 rounded-full overflow-hidden mb-4">
+            <div
+              className="h-full bg-[#336C79] rounded-full"
+              style={{ width: "60%" }}
+            ></div>
+          </div>
+          <div className="">
+            <p className="font-medium">60% to the next reward.</p>
+            <p>
+              You have placed 15 non-subscription orders. Spend $500 more to
+              reach the next reward tier.
+            </p>
+          </div>
         </div>
       </div>
-      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6  rounded-xl">
-        <Table
-          dataSource={data}
-          columns={columns}
-          pagination={{ pageSize: 10 }}
-          bordered={false}
-          size="middle"
-          rowClassName="custom-row"
-        />
+
+      {/* <hr className="my-8 border-gray-200" /> */}
+
+      {/* Subscription Plans */}
+      <h2 className="text-2xl font-bold mb-6 mt-16">Choose Your Subscription</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+        {subscriptionPlans.map((plan) => (
+          <Card
+            key={plan.id}
+            className={` transition-all rounded-xl font-semibold`}
+          >
+            {plan.crownIcon}
+            <div className="flex flex-col justify-center items-center mb-4">
+              <p className="">{plan.icon}</p>
+              <h3 className="text-3xl font-bold mt-3">{plan.tier}</h3>
+            </div>
+            <ul className="list-disc pl-5 text-gray-600 space-y-3 mb-6">
+              {plan.benefits.map((benefit, index) => (
+                <li key={index}>{benefit}</li>
+              ))}
+            </ul>
+            <Checkbox className="mb-4">
+              I Agree to the terms & conditions
+            </Checkbox>
+            <br />
+            <GradientButton
+              block
+              className={`${plan.buttonColor} text-white h-10 font-semibold`}
+            >
+              Choose Your Best Plan
+            </GradientButton>
+          </Card>
+        ))}
       </div>
-
-      {/* Add Tier Modal */}
-      <Modal
-        title="Add Tier"
-        open={isAddTierModalOpen}
-        onCancel={() => setIsAddTierModalOpen(false)}
-        onOk={() => form.submit()}
-        okButtonProps={{
-          style: {
-            background: "linear-gradient(to right, #4E9DAB, #336C79)",
-            border: "none",
-            color: "white",
-          },
-        }}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            label="Tier Name"
-            name="tierName"
-            rules={[{ required: true, message: "Enter Tier Name" }]}
-          >
-            <Input placeholder="Enter tier name" />
-          </Form.Item>
-          <Form.Item
-            label="Tier Threshold ($)"
-            name="tierThreshold"
-            rules={[{ required: true, message: "Enter threshold amount" }]}
-          >
-            <Input placeholder="Enter threshold amount" type="number" />
-          </Form.Item>
-          <Form.Item
-            label="Eligibility"
-            name="eligibility"
-            rules={[{ required: true, message: "Select eligibility" }]}
-          >
-            <Select>
-              <Option value="Yes">Yes</Option>
-              <Option value="No">No</Option>
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      {/* Manage Eligibility Modal */}
-      <Modal
-        title="Manage Eligibility"
-        open={isManageEligibilityModalOpen}
-        onCancel={() => setIsManageEligibilityModalOpen(false)}
-        onOk={() => form.submit()}
-        okButtonProps={{
-          style: {
-            background: "linear-gradient(to right, #4E9DAB, #336C79)",
-            border: "none",
-            color: "white",
-          },
-        }}
-      >
-        <Form layout="vertical">
-          <Form.Item label="Bronze Tier Threshold ($)" name="bronzeThreshold">
-            <Input type="number" placeholder="Enter amount" />
-          </Form.Item>
-          <Form.Item label="Silver Tier Threshold ($)" name="silverThreshold">
-            <Input type="number" placeholder="Enter amount" />
-          </Form.Item>
-          <Form.Item label="Gold Tier Threshold ($)" name="goldThreshold">
-            <Input type="number" placeholder="Enter amount" />
-          </Form.Item>
-          <Form.Item
-            label="Platinum Tier Threshold ($)"
-            name="platinumThreshold"
-          >
-            <Input type="number" placeholder="Enter amount" />
-          </Form.Item>
-          <Form.Item label="Eligibility Tiers" name="eligibilityTiers">
-            <Select mode="multiple" placeholder="Select eligibility tiers">
-              <Option value="Bronze">Bronze</Option>
-              <Option value="Silver">Silver</Option>
-              <Option value="Gold">Gold</Option>
-              <Option value="Platinum">Platinum</Option>
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const ViewSalesReps = () => {
               <img
                 src={salesRep.image || "https://via.placeholder.com/150"} // Fallback Image
                 alt={salesRep.name}
-                className="w-32 h-32 rounded-full mb-4 border"
+                className="w-28 h-28 rounded-full mb-4 border"
               />
 
               {/* Details Section */}
@@ -30,18 +30,7 @@ const ViewSalesReps = () => {
                 <p>
                   <strong>Email:</strong> {salesRep.email}
                 </p>
-                <p>
-                  <strong>Assigned Retailer:</strong> {salesRep.retailer}
-                </p>
-                <p>
-                  <strong>Total Sales:</strong> {salesRep.sales}
-                </p>
-                {/* <p>
-                  <strong>Commission:</strong> {salesRep.commission}
-                </p> */}
-                {/* <p>
-                  <strong>Status:</strong> {salesRep.status}
-                </p> */}
+              
               </div>
             </div>
           ) : (

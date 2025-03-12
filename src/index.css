@@ -85,12 +85,12 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 
-/* Selected menu item image color change to white */
 .ant-menu-item-selected .icon-image {
-  filter: invert(1) grayscale(0) brightness(100%) !important;
+  filter: invert(1) grayscale(1) brightness(100%) !important;
+  display: block;
 }
 
-/* Table Head Gradient */
+
 /* Table Head Background */
 .ant-table-thead > tr > th {
   background: #4E9DAB !important;
@@ -101,12 +101,18 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* Add margin bottom to each row in the table body */
-.ant-table-tbody > tr {
+.ant-table-tbody > tr >th {
   margin-bottom: 5px;
 }
-/* Add space between rows */
-.ant-table {
-  border-spacing: 0 5px; /* Adds 5px space between rows */
+
+.ant-table td {
+  text-align: center !important;
 }
+
+.custom-search .ant-input {
+  height: 40px !important;
+}
+
+
 
 

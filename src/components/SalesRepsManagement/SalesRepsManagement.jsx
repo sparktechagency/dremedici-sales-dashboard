@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import GradientButton from "../common/GradiantButton";
+
+const { Option } = Select;
 
 const SalesRepsManagementTable = () => {
   const [data, setData] = useState([
@@ -128,10 +130,11 @@ const SalesRepsManagementTable = () => {
   ]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
   const [editingId, setEditingId] = useState(null);
+    const [selectedRecord, setSelectedRecord] = useState(null);
   const [form] = Form.useForm();
-  const navigate=useNavigate()
-  
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -151,6 +154,31 @@ const SalesRepsManagementTable = () => {
     console.log("Selected Sales Rep:", formData.salesRep);
     console.log("Target Amount:", formData.targetAmount);
     handleClose();
+  };
+
+  // 🔹 Status Update Modal Open
+  const showStatusModal = (record) => {
+    setSelectedRecord(record);
+    form.setFieldsValue({ status: record.status }); 
+    setIsStatusModalVisible(true);
+  };
+
+  // 🔹 Status Update Modal Close
+  const handleStatusCancel = () => {
+    setIsStatusModalVisible(false);
+    form.resetFields();
+  };
+
+  // 🔹 Status Update Handle
+  const handleStatusUpdate = (values) => {
+    setData(
+      data.map((item) =>
+        item.id === selectedRecord.id
+          ? { ...item, status: values.status }
+          : item
+      )
+    );
+    handleStatusCancel();
   };
 
   const showModal = (record = null) => {
@@ -215,7 +243,6 @@ const SalesRepsManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex gap-2 justify-center">
-         
           <GradientButton
             onClick={() =>
               navigate(`/retailer/${record.id}`, { state: record })
@@ -224,8 +251,8 @@ const SalesRepsManagementTable = () => {
             Details
           </GradientButton>
 
-          <GradientButton onClick={() => showModal(record)}>
-            Edit
+          <GradientButton onClick={() => showStatusModal(record)}>
+            Status Update
           </GradientButton>
           <button
             // danger
@@ -246,17 +273,17 @@ const SalesRepsManagementTable = () => {
       {/* tops of tables  */}
       <div className="flex justify-between items-center mb-6 ">
         <div>
-          <h1 className="text-2xl font-bold">All Sales Reps</h1>
+          <h1 className="text-2xl font-bold">Assign Retailer</h1>
         </div>
         <div className="flex gap-5 items-center">
           <div>
-            <Button
+            {/* <Button
               type="primary"
               onClick={handleOpen}
               className="bg-gradient-to-r from-primary  to-secondary py-5 font-bold"
             >
               Set Target Sales Reps
-            </Button>
+            </Button> */}
 
             <Modal
               title="Assign Target to Sales Rep"
@@ -303,23 +330,21 @@ const SalesRepsManagementTable = () => {
             onClick={() => showModal()}
             className="bg-gradient-to-r from-primary  to-secondary py-5 font-bold"
           >
-            Add Sales Rep
+            Add Retailer
           </Button>
         </div>
       </div>
-
       {/* tables info  */}
       <div className="bg-gradient-to-r from-primary  to-secondary pt-6 px-6 rounded-xl">
         <Table
           dataSource={data}
           columns={columns}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 12 }}
           bordered={false}
           size="small"
           rowClassName="custom-row"
         />
       </div>
-
       {/* modals  */}
       <Modal
         title={editingId ? "Edit Sales Rep" : "Add Sales Rep"}
@@ -385,6 +410,31 @@ const SalesRepsManagementTable = () => {
           >
             <Input />
           </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Update Status"
+        open={isStatusModalVisible}
+        onCancel={handleStatusCancel}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleStatusUpdate}>
+         
+          <Form.Item
+            name="status"
+            label="Status"
+            rules={[{ required: true, message: "Please select a status!" }]}
+          >
+            <Select placeholder="Select status">
+              <Select.Option value="active">Active</Select.Option>
+              <Select.Option value="inactive">Inactive</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Button type="primary" htmlType="submit">
+            Update
+          </Button>
         </Form>
       </Modal>
     </div>

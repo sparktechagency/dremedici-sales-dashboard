@@ -5,7 +5,7 @@ import LoyalityCard from '../../components/loyaltyProgram/LoyalityCard'
 const LoyaltyProgram = () => {
   return (
     <div>
-        <LoyalityCard />
+        {/* <LoyalityCard /> */}
       <LoyalityProgramTable />
     </div>
   )
