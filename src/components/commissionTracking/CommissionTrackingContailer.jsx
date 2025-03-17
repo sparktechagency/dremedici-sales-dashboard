@@ -86,9 +86,7 @@ const CommissionTrackingContainer = () => {
       title: "Product Status",
       dataIndex: "productStatus",
       key: "productStatus",
-      render: (status) => (
-        <Tag color={status === "Active" ? "green" : "red"}>{status}</Tag>
-      ),
+      
       align: "center",
     },
   ];

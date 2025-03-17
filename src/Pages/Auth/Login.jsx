@@ -2,6 +2,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
+import image4 from "../../assets/image4.png";
 // import Cookies from "js-cookie";
 
 const Login = () => {
@@ -15,6 +16,7 @@ const Login = () => {
   return (
     <div>
       <div className="text-center mb-8">
+        <img src={image4} alt="logo" className="h-40 w-40 mx-auto" />
         <h1 className="text-[25px] font-semibold mb-6">Login</h1>
         <p>Please enter your email and password to continue</p>
       </div>

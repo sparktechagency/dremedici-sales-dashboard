@@ -432,9 +432,9 @@ const SalesRepsManagementTable = () => {
             </Select>
           </Form.Item>
 
-          <Button type="primary" htmlType="submit">
+          <GradientButton type="primary" htmlType="submit">
             Update
-          </Button>
+          </GradientButton>
         </Form>
       </Modal>
     </div>

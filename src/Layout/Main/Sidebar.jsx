@@ -116,23 +116,23 @@ const Sidebar = () => {
       ),
       label: <Link to="/inventory">Inventory</Link>,
     },
-    {
-      key: "/loyaltyProgram",
-      icon: (
-        <img
-          src={Frame6}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
-          }}
-          className="icon-image"
-        />
-      ),
-      label: <Link to="/loyaltyProgram">Loyalty Program</Link>,
-    },
+    // {
+    //   key: "/loyaltyProgram",
+    //   icon: (
+    //     <img
+    //       src={Frame6}
+    //       alt="Retailer Icon"
+    //       style={{
+    //         width: "24px",
+    //         height: "24px",
+    //         filter: "invert(1) grayscale(1)", // Black by default
+    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
+    //       }}
+    //       className="icon-image"
+    //     />
+    //   ),
+    //   label: <Link to="/loyaltyProgram">Loyalty Program</Link>,
+    // },
 
     {
       key: "subMenuSetting",

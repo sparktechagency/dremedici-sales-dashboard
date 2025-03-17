@@ -98,8 +98,10 @@ const Home = () => {
           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div>
-                <h2 className="text-center text-xl font-bold">Total Sales</h2>
-                <h3 className="text-primary text-xl font-bold">$12100</h3>
+                <h2 className="text-center text-xl font-bold mb-3">
+                  Total Sales
+                </h2>
+                <h3 className="text-primary text-3xl font-bold">$12100</h3>
               </div>
               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
                 <MdArrowUpward color="" size={24} />
@@ -111,8 +113,10 @@ const Home = () => {
           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div>
-                <h2 className="text-center text-xl font-bold">Total Sales</h2>
-                <h3 className="text-primary text-xl font-bold">$12100</h3>
+                <h2 className="text-center text-xl font-bold mb-3">
+                  Total Order
+                </h2>
+                <h3 className="text-primary text-3xl font-bold">$12100</h3>
               </div>
               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
                 <MdArrowUpward color="" size={24} />
@@ -124,8 +128,10 @@ const Home = () => {
           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div>
-                <h2 className="text-center text-xl font-bold">Total Sales</h2>
-                <h3 className="text-primary text-xl font-bold">$12100</h3>
+                <h2 className="text-center text-xl font-bold mb-3">
+                  Commission
+                </h2>
+                <h3 className="text-primary text-3xl font-bold">$12100</h3>
               </div>
               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
                 <MdArrowUpward color="" size={24} />
@@ -137,8 +143,10 @@ const Home = () => {
           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
             <div className="flex items-center  gap-3">
               <div>
-                <h2 className="text-center text-xl font-bold">Total Sales</h2>
-                <h3 className="text-primary text-xl font-bold">$12100</h3>
+                <h2 className="text-center text-xl font-bold mb-3">
+                  Retailers
+                </h2>
+                <h3 className="text-primary text-3xl font-bold">$12100</h3>
               </div>
               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
                 <MdArrowUpward color="" size={24} />

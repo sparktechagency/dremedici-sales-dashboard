@@ -17,9 +17,9 @@ const DetailsModal = ({ isVisible, onClose, orderData }) => {
           <div className="flex justify-center mb-4">
             <img
             //   src={`${imageUrl}${orderData.image}` }
-            src={"orderData.image"}
+            src={orderData.image}
               alt="Order"
-              className="w-40 h-40 object-cover rounded-lg shadow-md"
+              className="w-40 h-40 object-cover rounded-full shadow-md"
             />
           </div>
         )}

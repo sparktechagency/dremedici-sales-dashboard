@@ -1,46 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Form, Space, Select } from "antd";
+import {
+  Table,
+  Modal,
+  Button,
+  Input,
+  Form,
+  Space,
+  Select,
+  message,
+} from "antd";
 import GradientButton from "../../common/GradiantButton";
 import DetailsModal from "../../salesMangement/DetailsModal";
+import StatusUpdateModal from "../../salesMangement/StatusUpdateModal";
 
 const RetailerInfo = ({ salesRep }) => {
-  console.log(salesRep.name); // Check the value of salesRep.name
   const [data, setData] = useState([
     {
       key: "1",
-      sl: "1",
+      orderId: "ORD001",
       retailerName: "John Doe",
-      email: "johndoe@example.com",
+      salesRepName: "Rep 1",
       totalBoxes: 100,
       freeBoxes: 10,
-      status: "Active",
+      amount: 500,
+      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
+      status: "pending",
     },
     {
       key: "2",
-      sl: "2",
+      orderId: "ORD002",
       retailerName: "Jane Smith",
-      email: "janesmith@example.com",
+      salesRepName: "Rep 2",
       totalBoxes: 200,
       freeBoxes: 20,
-      status: "Inactive",
-    },
-    {
-      key: "3",
-      sl: "1",
-      retailerName: "John Doe",
-      email: "johndoe@example.com",
-      totalBoxes: 100,
-      freeBoxes: 10,
-      status: "Active",
-    },
-    {
-      key: "4",
-      sl: "2",
-      retailerName: "Jane Smith",
-      email: "janesmith@example.com",
-      totalBoxes: 200,
-      freeBoxes: 20,
-      status: "Inactive",
+      amount: 1000,
+      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
+      status: "shipped",
     },
   ]);
 
@@ -50,80 +45,33 @@ const RetailerInfo = ({ salesRep }) => {
   const [isRetailerModalVisible, setIsRetailerModalVisible] = useState(false);
   const [isModalDetailsVisible, setIsModalDetailsVisible] = useState(false);
   const [selectedOrderData, setSelectedOrderData] = useState(null);
+  const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
 
-  // Set the initial targetSalesRep state using the salesRep prop (if available)
-  const [targetSalesRep, setTargetSalesRep] = useState({
-    name: salesRep?.name || "", // Set initial value from props, fallback to empty string
-    amount: "",
-  });
+  const [orders, setOrders] = useState(data); // Ensuring orders is an array
 
-  // Update targetSalesRep state when salesRep prop changes
-  useEffect(() => {
-    if (salesRep?.name) {
-      setTargetSalesRep((prevState) => ({
-        ...prevState,
-        name: salesRep.name,
-      }));
-    }
-  }, [salesRep]);
+  const handleUpdateStatus = (newStatus) => {
+    // Find the order being updated
+    const updatedOrder = { ...selectedOrderData, status: newStatus };
 
-  const showModal = (record = null) => {
-    setIsModalVisible(true);
-    if (record) {
-      setIsEditing(true);
-      setCurrentRecord(record);
-    } else {
-      setIsEditing(false);
-      setCurrentRecord(null);
-    }
+    // Update the orders state with the new status for the specific order
+    const updatedOrders = orders.map((order) =>
+      order.orderId === selectedOrderData?.orderId ? updatedOrder : order
+    );
+
+    // Update the orders state with the modified data
+    setOrders(updatedOrders);
+
+    message.success(`Order status updated to "${newStatus}" successfully!`);
+    setIsStatusModalVisible(false); // Close status modal
   };
-
-  const showRetailerModal = () => {
-    setIsRetailerModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setIsRetailerModalVisible(false);
-    setIsEditing(false);
-    setCurrentRecord(null);
-    setTargetSalesRep({ name: "", amount: "" });
-  };
-
-  const handleSave = (values) => {
-    if (isEditing) {
-      setData((prevData) =>
-        prevData.map((item) =>
-          item.key === currentRecord.key ? { ...item, ...values } : item
-        )
-      );
-    } else {
-      setData([...data, { key: String(data.length + 1), ...values }]);
-    }
-    handleCancel();
-  };
-
-  const handleTargetSave = () => {
-    // Handle the saving logic for target sales reps
-    console.log("Target Sales Rep Saved:", targetSalesRep);
-    handleCancel();
-  };
-
-  const handleDelete = (key) => {
-    setData(data.filter((item) => item.key !== key));
-  };
-
-   const handleCloseModal = () => {
-     setIsModalDetailsVisible(false); // Hide modal
-   };
-
 
   const columns = [
-    { title: "SL", dataIndex: "sl", align: "center" },
+    { title: "Order ID", dataIndex: "orderId", align: "center" },
     { title: "Retailer Name", dataIndex: "retailerName", align: "center" },
-    { title: "Email", dataIndex: "email", align: "center" },
+    { title: "Sales Rep Name", dataIndex: "salesRepName", align: "center" },
     { title: "Total Boxes Ordered", dataIndex: "totalBoxes", align: "center" },
     { title: "Free Boxes", dataIndex: "freeBoxes", align: "center" },
+    { title: "Amount", dataIndex: "amount", align: "center" },
     { title: "Status", dataIndex: "status", align: "center" },
     {
       title: "Action",
@@ -139,16 +87,14 @@ const RetailerInfo = ({ salesRep }) => {
           >
             Details
           </GradientButton>
-          <GradientButton onClick={() => showModal(record)}>
-            Edit
-          </GradientButton>
-          <Button
-            onClick={() => handleDelete(record.key)}
-            type="danger"
-            className="bg-red-500 text-white py-[18px]"
+          <GradientButton
+            onClick={() => {
+              setSelectedOrderData(record);
+              setIsStatusModalVisible(true);
+            }}
           >
-            Delete
-          </Button>
+            Status Update
+          </GradientButton>
         </Space>
       ),
     },
@@ -156,13 +102,10 @@ const RetailerInfo = ({ salesRep }) => {
 
   return (
     <div>
-      <div className="flex justify-between mb-10 mt-16">
-        <h1 className="text-2xl font-bold">Sales Rep Details</h1>
+      <div className="flex justify-between mb-10 mt-10">
+        <h1 className="text-2xl font-bold">Order List</h1>
         <div className="flex gap-4">
-          {/* <GradientButton onClick={showTargetModal}>
-            Set Target Sales Reps
-          </GradientButton> */}
-          <GradientButton onClick={() => showRetailerModal()}>
+          <GradientButton onClick={() => setIsRetailerModalVisible(true)}>
             Edit profile
           </GradientButton>
         </div>
@@ -170,7 +113,7 @@ const RetailerInfo = ({ salesRep }) => {
 
       <div className="px-6 pt-6 rounded-lg bg-gradient-to-r from-primary to-secondary">
         <Table
-          dataSource={data}
+          dataSource={orders} // Use the 'orders' state here
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered
@@ -179,72 +122,10 @@ const RetailerInfo = ({ salesRep }) => {
         />
       </div>
 
-      {/* Edit/Add Modal */}
-      <Modal
-        title={isEditing ? "Edit Entry" : "Add New Entry"}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form
-          layout="vertical"
-          initialValues={isEditing ? currentRecord : {}}
-          onFinish={handleSave}
-        >
-          <Form.Item
-            name="retailerName"
-            label="Retailer Name"
-            rules={[{ required: true, message: "Please input retailer name!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[{ required: true, message: "Please input email!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="totalBoxes"
-            label="Total Boxes Ordered"
-            rules={[{ required: true, message: "Please input total boxes!" }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-
-          <Form.Item
-            name="freeBoxes"
-            label="Free Boxes"
-            rules={[{ required: true, message: "Please input free boxes!" }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-
-          <Form.Item
-            name="status"
-            label="Status"
-            rules={[{ required: true, message: "Please select a status!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item>
-            <GradientButton type="primary" htmlType="submit">
-              {isEditing ? "Save Changes" : "Add Entry"}
-            </GradientButton>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-     
-
       {/* Render the modal with the selected order data */}
       <DetailsModal
         isVisible={isModalDetailsVisible}
-        onClose={handleCloseModal}
+        onClose={() => setIsModalDetailsVisible(false)}
         orderData={selectedOrderData}
       />
 
@@ -252,7 +133,7 @@ const RetailerInfo = ({ salesRep }) => {
       <Modal
         title="Edit Profile"
         visible={isRetailerModalVisible}
-        onCancel={handleCancel}
+        onCancel={() => setIsRetailerModalVisible(false)}
         footer={null}
       >
         <Form
@@ -263,7 +144,7 @@ const RetailerInfo = ({ salesRep }) => {
             assignReps: salesRep?.assignReps || "",
             status: salesRep?.status || "Active",
           }}
-          onFinish={handleSave}
+          onFinish={() => {}}
         >
           {/* Retailer Name */}
           <Form.Item
@@ -318,6 +199,16 @@ const RetailerInfo = ({ salesRep }) => {
           </Form.Item>
         </Form>
       </Modal>
+
+      {/* Status Update Modal */}
+      {selectedOrderData && (
+        <StatusUpdateModal
+          isVisible={isStatusModalVisible}
+          onClose={() => setIsStatusModalVisible(false)}
+          orderData={selectedOrderData}
+          onUpdateStatus={handleUpdateStatus}
+        />
+      )}
     </div>
   );
 };

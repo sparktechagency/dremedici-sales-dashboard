@@ -72,13 +72,13 @@ const options = {
       borderColor: "#ffffff",
       borderWidth: 2,
       backgroundColor: "rgba(0, 0, 0, 0.8)",
-      padding: 15, // ✅ More padding to increase overall size
+      padding: 15,
       cornerRadius: 8,
       displayColors: false,
       bodyFont: {
-        size: 16, // ✅ Increase font size to make tooltip wider
+        size: 16,
       },
-      boxPadding: 10, // ✅ Extra padding around content
+      boxPadding: 10,
       callbacks: {
         label: (context) => `$${context.raw.toLocaleString()}`.padEnd(15, " "), // ✅ Add spaces to expand width
       },
@@ -88,10 +88,10 @@ const options = {
     x: {
       grid: {
         display: true,
-        color: "rgba(255, 255, 255, 0.2)", // Light white grid lines
+        color: "rgba(255, 255, 255, 0.2)",
       },
       ticks: {
-        color: "#ffffff", // White text for X-axis labels
+        color: "#ffffff",
       },
     },
     y: {
@@ -100,7 +100,8 @@ const options = {
       },
       beginAtZero: false,
       ticks: {
-        color: "#ffffff", // White text for Y-axis labels
+        color: "#ffffff",
+        padding: 32,
         callback: function (value) {
           return `$${value.toLocaleString()}`;
         },
