@@ -5,8 +5,7 @@ import { FaUsers } from "react-icons/fa6";
 const CommissionCard = () => {
   // Data for cards
   const cardData = [
-    { icon: FaUsers, value: "100", label: "Total Retailers" },
-    { icon: FaUsers, value: "$12", label: "Total Sales Reps" },
+    { icon: FaUsers, value: "$5000", label: "Total Commission Earned" },
   ];
 
   return (
@@ -33,7 +32,7 @@ const SalesRepsCard = ({ icon: Icon, value, label }) => {
         </div>
         <div>
           <h3 className="text-white text-[32px] font-semibold">{value}</h3>
-          <h2 className="text-white text-center text-xl">{label}</h2>
+          <h2 className="text-white text-center text-base">{label}</h2>
         </div>
       </div>
     </div>

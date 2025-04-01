@@ -217,26 +217,30 @@ const SalesRepsManagementTable = () => {
   const columns = [
     { title: "SL", dataIndex: "id", key: "id", align: "center" },
     {
-      title: "Sales Rep Name",
+      title: "Retailer Name",
       dataIndex: "name",
       key: "name",
       align: "center",
     },
     { title: "Email", dataIndex: "email", key: "email", align: "center" },
     {
-      title: "Assigned Retailer",
+      title: "Total Order",
       dataIndex: "retailer",
       key: "retailer",
       align: "center",
     },
-    { title: "Total Sales", dataIndex: "sales", key: "sales", align: "center" },
     {
-      title: "Commission",
+      title: "Subscription Tier",
+      dataIndex: "sales",
+      key: "sales",
+      align: "center",
+    },
+    {
+      title: "Total Sell",
       dataIndex: "commission",
       key: "commission",
       align: "center",
     },
-    { title: "Status", dataIndex: "status", key: "status", align: "center" },
     {
       title: "Action",
       key: "action",

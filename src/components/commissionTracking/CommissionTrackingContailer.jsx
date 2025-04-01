@@ -54,6 +54,7 @@ const CommissionTrackingContainer = () => {
       title: "Product Name",
       dataIndex: "productName",
       key: "productName",
+      align: "center",
     },
     {
       title: "Sales Amount",
@@ -70,25 +71,11 @@ const CommissionTrackingContainer = () => {
       align: "center",
     },
     {
-      title: "Commission Rate",
-      dataIndex: "commissionRate",
-      key: "commissionRate",
-      render: (text) => `${text}%`,
-      align: "center",
-    },
-    {
       title: "Sale Date",
       dataIndex: "saleDate",
       key: "saleDate",
       align: "center",
-    },
-    {
-      title: "Product Status",
-      dataIndex: "productStatus",
-      key: "productStatus",
-      
-      align: "center",
-    },
+    }
   ];
 
   // 🔹 Apply Filters
