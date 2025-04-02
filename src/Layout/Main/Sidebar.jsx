@@ -1,8 +1,8 @@
-import { Menu } from "antd";
+import { Menu, Modal } from "antd";
 import React, { useEffect, useState } from "react";
-import {  MdOutlineInventory2 } from "react-icons/md";
+import { MdOutlineInventory2 } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiMiniUsers, } from "react-icons/hi2";
+import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { PiSquaresFourLight } from "react-icons/pi";
@@ -16,17 +16,26 @@ import Frame6 from "../../assets/Frame6.png";
 import Frame7 from "../../assets/Frame7.png";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 
-
 const Sidebar = () => {
   const location = useLocation();
   const path = location.pathname;
   const [selectedKey, setSelectedKey] = useState("");
   const [openKeys, setOpenKeys] = useState([]);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const showLogoutConfirm = () => {
+    setIsLogoutModalOpen(true);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setIsLogoutModalOpen(false);
     navigate("/auth/login");
+  };
+
+  const handleCancel = () => {
+    setIsLogoutModalOpen(false);
   };
 
   const menuItems = [
@@ -39,31 +48,14 @@ const Sidebar = () => {
           style={{
             width: "24px",
             height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
           }}
           className="icon-image  text-white"
         />
       ),
       label: <Link to="/">Dashboard Overview</Link>,
     },
-    // {
-    //   key: "/salesManagement",
-    //   icon: (
-    //     <img
-    //       src={Frame2}
-    //       alt="Retailer Icon"
-    //       style={{
-    //         width: "24px",
-    //         height: "24px",
-    //         filter: "invert(1) grayscale(1)", // Black by default
-    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
-    //       }}
-    //       className="icon-image"
-    //     />
-    //   ),
-    //   label: <Link to="/salesManagement">Sales Management</Link>,
-    // },
     {
       key: "/retailer",
       icon: (
@@ -73,8 +65,8 @@ const Sidebar = () => {
           style={{
             width: "24px",
             height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
           }}
           className="icon-image"
         />
@@ -90,15 +82,14 @@ const Sidebar = () => {
           style={{
             width: "24px",
             height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
           }}
           className="icon-image"
         />
       ),
       label: <Link to="/salesRepsManage">Commission Tracking</Link>,
     },
-
     {
       key: "/inventory",
       icon: (
@@ -108,32 +99,14 @@ const Sidebar = () => {
           style={{
             width: "24px",
             height: "24px",
-            filter: "invert(1) grayscale(1)", // Black by default
-            transition: "filter 0.3s ease", // Smooth transition for hover effect
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
           }}
           className="icon-image"
         />
       ),
       label: <Link to="/inventory">Inventory</Link>,
     },
-    // {
-    //   key: "/loyaltyProgram",
-    //   icon: (
-    //     <img
-    //       src={Frame6}
-    //       alt="Retailer Icon"
-    //       style={{
-    //         width: "24px",
-    //         height: "24px",
-    //         filter: "invert(1) grayscale(1)", // Black by default
-    //         transition: "filter 0.3s ease", // Smooth transition for hover effect
-    //       }}
-    //       className="icon-image"
-    //     />
-    //   ),
-    //   label: <Link to="/loyaltyProgram">Loyalty Program</Link>,
-    // },
-
     {
       key: "subMenuSetting",
       icon: (
@@ -183,7 +156,7 @@ const Sidebar = () => {
     {
       key: "/logout",
       icon: <IoIosLogOut size={24} />,
-      label: <p onClick={handleLogout}>Logout</p>,
+      label: <p onClick={showLogoutConfirm}>Logout</p>,
     },
   ];
 
@@ -214,10 +187,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      className="mb-20 h-screen 
-     "
-    >
+    <div className="mb-20 h-screen">
       <Link
         to={"/"}
         className="flex items-center justify-center py-4 border-b-2 border-primary"
@@ -237,15 +207,27 @@ const Sidebar = () => {
         }}
         items={menuItems.map((item) => ({
           ...item,
-          label: <span className="">{item.label}</span>, // Ensures text remains black
+          label: <span className="">{item.label}</span>,
           children: item.children
             ? item.children.map((subItem) => ({
                 ...subItem,
-                label: <span className="">{subItem.label}</span>, // Ensures submenu text remains black
+                label: <span className="">{subItem.label}</span>,
               }))
             : undefined,
         }))}
       />
+
+      <Modal
+        centered
+        title="Confirm Logout"
+        open={isLogoutModalOpen}
+        onOk={handleLogout}
+        onCancel={handleCancel}
+        okText="Logout"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to logout?</p>
+      </Modal>
     </div>
   );
 };
