@@ -10,11 +10,19 @@ import {
   Checkbox,
   Space,
   message,
+  Tooltip,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import GradientButton from "../common/GradiantButton";
+import {
+  UploadOutlined,
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 const ProductInfo = () => {
   const [data, setData] = useState([
@@ -34,38 +42,7 @@ const ProductInfo = () => {
         "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
       ],
     },
-    {
-      key: "2",
-      productName: "Product B",
-      category: "Fashion",
-      totalBoxes: 50,
-      freeBoxes: 5,
-      lowStockAlert: false,
-      price: 200,
-      quantity: 30,
-      commission: 5,
-      images: [
-        "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-        "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-        "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      ],
-    },
-    {
-      key: "3",
-      productName: "Product c",
-      category: "Fashion",
-      totalBoxes: 50,
-      freeBoxes: 5,
-      lowStockAlert: false,
-      price: 200,
-      quantity: 30,
-      commission: 5,
-      images: [
-        "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-        "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-        "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      ],
-    },
+    // ... rest of your data
   ]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -75,7 +52,6 @@ const ProductInfo = () => {
   const [searchText, setSearchText] = useState("");
   const [isStockModalVisible, setIsStockModalVisible] = useState(false);
   const [stockForm] = Form.useForm();
-
   const [form] = Form.useForm();
 
   const filteredData = data.filter(
@@ -94,9 +70,6 @@ const ProductInfo = () => {
       form.resetFields();
     }
   };
-
-
-  
 
   const showStockModal = (record) => {
     setCurrentProduct(record);
@@ -144,13 +117,26 @@ const ProductInfo = () => {
     handleCancel();
   };
 
-  const handleDelete = (key) => {
-    setData(data.filter((item) => item.key !== key));
-    message.error("Product deleted!");
+  const showDeleteConfirm = (key) => {
+    confirm({
+      title: "Are you sure you want to delete this product?",
+      icon: <ExclamationCircleFilled />,
+      content: "This action cannot be undone.",
+      okText: "Yes, delete it",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        setData(data.filter((item) => item.key !== key));
+        message.success("Product deleted successfully");
+      },
+      onCancel() {
+        console.log("Cancelled");
+      },
+    });
   };
 
   const columns = [
-    { title: "Product Name", dataIndex: "productName", align: "center", },
+    { title: "Product Name", dataIndex: "productName", align: "center" },
     { title: "Category", dataIndex: "category", align: "center" },
     { title: "Total Boxes", dataIndex: "totalBoxes", align: "center" },
     { title: "Free Boxes", dataIndex: "freeBoxes", align: "center" },
@@ -165,31 +151,33 @@ const ProductInfo = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <Space>
-          <GradientButton
-            onClick={() => showDetailModal(record)}
-          >
-            Details
-          </GradientButton>
-          <GradientButton
-            onClick={() => showModal(record)}
-          >
-            Edit
-          </GradientButton>
-          {/* <Button
-            onClick={() => showStockModal(record)}
-            type="primary"
-            className="bg-orange-500 text-white"
-          >
-            Stock Update
-          </Button> */}
-          <Button
-            onClick={() => handleDelete(record.key)}
-            type="danger"
-            className="bg-red-500 text-white py-[18px]"
-          >
-            Delete
-          </Button>
+        <Space size="middle">
+          <Tooltip title="View Details">
+            <Button
+              type="text"
+              icon={<EyeOutlined />}
+              onClick={() => showDetailModal(record)}
+              className="text-blue-500 hover:text-blue-700"
+            />
+          </Tooltip>
+
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              icon={<EditOutlined />}
+              onClick={() => showModal(record)}
+              className="text-green-500 hover:text-green-700"
+            />
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              onClick={() => showDeleteConfirm(record.key)}
+              className="text-red-500 hover:text-red-700"
+            />
+          </Tooltip>
         </Space>
       ),
     },
@@ -207,13 +195,18 @@ const ProductInfo = () => {
             onChange={(e) => setSearchText(e.target.value)}
             className="w-60 py-2"
           />
-          <GradientButton onClick={() => showModal()}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => showModal()}
+            className="bg-gradient-to-r from-primary to-secondary py-[19px]"
+          >
             Add Product
-          </GradientButton>
+          </Button>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-primary  to-secondary px-6 pt-6 rounded-xl">
+      <div className="bg-gradient-to-r from-primary to-secondary px-6 pt-6 rounded-xl">
         <Table
           dataSource={filteredData}
           columns={columns}
@@ -226,6 +219,7 @@ const ProductInfo = () => {
 
       {/* Add/Edit Modal */}
       <Modal
+        centered
         title={editingId ? "Edit Product" : "Add Product"}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -295,15 +289,20 @@ const ProductInfo = () => {
           </Form.Item>
 
           <Form.Item>
-            <GradientButton type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-gradient-to-r from-primary to-secondary"
+            >
               {editingId ? "Update Product" : "Add Product"}
-            </GradientButton>
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
 
       {/* Details Modal */}
-      <Modal
+      <Modal 
+        centered
         title="Product Details"
         visible={isDetailModalVisible}
         onCancel={handleCancel}
@@ -311,15 +310,14 @@ const ProductInfo = () => {
       >
         {currentProduct && (
           <div>
-            {/* Image Display Section */}
-            <div className="flex flex-col  gap-2 my-4">
+            <div className="flex flex-col gap-2 my-4">
               {currentProduct.images && currentProduct.images.length > 0 && (
                 <>
                   <div className="flex gap-10">
                     <img
                       src={currentProduct.images[1]}
                       alt="Product"
-                      className="w-60 h-48 object-cover rounded-lg shadow-md "
+                      className="w-60 h-48 object-cover rounded-lg shadow-md"
                     />
                     <div>
                       <p>
@@ -361,14 +359,16 @@ const ProductInfo = () => {
             </div>
 
             <div className="flex justify-end">
-              <GradientButton
+              <Button
+                type="primary"
                 onClick={() => {
                   setIsDetailModalVisible(false);
                   showStockModal(currentProduct);
                 }}
+                className="bg-gradient-to-r from-primary to-secondary"
               >
                 Stock Update
-              </GradientButton>
+              </Button>
             </div>
           </div>
         )}
@@ -376,6 +376,7 @@ const ProductInfo = () => {
 
       {/* Stock Update Modal */}
       <Modal
+        centered
         title="Update Stock Quantity"
         visible={isStockModalVisible}
         onCancel={() => setIsStockModalVisible(false)}
@@ -390,9 +391,13 @@ const ProductInfo = () => {
             <Input type="number" />
           </Form.Item>
           <Form.Item>
-            <GradientButton type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-gradient-to-r from-primary to-secondary"
+            >
               Update Quantity
-            </GradientButton>
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

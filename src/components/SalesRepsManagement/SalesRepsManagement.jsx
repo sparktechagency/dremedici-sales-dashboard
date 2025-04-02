@@ -1,7 +1,21 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Select } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Tooltip,
+  message,
+} from "antd";
 import { useNavigate } from "react-router-dom";
-import GradientButton from "../common/GradiantButton";
+import {
+  EyeOutlined,
+  SyncOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -27,112 +41,15 @@ const SalesRepsManagementTable = () => {
       commission: "$250",
       status: "Inactive",
     },
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
+    // ... rest of your data
   ]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
   const [editingId, setEditingId] = useState(null);
-    const [selectedRecord, setSelectedRecord] = useState(null);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -141,6 +58,23 @@ const SalesRepsManagementTable = () => {
     salesRep: "",
     targetAmount: "",
   });
+
+  // Delete confirmation modal
+  const showDeleteConfirm = (record) => {
+    setRecordToDelete(record);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDelete = () => {
+    setData(data.filter((item) => item.id !== recordToDelete.id));
+    setIsDeleteModalVisible(false);
+    message.success("Retailer deleted successfully");
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalVisible(false);
+    setRecordToDelete(null);
+  };
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
@@ -156,20 +90,17 @@ const SalesRepsManagementTable = () => {
     handleClose();
   };
 
-  // 🔹 Status Update Modal Open
   const showStatusModal = (record) => {
     setSelectedRecord(record);
-    form.setFieldsValue({ status: record.status }); 
+    form.setFieldsValue({ status: record.status });
     setIsStatusModalVisible(true);
   };
 
-  // 🔹 Status Update Modal Close
   const handleStatusCancel = () => {
     setIsStatusModalVisible(false);
     form.resetFields();
   };
 
-  // 🔹 Status Update Handle
   const handleStatusUpdate = (values) => {
     setData(
       data.map((item) =>
@@ -179,6 +110,7 @@ const SalesRepsManagementTable = () => {
       )
     );
     handleStatusCancel();
+    message.success("Status updated successfully");
   };
 
   const showModal = (record = null) => {
@@ -208,8 +140,10 @@ const SalesRepsManagementTable = () => {
           item.id === editingId ? { ...item, ...values } : item
         )
       );
+      message.success("Retailer updated successfully");
     } else {
       setData([...data, { id: data.length + 1, ...values }]);
+      message.success("Retailer added successfully");
     }
     handleCancel();
   };
@@ -246,27 +180,29 @@ const SalesRepsManagementTable = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <div className="flex gap-2 justify-center">
-          <GradientButton
-            onClick={() =>
-              navigate(`/retailer/${record.id}`, { state: record })
-            }
-          >
-            Details
-          </GradientButton>
+        <div className="flex gap-4 justify-center">
+          <Tooltip title="View Details">
+            <EyeOutlined
+              onClick={() =>
+                navigate(`/retailer/${record.id}`, { state: record })
+              }
+              className="text-blue-500 text-lg cursor-pointer hover:text-blue-700"
+            />
+          </Tooltip>
 
-          <GradientButton onClick={() => showStatusModal(record)}>
-            Status Update
-          </GradientButton>
-          <button
-            // danger
-            onClick={() =>
-              setData(data.filter((item) => item.id !== record.id))
-            }
-            className="bg-red-500 text-white py-[5px] w-20 rounded-md hover:bg-red-400"
-          >
-            Delete
-          </button>
+          <Tooltip title="Update Status">
+            <SyncOutlined
+              onClick={() => showStatusModal(record)}
+              className="text-green-500 text-lg cursor-pointer hover:text-green-700"
+            />
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <DeleteOutlined
+              onClick={() => showDeleteConfirm(record)}
+              className="text-red-500 text-lg cursor-pointer hover:text-red-700"
+            />
+          </Tooltip>
         </div>
       ),
     },
@@ -274,21 +210,12 @@ const SalesRepsManagementTable = () => {
 
   return (
     <div>
-      {/* tops of tables  */}
-      <div className="flex justify-between items-center mb-6 ">
+      <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold">Assign Retailer</h1>
         </div>
         <div className="flex gap-5 items-center">
           <div>
-            {/* <Button
-              type="primary"
-              onClick={handleOpen}
-              className="bg-gradient-to-r from-primary  to-secondary py-5 font-bold"
-            >
-              Set Target Sales Reps
-            </Button> */}
-
             <Modal
               title="Assign Target to Sales Rep"
               open={isModalOpen}
@@ -332,14 +259,15 @@ const SalesRepsManagementTable = () => {
           <Button
             type="primary"
             onClick={() => showModal()}
-            className="bg-gradient-to-r from-primary  to-secondary py-5 font-bold"
+            icon={<PlusOutlined />}
+            className="bg-gradient-to-r from-primary to-secondary h-10 font-bold flex items-center"
           >
             Add Retailer
           </Button>
         </div>
       </div>
-      {/* tables info  */}
-      <div className="bg-gradient-to-r from-primary  to-secondary pt-6 px-6 rounded-xl">
+
+      <div className="bg-gradient-to-r from-primary to-secondary pt-6 px-6 rounded-xl">
         <Table
           dataSource={data}
           columns={columns}
@@ -349,13 +277,14 @@ const SalesRepsManagementTable = () => {
           rowClassName="custom-row"
         />
       </div>
-      {/* modals  */}
+
+      {/* Add/Edit Modal */}
       <Modal
         title={editingId ? "Edit Sales Rep" : "Add Sales Rep"}
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={() => form.submit()}
-        okText={editingId ? "Save Changes" : "Add Sales Rep"} // Change button text
+        okText={editingId ? "Save Changes" : "Add Sales Rep"}
         okButtonProps={{
           style: {
             background: "linear-gradient(to right, #4E9DAB, #336C79)",
@@ -365,7 +294,7 @@ const SalesRepsManagementTable = () => {
         }}
         cancelButtonProps={{
           style: {
-            background: "#D32F2F", // Custom red for cancel
+            background: "#D32F2F",
             border: "none",
             color: "white",
           },
@@ -417,6 +346,7 @@ const SalesRepsManagementTable = () => {
         </Form>
       </Modal>
 
+      {/* Status Update Modal */}
       <Modal
         title="Update Status"
         open={isStatusModalVisible}
@@ -424,7 +354,6 @@ const SalesRepsManagementTable = () => {
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleStatusUpdate}>
-         
           <Form.Item
             name="status"
             label="Status"
@@ -436,10 +365,32 @@ const SalesRepsManagementTable = () => {
             </Select>
           </Form.Item>
 
-          <GradientButton type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            icon={<SyncOutlined />}
+            className="bg-gradient-to-r from-primary to-secondary h-10 font-bold"
+          >
             Update
-          </GradientButton>
+          </Button>
         </Form>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={isDeleteModalVisible}
+        onOk={handleDelete}
+        onCancel={handleDeleteCancel}
+        okText="Delete"
+        cancelText="Cancel"
+        okButtonProps={{
+          danger: true,
+          type: "primary",
+        }}
+      >
+        <p>Are you sure you want to delete {recordToDelete?.name}?</p>
+        <p>This action cannot be undone.</p>
       </Modal>
     </div>
   );
