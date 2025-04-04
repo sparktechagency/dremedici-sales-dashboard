@@ -15,9 +15,12 @@ import { LockOutlined } from "@ant-design/icons";
 import GradientButton from "../../common/GradiantButton";
 import DetailsModal from "../../salesMangement/DetailsModal";
 import StatusUpdateModal from "../../salesMangement/StatusUpdateModal";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const RetailerInfo = () => {
   // Sample data for orders
+  const router = useNavigate();
   const [orders, setOrders] = useState([
     {
       key: "1",
@@ -119,7 +122,13 @@ const RetailerInfo = () => {
   return (
     <div>
       <div className="flex justify-between mb-10 mt-10">
-        <h1 className="text-2xl font-bold">Order List</h1>
+        <div className="flex items-center gap-2">
+          <MdArrowBackIosNew
+            onClick={() => router("/retailer")}
+            className="cursor-pointer"
+          />
+          <h1 className="text-2xl font-bold">Order List</h1>
+        </div>
         <div className="flex gap-4">
           <button
             className="border border-primary px-2 py-2 rounded-md"
@@ -257,22 +266,6 @@ const RetailerInfo = () => {
                 ]}
               >
                 <Input.TextArea className="p-2 rounded" rows={3} />
-              </Form.Item>
-
-              <Form.Item
-                label="Account Status"
-                name="accountStatus"
-                rules={[
-                  { required: true, message: "Please select account status" },
-                ]}
-              >
-                <Select placeholder="Select Account Status" className="w-full">
-                  {statusOptions.map((status) => (
-                    <Select.Option key={status} value={status}>
-                      {status}
-                    </Select.Option>
-                  ))}
-                </Select>
               </Form.Item>
             </Col>
 
