@@ -181,16 +181,16 @@ const SalesRepsManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex gap-4 justify-center">
-          <Tooltip title="View Details">
-            <EyeOutlined
+            <button
               onClick={() =>
                 navigate(`/retailer/${record.id}`, { state: record })
               }
-              className="text-blue-500 text-lg cursor-pointer hover:text-blue-700"
-            />
-          </Tooltip>
+              className=" cursor-pointer border border-primary px-2 py-1.5 rounded-md"
+            >
+              View Details
+            </button>
 
-          <Tooltip title="Update Status">
+          {/* <Tooltip title="Update Status">
             <SyncOutlined
               onClick={() => showStatusModal(record)}
               className="text-green-500 text-lg cursor-pointer hover:text-green-700"
@@ -202,7 +202,7 @@ const SalesRepsManagementTable = () => {
               onClick={() => showDeleteConfirm(record)}
               className="text-red-500 text-lg cursor-pointer hover:text-red-700"
             />
-          </Tooltip>
+          </Tooltip> */}
         </div>
       ),
     },
@@ -256,14 +256,14 @@ const SalesRepsManagementTable = () => {
               </div>
             </Modal>
           </div>
-          <Button
+          {/* <Button
             type="primary"
             onClick={() => showModal()}
             icon={<PlusOutlined />}
             className="bg-gradient-to-r from-primary to-secondary h-10 font-bold flex items-center"
           >
             Add Retailer
-          </Button>
+          </Button> */}
         </div>
       </div>
 

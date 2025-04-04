@@ -90,23 +90,23 @@ const Sidebar = () => {
       ),
       label: <Link to="/salesRepsManage">Commission Tracking</Link>,
     },
-    {
-      key: "/inventory",
-      icon: (
-        <img
-          src={Frame5}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image"
-        />
-      ),
-      label: <Link to="/inventory">Inventory</Link>,
-    },
+    // {
+    //   key: "/inventory",
+    //   icon: (
+    //     <img
+    //       src={Frame5}
+    //       alt="Retailer Icon"
+    //       style={{
+    //         width: "24px",
+    //         height: "24px",
+    //         filter: "invert(1) grayscale(1)",
+    //         transition: "filter 0.3s ease",
+    //       }}
+    //       className="icon-image"
+    //     />
+    //   ),
+    //   label: <Link to="/inventory">Inventory</Link>,
+    // },
     {
       key: "subMenuSetting",
       icon: (

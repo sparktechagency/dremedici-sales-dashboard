@@ -5,8 +5,8 @@ import { FaUsers } from "react-icons/fa6";
 const DetailsCard = () => {
   // Data for cards
   const cardData = [
-    { icon: FaUsers, value: "100", label: "Total Retailers" },
-    { icon: FaUsers, value: "$12", label: "Total Sales Reps" },
+    { icon: FaUsers, value: "$5000", label: "Total Sales" },
+    { icon: FaUsers, value: "20", label: "Total Order" },
   ];
 
   return (

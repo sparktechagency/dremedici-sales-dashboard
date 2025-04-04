@@ -7,6 +7,7 @@ const ViewSalesReps = () => {
   const { id } = useParams(); // Get dynamic ID from URL
   const location = useLocation(); // Get state data
   const salesRep = location.state; // Received sales rep data
+  
 
   return (
     <div className="">
@@ -23,14 +24,16 @@ const ViewSalesReps = () => {
 
               {/* Details Section */}
 
-              <div>
+              <div className="flex flex-col gap-3">
                 <p>
                   <strong>Name:</strong> {salesRep.name}
                 </p>
                 <p>
                   <strong>Email:</strong> {salesRep.email}
                 </p>
-              
+                <p>
+                  <strong>Tier:</strong> {"Gold"}
+                </p>
               </div>
             </div>
           ) : (
