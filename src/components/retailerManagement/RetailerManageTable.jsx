@@ -168,7 +168,7 @@ const RetailerManageTable = () => {
       <div className="flex justify-between items-center mb-10">
         <div>
           <h2 className="text-2xl font-bold">
-            Retailer List{" "}
+            Retailer List 
             <span className="text-secondary">{retailersData.length}</span>{" "}
           </h2>
         </div>

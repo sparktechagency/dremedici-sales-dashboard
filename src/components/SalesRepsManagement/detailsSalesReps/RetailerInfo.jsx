@@ -58,7 +58,7 @@ const RetailerInfo = () => {
     shippingAddress: "123 Main St, Anytown, USA",
     accountStatus: "Active",
     nameOnCard: "John Doe",
-    cardNumber: "4111111111111111",
+    cardNumber: "424242424242",
     expiry: "12/25",
     cvc: "123",
     zipCode: "12345",
@@ -127,7 +127,7 @@ const RetailerInfo = () => {
             onClick={() => router("/retailer")}
             className="cursor-pointer"
           />
-          <h1 className="text-2xl font-bold">Order List</h1>
+          <h1 className="text-2xl font-bold">Order Histoty</h1>
         </div>
         <div className="flex gap-4">
           <button
@@ -446,9 +446,7 @@ const RetailerInfo = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">Card Number</p>
-                  <p className="font-medium">
-                    •••• •••• •••• {retailerData.cardNumber.slice(-4)}
-                  </p>
+                  <p className="font-medium">{retailerData.cardNumber}</p>
                 </div>
                 <div className="flex gap-4">
                   <div>
@@ -457,7 +455,7 @@ const RetailerInfo = () => {
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">CVC</p>
-                    <p className="font-medium">•••</p>
+                    <p className="font-medium">{retailerData.cvc}</p>
                   </div>
                 </div>
                 <div>

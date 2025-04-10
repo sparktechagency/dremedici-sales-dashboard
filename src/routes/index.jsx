@@ -28,6 +28,7 @@ import ViewSalesReps from "../components/SalesRepsManagement/detailsSalesReps/Vi
 import Products from "../Pages/Dashboard/Products";
 import LoyaltyProgram from "../Pages/Dashboard/LoyaltyProgram";
 import CommissionTracking from "../Pages/Dashboard/CommissionTracking";
+import MySales from "../components/mySales/MySales";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
@@ -58,8 +59,8 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/inventory",
-        element: <Products />,
+        path: "/mySales",
+        element: <MySales />,
       },
       {
         path: "/loyaltyProgram",

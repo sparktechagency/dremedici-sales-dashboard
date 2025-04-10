@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Tag, Input, Select } from "antd";
+import { Table, Input, Select } from "antd";
 
 const { Option } = Select;
 
@@ -13,7 +13,8 @@ const CommissionTrackingContainer = () => {
       salesAmount: 800,
       commissionEarned: 60,
       commissionRate: 10,
-      saleDate: "Jan 10, 2025",
+      quantitySold: 100, // Added quantity sold
+      lastSaleDate: "Jan 10, 2025", // Last sale date
       productStatus: "Active",
     },
     {
@@ -23,7 +24,8 @@ const CommissionTrackingContainer = () => {
       salesAmount: 1000,
       commissionEarned: 80,
       commissionRate: 12,
-      saleDate: "Feb 15, 2024",
+      quantitySold: 120, // Added quantity sold
+      lastSaleDate: "Feb 15, 2024", // Last sale date
       productStatus: "Inactive",
     },
     {
@@ -33,7 +35,8 @@ const CommissionTrackingContainer = () => {
       salesAmount: 500,
       commissionEarned: 40,
       commissionRate: 8,
-      saleDate: "Mar 20, 2025",
+      quantitySold: 60, // Added quantity sold
+      lastSaleDate: "Mar 20, 2025", // Last sale date
       productStatus: "Active",
     },
   ];
@@ -57,6 +60,12 @@ const CommissionTrackingContainer = () => {
       align: "center",
     },
     {
+      title: "Quantity Sold", // New column for quantity sold
+      dataIndex: "quantitySold",
+      key: "quantitySold",
+      align: "center",
+    },
+    {
       title: "Sales Amount",
       dataIndex: "salesAmount",
       key: "salesAmount",
@@ -71,18 +80,26 @@ const CommissionTrackingContainer = () => {
       align: "center",
     },
     {
-      title: "Sale Date",
-      dataIndex: "saleDate",
-      key: "saleDate",
+      title: "Commission per Order", // New column for commission per order
+      dataIndex: "commissionEarned",
+      key: "commissionEarnedPerOrder",
+      render: (commissionEarned, record) =>
+        `$${(commissionEarned / record.quantitySold).toFixed(2)}`, // Commission per order
       align: "center",
-    }
+    },
+    {
+      title: "Last Sale Date", // Changed from "Sale Date" to "Last Sale Date"
+      dataIndex: "lastSaleDate",
+      key: "lastSaleDate",
+      align: "center",
+    },
   ];
 
   // 🔹 Apply Filters
   const filteredData = initialData.filter((item) => {
     const lowerCaseName = item.productName.toLowerCase();
-    const saleYear = item.saleDate.split(" ")[2]; // Extracting Year
-    const saleMonth = item.saleDate.split(" ")[0]; // Extracting Month
+    const saleYear = item.lastSaleDate.split(" ")[2]; // Extracting Year
+    const saleMonth = item.lastSaleDate.split(" ")[0]; // Extracting Month
 
     return (
       lowerCaseName.includes(searchText.toLowerCase()) &&
@@ -106,12 +123,12 @@ const CommissionTrackingContainer = () => {
             className="w-60 py-2"
           />
 
-          {/*  Filter by Year */}
+          {/* Filter by Year */}
           <Select
             placeholder="Filter by year"
             allowClear
             onChange={setSelectedYear}
-            className="w-40 "
+            className="w-40"
             style={{ height: "40px" }}
           >
             <Option value="2025">2025</Option>

@@ -11,7 +11,7 @@ const ViewSalesReps = () => {
 
   return (
     <div className="">
-      <div className="flex  justify-between items-center">
+      <div className="flex  justify-between items-center ">
         <div>
           {salesRep ? (
             <div className=" px-4  rounded shadow flex gap-10 items-center w-[450px]">

@@ -320,8 +320,8 @@ const Home = () => {
         />
       </div>
 
-      <div className="flex justify-end gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-md w-5/12">
+      <div className="flex justify-end gap-4 mb-2">
+        <div className="bg-white p-4 rounded-xl shadow-md w-4/12">
           <h2 className="text-xl font-semibold mb-2">Choose Retailer</h2>
           <Select
             value={retailer}
@@ -344,11 +344,11 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-md w-4/12">
+        <div className="bg-white p-4 rounded-xl shadow-md w-3/12">
           <h2 className="text-xl font-semibold mb-4">Shopping Cart</h2>
-          <p>Total Box: {totalBox}</p>
+          <p>Total Boxes: {totalBox}</p>
           <p>Total amount: ${totalAmount}</p>
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center mt-12">
             <Button danger>Remove All</Button>
             <Button type="primary">Place Order</Button>
           </div>

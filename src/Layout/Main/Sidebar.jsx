@@ -71,7 +71,7 @@ const Sidebar = () => {
           className="icon-image"
         />
       ),
-      label: <Link to="/retailer">My Retailer</Link>,
+      label: <Link to="/retailer">My Retailers</Link>,
     },
     {
       key: "/salesRepsManage",
@@ -89,6 +89,23 @@ const Sidebar = () => {
         />
       ),
       label: <Link to="/salesRepsManage">Commission Tracking</Link>,
+    },
+    {
+      key: "/mySales",
+      icon: (
+        <img
+          src={Frame4}
+          alt="Retailer Icon"
+          style={{
+            width: "24px",
+            height: "24px",
+            filter: "invert(1) grayscale(1)",
+            transition: "filter 0.3s ease",
+          }}
+          className="icon-image"
+        />
+      ),
+      label: <Link to="/mySales">My Sales</Link>,
     },
     // {
     //   key: "/inventory",
@@ -192,7 +209,7 @@ const Sidebar = () => {
         to={"/"}
         className="flex items-center justify-center py-4 border-b-2 border-primary"
       >
-        <img src={image4} alt="logo" className="w-40 h-40" />
+        <img src={image4} alt="logo" className="w-28 h-28" />
       </Link>
       <Menu
         mode="inline"

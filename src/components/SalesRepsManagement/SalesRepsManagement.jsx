@@ -158,7 +158,7 @@ const SalesRepsManagementTable = () => {
     },
     { title: "Email", dataIndex: "email", key: "email", align: "center" },
     {
-      title: "Total Order",
+      title: "Total Orders",
       dataIndex: "retailer",
       key: "retailer",
       align: "center",
@@ -170,7 +170,7 @@ const SalesRepsManagementTable = () => {
       align: "center",
     },
     {
-      title: "Total Sell",
+      title: "Total Purchased",
       dataIndex: "commission",
       key: "commission",
       align: "center",
