@@ -29,6 +29,7 @@ import Products from "../Pages/Dashboard/Products";
 import LoyaltyProgram from "../Pages/Dashboard/LoyaltyProgram";
 import CommissionTracking from "../Pages/Dashboard/CommissionTracking";
 import MySales from "../components/mySales/MySales";
+import MyOrderHistory from "../components/myOrder/MyOrderHistory";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/privacy-policy",
         element: <PrivacyPolicy />,
+      },
+      {
+        path: "/orders",
+        element: <MyOrderHistory />,
       },
       {
         path: "/terms-and-conditions",

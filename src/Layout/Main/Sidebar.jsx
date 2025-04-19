@@ -1,20 +1,15 @@
 import { Menu, Modal } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdOutlineInventory2 } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
-import { PiSquaresFourLight } from "react-icons/pi";
+import {
+  Dashboard,
+  SalesRepsManagement,
+  Settings,
+  RetailersManagement,
+  SalesManagement,
+} from "../../components/common/Svg"; // Import the relevant SVGs
 import image4 from "../../assets/image4.png";
-import Frame1 from "../../assets/Frame1.png";
-import Frame2 from "../../assets/Frame2.png";
-import Frame3 from "../../assets/Frame3.png";
-import Frame4 from "../../assets/Frame4.png";
-import Frame5 from "../../assets/Frame5.png";
-import Frame6 from "../../assets/Frame6.png";
-import Frame7 from "../../assets/Frame7.png";
-import { LuChartNoAxesCombined } from "react-icons/lu";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -38,135 +33,75 @@ const Sidebar = () => {
     setIsLogoutModalOpen(false);
   };
 
+  // Function to check if a menu item is active
+  const isItemActive = (itemKey) => {
+    return (
+      selectedKey === itemKey ||
+      (itemKey === "subMenuSetting" &&
+        ["/profile", "/terms-and-conditions", "/privacy-policy"].includes(
+          selectedKey
+        ))
+    );
+  };
+
+  // Render icon with conditional color based on active route
+  const renderIcon = (IconComponent, itemKey) => {
+    const isActive = isItemActive(itemKey);
+    return (
+      <div
+        style={{ width: 20, height: 20 }}
+        className={isActive ? "svg-active" : ""}
+      >
+        <IconComponent
+          className="menu-icon"
+          fill={isActive ? "#ffffff" : "#1E1E1E"} // Active icon color set to white
+        />
+      </div>
+    );
+  };
+
   const menuItems = [
     {
       key: "/",
-      icon: (
-        <img
-          src={Frame1}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image  text-white"
-        />
-      ),
+      icon: renderIcon(Dashboard, "/"),
       label: <Link to="/">Dashboard Overview</Link>,
     },
     {
       key: "/retailer",
-      icon: (
-        <img
-          src={Frame3}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image"
-        />
-      ),
+      icon: renderIcon(RetailersManagement, "/retailer"),
       label: <Link to="/retailer">My Retailers</Link>,
     },
     {
       key: "/salesRepsManage",
-      icon: (
-        <img
-          src={Frame4}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image"
-        />
-      ),
+      icon: renderIcon(SalesRepsManagement, "/salesRepsManage"),
       label: <Link to="/salesRepsManage">Commission Tracking</Link>,
     },
     {
+      key: "/orders",
+      icon: renderIcon(SalesManagement, "/orders"),
+      label: <Link to="/orders">My Orders History</Link>,
+    },
+    {
       key: "/mySales",
-      icon: (
-        <img
-          src={Frame4}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image"
-        />
-      ),
+      icon: renderIcon(SalesRepsManagement, "/mySales"),
       label: <Link to="/mySales">My Sales</Link>,
     },
-    // {
-    //   key: "/inventory",
-    //   icon: (
-    //     <img
-    //       src={Frame5}
-    //       alt="Retailer Icon"
-    //       style={{
-    //         width: "24px",
-    //         height: "24px",
-    //         filter: "invert(1) grayscale(1)",
-    //         transition: "filter 0.3s ease",
-    //       }}
-    //       className="icon-image"
-    //     />
-    //   ),
-    //   label: <Link to="/inventory">Inventory</Link>,
-    // },
     {
       key: "subMenuSetting",
-      icon: (
-        <img
-          src={Frame7}
-          alt="Retailer Icon"
-          style={{
-            width: "24px",
-            height: "24px",
-            filter: "invert(1) grayscale(1)",
-            transition: "filter 0.3s ease",
-          }}
-          className="icon-image"
-        />
-      ),
+      icon: renderIcon(Settings, "subMenuSetting"),
       label: "Settings",
       children: [
         {
           key: "/profile",
-          label: (
-            <Link to="/profile" className="  ">
-              Update Profile
-            </Link>
-          ),
+          label: <Link to="/profile">Update Profile</Link>,
         },
         {
           key: "/terms-and-conditions",
-          label: (
-            <Link
-              to="/terms-and-conditions"
-              className="text-white hover:text-white"
-            >
-              Terms And Condition
-            </Link>
-          ),
+          label: <Link to="/terms-and-conditions">Terms And Condition</Link>,
         },
         {
           key: "/privacy-policy",
-          label: (
-            <Link to="/privacy-policy" className="text-white hover:text-white">
-              Privacy Policy
-            </Link>
-          ),
+          label: <Link to="/privacy-policy">Privacy Policy</Link>,
         },
       ],
     },
@@ -209,14 +144,14 @@ const Sidebar = () => {
         to={"/"}
         className="flex items-center justify-center py-4 border-b-2 border-primary"
       >
-        <img src={image4} alt="logo" className="w-28 h-28" />
+        <img src={image4} alt="logo" className="w-40 h-32" />
       </Link>
       <Menu
         mode="inline"
         selectedKeys={[selectedKey]}
         openKeys={openKeys}
         onOpenChange={handleOpenChange}
-        className="font-poppins text-black"
+        className="font-poppins text-black sidebar-menu"
         style={{
           borderRightColor: "transparent",
           background: "transparent",
@@ -224,16 +159,15 @@ const Sidebar = () => {
         }}
         items={menuItems.map((item) => ({
           ...item,
-          label: <span className="">{item.label}</span>,
+          label: <span>{item.label}</span>,
           children: item.children
             ? item.children.map((subItem) => ({
                 ...subItem,
-                label: <span className="">{subItem.label}</span>,
+                label: <span>{subItem.label}</span>,
               }))
             : undefined,
         }))}
       />
-
       <Modal
         centered
         title="Confirm Logout"
