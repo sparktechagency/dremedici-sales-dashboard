@@ -6,8 +6,8 @@ export default {
       colors: {
         primary: "#6200EE",
         secondary: "#6200EE",
-        third:"#03DAC5",
-        baseBg: "#FAF2DF",
+        third: "#03DAC5",
+        baseBg: "#FFFBD6",
       },
     },
   },

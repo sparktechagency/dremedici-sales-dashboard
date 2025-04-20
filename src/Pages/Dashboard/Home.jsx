@@ -301,7 +301,7 @@ const Home = () => {
   );
 
   return (
-    <div className="bg-[#fdf3e6] flex flex-col gap-10">
+    <div className="flex flex-col gap-10 ">
       <div className="flex items-center justify-end">
         <Input
           className="w-1/4 p-2"
