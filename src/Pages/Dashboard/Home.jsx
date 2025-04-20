@@ -87,21 +87,21 @@
 
 //   return (
 //     <div className="">
-//       <div className="flex gap-10   rounded-lg">
+//       <div className="flex gap-10 rounded-lg">
 //         {/* Line Chart Section */}
-//         <div className=" flex-1 w-2/3 bg-gradient-to-r from-primary  to-secondary p-6 rounded-lg ">
-//           <h2 className="text-xl font-bold text-white mb-4">Total Revenue</h2>
+//         <div className="flex-1 w-2/3 p-6 rounded-lg bg-gradient-to-r from-primary to-secondary">
+//           <h2 className="mb-4 text-xl font-bold text-white">Total Revenue</h2>
 //           <LineChart />
 //         </div>
 //         {/* Card Section */}
 //         <div className="grid grid-cols-2 w-1/3 gap-6 h-[340px] bg-gradient-to-r from-primary  to-secondary p-6 rounded-lg">
-//           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+//           <div className="flex items-center justify-between gap-4 px-2 py-0 bg-white rounded-lg">
 //             <div className="flex items-center gap-3">
 //               <div>
-//                 <h2 className="text-center text-xl font-bold mb-3">
+//                 <h2 className="mb-3 text-xl font-bold text-center">
 //                   Total Sales
 //                 </h2>
-//                 <h3 className="text-primary text-3xl font-bold">$12100</h3>
+//                 <h3 className="text-3xl font-bold text-primary">$12100</h3>
 //               </div>
 //               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
 //                 <MdArrowUpward color="" size={24} />
@@ -110,13 +110,13 @@
 //             </div>
 //           </div>
 
-//           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+//           <div className="flex items-center justify-between gap-4 px-2 py-0 bg-white rounded-lg">
 //             <div className="flex items-center gap-3">
 //               <div>
-//                 <h2 className="text-center text-xl font-bold mb-3">
+//                 <h2 className="mb-3 text-xl font-bold text-center">
 //                   Total Order
 //                 </h2>
-//                 <h3 className="text-primary text-3xl font-bold">$12100</h3>
+//                 <h3 className="text-3xl font-bold text-primary">$12100</h3>
 //               </div>
 //               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
 //                 <MdArrowUpward color="" size={24} />
@@ -125,13 +125,13 @@
 //             </div>
 //           </div>
 
-//           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
+//           <div className="flex items-center justify-between gap-4 px-2 py-0 bg-white rounded-lg">
 //             <div className="flex items-center gap-3">
 //               <div>
-//                 <h2 className="text-center text-xl font-bold mb-3">
+//                 <h2 className="mb-3 text-xl font-bold text-center">
 //                   Commission
 //                 </h2>
-//                 <h3 className="text-primary text-3xl font-bold">$12100</h3>
+//                 <h3 className="text-3xl font-bold text-primary">$12100</h3>
 //               </div>
 //               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
 //                 <MdArrowUpward color="" size={24} />
@@ -140,13 +140,13 @@
 //             </div>
 //           </div>
 
-//           <div className="bg-white rounded-lg py-0 px-2 flex items-center justify-between gap-4">
-//             <div className="flex items-center  gap-3">
+//           <div className="flex items-center justify-between gap-4 px-2 py-0 bg-white rounded-lg">
+//             <div className="flex items-center gap-3">
 //               <div>
-//                 <h2 className="text-center text-xl font-bold mb-3">
+//                 <h2 className="mb-3 text-xl font-bold text-center">
 //                   Retailers
 //                 </h2>
-//                 <h3 className="text-primary text-3xl font-bold">$12100</h3>
+//                 <h3 className="text-3xl font-bold text-primary">$12100</h3>
 //               </div>
 //               <div className="w-16 h-16 rounded-full text-[#37C779] flex items-center justify-center">
 //                 <MdArrowUpward color="" size={24} />
@@ -157,7 +157,7 @@
 //         </div>
 //       </div>
 
-//       <div className="grid grid-cols-2 gap-x-10 mt-16">
+//       <div className="grid grid-cols-2 mt-16 gap-x-10">
 //         <OrderTable />
 //         <SalesLeaderBoard />
 //       </div>
@@ -302,7 +302,7 @@ const Home = () => {
 
   return (
     <div className="bg-[#fdf3e6] flex flex-col gap-10">
-      <div className="flex justify-end items-center">
+      <div className="flex items-center justify-end">
         <Input
           className="w-1/4 p-2"
           prefix={<SearchOutlined />}
@@ -310,7 +310,7 @@ const Home = () => {
         />
       </div>
 
-      <div className="bg-primary rounded-xl p-5">
+      <div className="p-5 bg-primary rounded-xl">
         <Table
           dataSource={data}
           columns={columns}
@@ -320,9 +320,9 @@ const Home = () => {
         />
       </div>
 
-      <div className="flex justify-end gap-4 mb-2">
-        <div className="bg-white p-4 rounded-xl shadow-md w-4/12">
-          <h2 className="text-xl font-semibold mb-2">Choose Retailer</h2>
+      <div className="flex justify-end gap-4 mb-2 ">
+        <div className="w-4/12 p-4 shadow-md bg-primary rounded-xl">
+          <h2 className="mb-2 text-xl font-semibold text-white">Choose Retailer</h2>
           <Select
             value={retailer}
             onChange={setRetailer}
@@ -344,13 +344,13 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-md w-3/12">
-          <h2 className="text-xl font-semibold mb-4">Shopping Cart</h2>
-          <p>Total Boxes: {totalBox}</p>
-          <p>Total amount: ${totalAmount}</p>
-          <div className="flex justify-between items-center mt-12">
-            <Button danger>Remove All</Button>
-            <Button type="primary">Place Order</Button>
+        <div className="w-3/12 p-4 shadow-md bg-primary rounded-xl">
+          <h2 className="mb-4 text-xl font-semibold text-white">Shopping Cart</h2>
+          <p className="text-white">Total Boxes: {totalBox}</p>
+          <p className="text-white">Total amount: ${totalAmount}</p>
+          <div className="flex items-center justify-between mt-12">
+            <Button >Remove All</Button>
+            <Button type="primary" className="text-third">Place Order</Button>
           </div>
         </div>
       </div>
