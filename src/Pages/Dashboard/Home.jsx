@@ -338,7 +338,7 @@ const Home = () => {
           />
           <div className="flex justify-end gap-2 mt-4">
             <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button type="primary" onClick={() => setIsModalOpen(false)}>
+            <Button type="primary" onClick={() => setIsModalOpen(false)} className="bg-third">
               Add Retailer
             </Button>
           </div>
@@ -350,7 +350,7 @@ const Home = () => {
           <p className="text-white">Total amount: ${totalAmount}</p>
           <div className="flex items-center justify-between mt-12">
             <Button >Remove All</Button>
-            <Button type="primary" className="text-third">Place Order</Button>
+            <Button type="primary" className="bg-third">Place Order</Button>
           </div>
         </div>
       </div>
