@@ -1,22 +1,38 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Checkbox, Form, Input, message } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
-import image4 from "../../assets/image4.png";
-// import Cookies from "js-cookie";
+import { useLoginMutation } from "../../redux/apiSlices/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [login, { isLoading, isError, error }] = useLoginMutation();
 
   const onFinish = async (values) => {
-    navigate("/");
-    // Cookies.set('token', token, { expires: 7 })
+    try {
+      const response = await login(values).unwrap();
+
+      if (response.success) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+
+        navigate("/");
+
+        message.success("Login successful!");
+      } else {
+        message.error("Login failed. Please try again.");
+      }
+    } catch (error) {
+      if (error?.data) {
+        message.error(error?.data?.message || "Something went wrong.");
+      } else {
+        message.error("Server error, Please try again later.");
+      }
+    }
   };
 
   return (
     <div>
       <div className="text-center mb-8">
-        <img src={image4} alt="logo" className="h-40 w-40 mx-auto" />
         <h1 className="text-[25px] font-semibold mb-6">Login</h1>
         <p>Please enter your email and password to continue</p>
       </div>
@@ -46,13 +62,12 @@ const Login = () => {
         </Form.Item>
 
         <div className="flex items-center justify-between">
-          <Form.Item
-            style={{ marginBottom: 0 }}
-            name="remember"
-            valuePropName="checked"
+          <a
+            className="login-form-forgot  px-4 py-1 text-black rounded-md font-semibold"
+            href="/auth/create-account"
           >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+            Create Account
+          </a>
 
           <a
             className="login-form-forgot bg-gradient-to-r from-primary  to-secondary px-4 py-1 text-white rounded-md font-semibold"

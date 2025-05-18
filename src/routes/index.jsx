@@ -30,6 +30,7 @@ import LoyaltyProgram from "../Pages/Dashboard/LoyaltyProgram";
 import CommissionTracking from "../Pages/Dashboard/CommissionTracking";
 import MySales from "../components/mySales/MySales";
 import MyOrderHistory from "../components/myOrder/MyOrderHistory";
+import CreateAccount from "../Pages/Auth/CreateAccount";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
@@ -124,6 +125,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "create-account",
+        element: <CreateAccount />,
       },
       {
         path: "forgot-password",

@@ -1,195 +1,263 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Switch,
-  Select,
-  notification,
-  Upload,
-  Avatar,
-} from "antd";
-import GradientButton from "../../../components/common/GradiantButton";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button, Upload, Avatar, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { useProfileQuery, useUpdateProfileMutation } from "../../../redux/apiSlices/authSlice";
+import { getImageUrl } from "../../../components/common/imageUrl";
 
-const { Option } = Select;
 
 const UserProfile = () => {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState(null);
-  const [fileList, setFileList] = useState([]); // State to handle file list
+  const [fileList, setFileList] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
+  const { data } = useProfileQuery();
+  const [updateProfile] = useUpdateProfileMutation();
+  // console.log(data)
 
-  const handleUpdate = async (values) => {
-    console.log("Updated Values: ", values);
-    console.log("Profile Image: ", imageUrl);
-    // Here, you can add the logic to update the user data to the server
-    // If it's successful, show a success notification
-    notification.success({
-      message: "Profile Updated Successfully!",
-      description: "Your profile information has been updated.",
-    });
-  };
+  const user = data?.data;
 
-  const handleImageChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList); // Update the file list when a new file is selected
-    if (newFileList.length > 0) {
-      setImageUrl(URL.createObjectURL(newFileList[0].originFileObj)); // Show preview of the image
+  useEffect(() => {
+    if (user) {
+      form.setFieldsValue({
+        name: user.name,
+        email: user.email,
+        address: user.address,
+        phone: user.phone || "",
+      });
+
+      // Set the image URL if it exists
+      if (user.image) {
+        setImageUrl(user.image);
+        setFileList([
+          {
+            uid: "-1",
+            name: "profile.jpg",
+            status: "done",
+            url: user.image,
+          },
+        ]);
+      }
+    }
+  }, [form, user]);
+
+  // Clean up blob URLs when component unmounts to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (imageUrl && imageUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
+  }, [imageUrl]);
+
+  const handleImageChange = (info) => {
+    const limitedFileList = info.fileList.slice(-1);
+    setFileList(limitedFileList);
+
+    if (limitedFileList.length > 0 && limitedFileList[0].originFileObj) {
+      setImageFile(limitedFileList[0].originFileObj);
+
+      const newImageUrl = URL.createObjectURL(limitedFileList[0].originFileObj);
+
+      if (imageUrl && imageUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(imageUrl);
+      }
+
+      setImageUrl(newImageUrl);
     } else {
-      setImageUrl(null); // Clear image if no file selected
+      setImageFile(null);
+      setImageUrl(null);
     }
   };
 
   const beforeUpload = (file) => {
     const isImage = file.type.startsWith("image/");
     if (!isImage) {
-      notification.error({
-        message: "Invalid File Type",
-        description: "Please upload an image file.",
-      });
+      message.error("Please upload an image file.");
     }
-    return isImage;
+
+    // Check file size (optional)
+    const isLessThan2MB = file.size / 1024 / 1024 < 2;
+    if (!isLessThan2MB) {
+      message.error("Image must be smaller than 2MB.");
+    }
+
+    return false; // Return false to prevent auto upload
+  };
+
+  const onFinish = async (values) => {
+    try {
+      // Create user data object
+      const userData = {
+        name: values.name,
+        email: values.email,
+        address: values.address,
+        phone: values.phone || "",
+      };
+
+      // Create a new FormData object to send to backend
+      const formDataToSend = new FormData();
+
+      // Append user data as a JSON string
+      formDataToSend.append("data", JSON.stringify(userData));
+
+      // Check if image exists and append it to FormData
+      if (imageFile) {
+        formDataToSend.append("image", imageFile);
+      }
+
+      // Send the FormData to the backend using your existing mutation
+      const response = await updateProfile(formDataToSend).unwrap();
+
+      if (response.success) {
+        message.success("Profile updated successfully!");
+
+        // Update token if returned in the response
+        if (response.token) {
+          localStorage.setItem("accessToken", response.token);
+        }
+      } else {
+        message.error(response.message || "Failed to update profile!");
+      }
+    } catch (error) {
+      console.error("Profile update error:", error);
+      message.error(
+        error.data?.message || "An error occurred while updating the profile"
+      );
+    }
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <div className="flex items-center justify-center">
-        <Form
-          form={form}
-          layout="vertical"
-          style={{ width: "80%" }}
-          onFinish={handleUpdate}
-        >
-          <div className="grid w-full grid-cols-1 lg:grid-cols-2 lg:gap-x-16 gap-y-7">
-            {/* Profile Image */}
-            <div className="flex justify-center col-span-2">
-              <Form.Item label="Profile Image" style={{ marginBottom: 0 }}>
-                <Upload
-                  name="avatar"
-                  showUploadList={false}
-                  action="/upload" // Adjust this to your server's upload endpoint
-                  onChange={handleImageChange}
-                  beforeUpload={beforeUpload} // Validate file before upload
-                  fileList={fileList} // Bind file list to the Upload component
-                  listType="picture-card"
-                >
-                  {imageUrl ? (
-                    <Avatar size={100} src={imageUrl} />
-                  ) : (
-                    <Avatar size={100} icon={<UploadOutlined />} />
-                  )}
-                </Upload>
-              </Form.Item>
-            </div>
-
-            {/* Username */}
-            <Form.Item
-              name="username"
-              label="Username"
-              style={{ marginBottom: 0 }}
-              rules={[
-                { required: true, message: "Please enter your username" },
-              ]}
-            >
-              <Input
-                placeholder="Enter your Username"
-                style={{
-                  height: "45px", // Increased height
-                  backgroundColor: "#f7f7f7", // Light grey background color
-                  borderRadius: "8px",
-                  border: "1px solid #E0E4EC",
-                  outline: "none",
-                }}
-              />
-            </Form.Item>
-
-            {/* Email */}
-            <Form.Item
-              name="email"
-              label="Email"
-              style={{ marginBottom: 0 }}
-              rules={[
-                { required: true, message: "Please enter your email" },
-                { type: "email", message: "Please enter a valid email" },
-              ]}
-            >
-              <Input
-                placeholder="Enter your Email"
-                style={{
-                  height: "45px", // Increased height
-                  backgroundColor: "#f7f7f7", // Light grey background color
-                  borderRadius: "8px",
-                  border: "1px solid #E0E4EC",
-                  outline: "none",
-                }}
-              />
-            </Form.Item>
-
-            {/* Address */}
-            <Form.Item
-              name="address"
-              label="Address"
-              style={{ marginBottom: 0 }}
-              rules={[{ required: true, message: "Please enter your address" }]}
-            >
-              <Input
-                placeholder="Enter your Address"
-                style={{
-                  height: "45px", // Increased height
-                  backgroundColor: "#f7f7f7", // Light grey background color
-                  borderRadius: "8px",
-                  border: "1px solid #E0E4EC",
-                  outline: "none",
-                }}
-              />
-            </Form.Item>
-
-            {/* Language */}
-            <Form.Item
-              name="language"
-              label="Language"
-              style={{ marginBottom: 0 }}
-              rules={[
-                { required: true, message: "Please select your language" },
-              ]}
-            >
-              <Select
-                placeholder="Select your Language"
-                style={{
-                  height: "45px", // Increased height
-                  backgroundColor: "#f7f7f7", // Light grey background color
-                  borderRadius: "8px",
-                  border: "1px solid #E0E4EC",
-                }}
+    <div className="flex items-center bg-white justify-center rounded-lg shadow-xl pt-5">
+      <Form
+        form={form}
+        layout="vertical"
+        style={{ width: "80%" }}
+        onFinish={onFinish}
+      >
+        <div className="grid w-full grid-cols-1 lg:grid-cols-2 lg:gap-x-16 gap-y-7">
+          {/* Profile Image */}
+          <div className="flex justify-center col-span-2">
+            <Form.Item label="Profile Image" style={{ marginBottom: 0 }}>
+              <Upload
+                name="avatar"
+                showUploadList={false}
+                beforeUpload={beforeUpload}
+                onChange={handleImageChange}
+                fileList={fileList}
+                accept="image/*"
               >
-                <Option value="english">English</Option>
-                <Option value="french">French</Option>
-                <Option value="spanish">Spanish</Option>
-              </Select>
+                {imageUrl ? (
+                  <div>
+                    <img
+                      src={
+                        imageUrl.startsWith("blob:")
+                          ? imageUrl
+                          : getImageUrl(imageUrl)
+                      }
+                      alt="Profile"
+                      style={{
+                        width: 100,
+                        height: 100,
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <Avatar size={100} icon={<UploadOutlined />} />
+                )}
+              </Upload>
             </Form.Item>
-
-            <Form.Item
-              name="notifications"
-              label="Enable Notifications"
-              valuePropName="checked"
-              style={{ marginBottom: 0, background: "white" }}
-            >
-              <Switch
-                defaultChecked
-                className="custom-switch" // Add your custom class here
-              />
-            </Form.Item>
-
-            {/* Update Profile Button */}
-            <div className="mt-6 text-end">
-              <Form.Item>
-                <GradientButton htmlType="submit" block>
-                  Update Profile
-                </GradientButton>
-              </Form.Item>
-            </div>
           </div>
-        </Form>
-      </div>
+
+          {/* Name */}
+          <Form.Item
+            name="name"
+            label="Name"
+            style={{ marginBottom: 0 }}
+            rules={[{ required: true, message: "Please enter your name" }]}
+          >
+            <Input
+              placeholder="Enter your Name"
+              style={{
+                height: "45px",
+                backgroundColor: "#f7f7f7",
+                borderRadius: "8px",
+                outline: "none",
+              }}
+            />
+          </Form.Item>
+
+          {/* Email (Disabled) */}
+          <Form.Item
+            name="email"
+            label="Email"
+            style={{ marginBottom: 0 }}
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <Input
+              placeholder="Enter your Email"
+              style={{
+                height: "45px",
+                backgroundColor: "#f7f7f7",
+                borderRadius: "8px",
+                border: "1px solid #E0E4EC",
+                outline: "none",
+              }}
+              disabled // Disable the email field
+            />
+          </Form.Item>
+
+          {/* Address */}
+          <Form.Item
+            name="address"
+            label="Address"
+            style={{ marginBottom: 0 }}
+            rules={[{ required: true, message: "Please enter your address" }]}
+          >
+            <Input
+              placeholder="Enter your Address"
+              style={{
+                height: "45px",
+                backgroundColor: "#f7f7f7",
+                borderRadius: "8px",
+                outline: "none",
+              }}
+            />
+          </Form.Item>
+
+          {/* Phone */}
+          <Form.Item name="phone" label="Phone" style={{ marginBottom: 0 }}>
+            <Input
+              placeholder="Enter your Phone Number"
+              style={{
+                height: "45px",
+                backgroundColor: "#f7f7f7",
+                borderRadius: "8px",
+                outline: "none",
+              }}
+            />
+          </Form.Item>
+
+          {/* Update Profile Button */}
+          <div className="col-span-2 mt-6 text-end">
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                style={{ height: 48 }}
+                className="text-white rounded-md bg-primary hover:bg-primary"
+              >
+                Update Profile
+              </Button>
+            </Form.Item>
+          </div>
+        </div>
+      </Form>
     </div>
   );
 };

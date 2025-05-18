@@ -6,43 +6,19 @@ import {
   Form,
   Input,
   Select,
-  Tooltip,
   message,
+  Pagination,
 } from "antd";
 import { useNavigate } from "react-router-dom";
+import { SyncOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-  EyeOutlined,
-  SyncOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-
-const { Option } = Select;
+  useGetRetailerByIdQuery,
+  useGetRetailersQuery,
+} from "../../redux/apiSlices/myRetailerApi";
 
 const SalesRepsManagementTable = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "Alice Johnson",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "example@email.com",
-      retailer: 5,
-      sales: "$300",
-      commission: "$200",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      image: "https://i.ibb.co.com/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
-      commission: "$250",
-      status: "Inactive",
-    },
-    // ... rest of your data
-  ]);
+  const { data: retailer } = useGetRetailersQuery();
+  const retailerData = retailer?.data;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
@@ -50,6 +26,9 @@ const SalesRepsManagementTable = () => {
   const [recordToDelete, setRecordToDelete] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -66,7 +45,7 @@ const SalesRepsManagementTable = () => {
   };
 
   const handleDelete = () => {
-    setData(data.filter((item) => item.id !== recordToDelete.id));
+    // In a real app, you would call an API to delete the retailer
     setIsDeleteModalVisible(false);
     message.success("Retailer deleted successfully");
   };
@@ -76,7 +55,6 @@ const SalesRepsManagementTable = () => {
     setRecordToDelete(null);
   };
 
-  const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
 
   const handleChange = (e) => {
@@ -90,31 +68,19 @@ const SalesRepsManagementTable = () => {
     handleClose();
   };
 
-  const showStatusModal = (record) => {
-    setSelectedRecord(record);
-    form.setFieldsValue({ status: record.status });
-    setIsStatusModalVisible(true);
-  };
-
   const handleStatusCancel = () => {
     setIsStatusModalVisible(false);
     form.resetFields();
   };
 
   const handleStatusUpdate = (values) => {
-    setData(
-      data.map((item) =>
-        item.id === selectedRecord.id
-          ? { ...item, status: values.status }
-          : item
-      )
-    );
+    // In a real app, you would call an API to update the status
     handleStatusCancel();
     message.success("Status updated successfully");
   };
 
   const showModal = (record = null) => {
-    setEditingId(record ? record.id : null);
+    setEditingId(record ? record._id : null);
     form.setFieldsValue(
       record || {
         name: "",
@@ -134,46 +100,68 @@ const SalesRepsManagementTable = () => {
   };
 
   const handleSave = (values) => {
-    if (editingId) {
-      setData(
-        data.map((item) =>
-          item.id === editingId ? { ...item, ...values } : item
-        )
-      );
-      message.success("Retailer updated successfully");
-    } else {
-      setData([...data, { id: data.length + 1, ...values }]);
-      message.success("Retailer added successfully");
-    }
+    // In a real app, you would call an API to save the retailer
     handleCancel();
+    message.success(
+      editingId
+        ? "Retailer updated successfully"
+        : "Retailer added successfully"
+    );
+  };
+
+  const handleViewDetails = (record) => {
+    navigate(`/retailer/${record._id}`, { state: record });
+  };
+
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
   };
 
   const columns = [
-    { title: "SL", dataIndex: "id", key: "id", align: "center" },
+    {
+      title: "SL",
+      dataIndex: "_id",
+      key: "_id",
+      align: "center",
+      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
+    },
     {
       title: "Retailer Name",
       dataIndex: "name",
       key: "name",
       align: "center",
     },
-    { title: "Email", dataIndex: "email", key: "email", align: "center" },
     {
-      title: "Total Orders",
-      dataIndex: "retailer",
-      key: "retailer",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       align: "center",
     },
     {
-      title: "Subscription Tier",
-      dataIndex: "sales",
-      key: "sales",
+      title: "Assigned Retailers",
+      dataIndex: "assignedRetailers",
+      key: "assignedRetailers",
       align: "center",
+      render: (assignedRetailers) =>
+        Array.isArray(assignedRetailers) ? assignedRetailers.length : 0,
     },
     {
-      title: "Total Purchased",
-      dataIndex: "commission",
-      key: "commission",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       align: "center",
+      render: (status) => (
+        <span
+          className={`px-2 py-1 rounded ${
+            status === "active"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {status}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -181,32 +169,21 @@ const SalesRepsManagementTable = () => {
       align: "center",
       render: (_, record) => (
         <div className="flex gap-4 justify-center">
-            <button
-              onClick={() =>
-                navigate(`/retailer/${record.id}`, { state: record })
-              }
-              className=" cursor-pointer border border-primary px-2 py-1.5 rounded-md"
-            >
-              View Details
-            </button>
-
-          {/* <Tooltip title="Update Status">
-            <SyncOutlined
-              onClick={() => showStatusModal(record)}
-              className="text-green-500 text-lg cursor-pointer hover:text-green-700"
-            />
-          </Tooltip>
-
-          <Tooltip title="Delete">
-            <DeleteOutlined
-              onClick={() => showDeleteConfirm(record)}
-              className="text-red-500 text-lg cursor-pointer hover:text-red-700"
-            />
-          </Tooltip> */}
+          <button
+            onClick={() => handleViewDetails(record)}
+            className="cursor-pointer border border-primary px-2 py-1.5 rounded-md hover:bg-primary hover:text-white transition-colors"
+          >
+            View Details
+          </button>
         </div>
       ),
     },
   ];
+
+  // Calculate pagination
+  const paginatedData = retailerData
+    ? retailerData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    : [];
 
   return (
     <div>
@@ -214,7 +191,7 @@ const SalesRepsManagementTable = () => {
         <div>
           <h1 className="text-2xl font-bold">Assign Retailer</h1>
         </div>
-        <div className="flex gap-5 items-center">
+        {/* <div className="flex gap-5 items-center">
           <div>
             <Modal
               title="Assign Target to Sales Rep"
@@ -256,32 +233,39 @@ const SalesRepsManagementTable = () => {
               </div>
             </Modal>
           </div>
-          {/* <Button
+          <Button
             type="primary"
-            onClick={() => showModal()}
-            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
             className="bg-gradient-to-r from-primary to-secondary h-10 font-bold flex items-center"
           >
-            Add Retailer
-          </Button> */}
-        </div>
+            Assign Target
+          </Button>
+        </div> */}
       </div>
 
       <div className="bg-gradient-to-r from-primary to-secondary pt-6 px-6 rounded-xl">
         <Table
-          dataSource={data}
+          dataSource={retailerData || []}
           columns={columns}
-          pagination={{ pageSize: 12 }}
+          rowKey="_id"
           bordered={false}
           size="small"
           rowClassName="custom-row"
+          loading={!retailerData}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: retailerData?.length || 0,
+            onChange: handlePageChange,
+            showSizeChanger: false, // Optional
+          }}
         />
       </div>
 
       {/* Add/Edit Modal */}
       <Modal
         title={editingId ? "Edit Sales Rep" : "Add Sales Rep"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         onOk={() => form.submit()}
         okText={editingId ? "Save Changes" : "Add Sales Rep"}
@@ -341,7 +325,10 @@ const SalesRepsManagementTable = () => {
             name="status"
             rules={[{ required: true, message: "Please enter status" }]}
           >
-            <Input />
+            <Select placeholder="Select status">
+              <Select.Option value="active">Active</Select.Option>
+              <Select.Option value="inactive">Inactive</Select.Option>
+            </Select>
           </Form.Item>
         </Form>
       </Modal>

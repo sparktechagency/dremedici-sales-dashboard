@@ -1,29 +1,42 @@
 import React from "react";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import { FaUsers } from "react-icons/fa6";
+import { useRetailerDetailsAnalysisQuery } from "../../../redux/apiSlices/myRetailerApi";
+import { useParams } from "react-router-dom";
 
 const DetailsCard = () => {
-  // Data for cards
-  const cardData = [
-    { icon: FaUsers, value: "$5000", label: "Total Purchased" },
-    { icon: FaUsers, value: "20", label: "Total Orders" },
-  ];
+  const { id } = useParams();
+  const { data: response } = useRetailerDetailsAnalysisQuery(id);
+
+  // Your actual data is inside response.data
+  const analysisData = response?.data;
 
   return (
     <div className="grid grid-cols-3 gap-6 h-[120px] mb-9">
-      {cardData.map((data, index) => (
-        <SalesRepsCard
-          key={index}
-          icon={data.icon}
-          value={data.value}
-          label={data.label}
-        />
-      ))}
+      <SalesRepsCard
+        icon={LuBadgeDollarSign}
+        value={
+          analysisData?.totalRevenue !== undefined
+            ? `$${analysisData.totalRevenue.toFixed(2)}`
+            : "N/A"
+        }
+        label="Total Purchased"
+      />
+      <SalesRepsCard
+        icon={FaUsers}
+        value={
+          analysisData?.totalOrders !== undefined
+            ? analysisData.totalOrders
+            : "N/A"
+        }
+        label="Total Orders"
+      />
+      {/* Add more cards here if needed */}
     </div>
   );
 };
 
-// SalesRepsCard Component Inside the Same File
+// SalesRepsCard Component
 const SalesRepsCard = ({ icon: Icon, value, label }) => {
   return (
     <div className="bg-gradient-to-r from-primary to-secondary shadow-lg rounded-lg p-6 flex items-center justify-between gap-4 hover:shadow-xl transition-shadow duration-300">
