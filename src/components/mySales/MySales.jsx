@@ -10,48 +10,87 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, Select, Spin } from "antd";
+import { useMySellsCompireQuery } from "../../redux/apiSlices/mySellsCompireApi";
 
 const { Option } = Select;
 
 const MySales = () => {
-  const [loading, setLoading] = useState(true);
+  // Get current year
+  const currentYear = new Date().getFullYear();
+
+  // Default to current year and previous year
+  const [yearComparison, setYearComparison] = useState([
+    currentYear.toString(),
+    (currentYear - 1).toString(),
+  ]);
+
+  // Available years for selection (current year, previous 3 years, and next year)
+  const availableYears = [
+    (currentYear - 3).toString(),
+    (currentYear - 2).toString(),
+    (currentYear - 1).toString(),
+    currentYear.toString(),
+    (currentYear + 1).toString(),
+  ];
+
+  // Prepare the arguments for the API query - as a single comma-separated string
+  const queryArgs = [
+    {
+      name: "years",
+      value: yearComparison.join(","),
+    },
+  ];
+
+  // Call the API with the selected years
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+  } = useMySellsCompireQuery(queryArgs);
+
+  // Transform API data to chart format
   const [salesData, setSalesData] = useState([]);
-  const [yearComparison, setYearComparison] = useState(["2024", "2023"]);
 
-  // Simulate fetching data
   useEffect(() => {
-    // This would be replaced with an actual API call in production
-    const fetchSalesData = () => {
-      setLoading(true);
+    if (apiResponse?.success && apiResponse?.data) {
+      // Create month-by-month data from the API response
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const transformedData = months.map((month, index) => {
+        const monthData = { month };
 
-      // Mock data for demonstration
-      setTimeout(() => {
-        const mockData = [
-          { month: "Jan", 2023: 4000, 2024: 4400 },
-          { month: "Feb", 2023: 3000, 2024: 3800 },
-          { month: "Mar", 2023: 5000, 2024: 5200 },
-          { month: "Apr", 2023: 2780, 2024: 3908 },
-          { month: "May", 2023: 1890, 2024: 2800 },
-          { month: "Jun", 2023: 2390, 2024: 3300 },
-          { month: "Jul", 2023: 3490, 2024: 3900 },
-          { month: "Aug", 2023: 4000, 2024: 4100 },
-          { month: "Sep", 2023: 2500, 2024: 3000 },
-          { month: "Oct", 2023: 3100, 2024: 3700 },
-          { month: "Nov", 2023: 5200, 2024: 5500 },
-          { month: "Dec", 2023: 6000, 2024: 6200 },
-        ];
+        // Add data for each selected year
+        yearComparison.forEach((year) => {
+          if (apiResponse.data[year]) {
+            const monthEntry = apiResponse.data[year].find(
+              (item) => item.month === month
+            );
+            monthData[year] = monthEntry ? monthEntry.sales : 0;
+          } else {
+            monthData[year] = 0;
+          }
+        });
 
-        setSalesData(mockData);
-        setLoading(false);
-      }, 1000);
-    };
+        return monthData;
+      });
 
-    fetchSalesData();
-  }, []);
+      setSalesData(transformedData);
+    }
+  }, [apiResponse, yearComparison]);
 
-  // Available years for comparison
-  const availableYears = ["2022", "2023", "2024", "2025"];
-
+  // Handle year selection change
   const handleYearChange = (value) => {
     setYearComparison(value);
   };
@@ -61,10 +100,14 @@ const MySales = () => {
     const totals = {};
 
     yearComparison.forEach((year) => {
-      totals[year] = salesData.reduce(
-        (sum, item) => sum + (item[year] || 0),
-        0
-      );
+      if (apiResponse?.data?.[year]) {
+        totals[year] = apiResponse.data[year].reduce(
+          (sum, item) => sum + (item.sales || 0),
+          0
+        );
+      } else {
+        totals[year] = 0;
+      }
     });
 
     return totals;
@@ -98,9 +141,13 @@ const MySales = () => {
             </Select>
           </div>
 
-          {loading ? (
+          {isLoading ? (
             <div className="flex justify-center items-center h-64">
               <Spin size="large" />
+            </div>
+          ) : isError ? (
+            <div className="text-center text-red-500 p-4">
+              Error loading sales data. Please try again.
             </div>
           ) : (
             <>
@@ -113,7 +160,7 @@ const MySales = () => {
                   >
                     <h3 className="text-lg font-medium">{year} Total</h3>
                     <p className="text-2xl font-bold">
-                      ${salesTotals[year]?.toLocaleString()}
+                      ${salesTotals[year]?.toLocaleString() || "0"}
                     </p>
                   </div>
                 ))}
@@ -148,7 +195,9 @@ const MySales = () => {
                             ? "#8884d8"
                             : index === 1
                             ? "#82ca9d"
-                            : "#ffc658"
+                            : index === 2
+                            ? "#ffc658"
+                            : "#ff7300"
                         }
                         activeDot={{ r: 8 }}
                       />

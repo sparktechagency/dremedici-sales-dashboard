@@ -97,10 +97,8 @@ const columns = [
 const OrderTable = () => {
   const [searchText, setSearchText] = useState("");
 
-  // Search handler
   const handleSearch = (value) => setSearchText(value);
 
-  // Filtering the data based on the search text
   const filteredData = dataSource.filter(
     (item) =>
       item.orderId.toLowerCase().includes(searchText.toLowerCase()) ||

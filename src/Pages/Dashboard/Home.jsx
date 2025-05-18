@@ -26,7 +26,7 @@ const Home = () => {
   const { data: productData, isLoading: productsLoading } = useGetProductsQuery(
     queryParams.length > 0 ? queryParams : null
   );
-  console.log(productData);
+
   // Query retailers with search parameters
   const { data: retailers, refetch } = useGetRetailerQuery();
 
@@ -72,7 +72,8 @@ const Home = () => {
         productId: product._id,
         name: product.name || "Product",
         category: product.category || "Cigar",
-        inStock: product.inStock !== false,
+        inStock: product.quantity,
+        availableStock: product.quantity, // Track available stock separately
         price: product.price || 100,
         quantity: 0,
       }));
@@ -94,11 +95,27 @@ const Home = () => {
 
   const updateQuantity = (key, delta) => {
     setProducts(
-      products.map((item) =>
-        item.key === key
-          ? { ...item, quantity: Math.max(0, item.quantity + delta) }
-          : item
-      )
+      products.map((item) => {
+        if (item.key === key) {
+          const newQuantity = Math.max(0, item.quantity + delta);
+
+          // Check if we're adding items and if there's enough stock
+          if (delta > 0 && item.availableStock <= 0) {
+            message.error(`No more stock available for ${item.name}`);
+            return item;
+          }
+
+          // Update available stock
+          const newAvailableStock = item.availableStock - delta;
+
+          return {
+            ...item,
+            quantity: newQuantity,
+            availableStock: newAvailableStock,
+          };
+        }
+        return item;
+      })
     );
   };
 
@@ -129,6 +146,7 @@ const Home = () => {
 
       const orderProducts = productsToOrder.map((item) => ({
         productId: item.productId,
+        name: item.name,
         quantity: item.quantity,
         totalAmount: item.quantity * item.price,
         price: item.price,
@@ -152,6 +170,7 @@ const Home = () => {
           products.map((product) => ({
             ...product,
             quantity: 0,
+            availableStock: product.inStock, // Reset available stock to original
           }))
         );
         setRetailerId(null);
@@ -186,10 +205,9 @@ const Home = () => {
     },
     {
       title: "In Stock",
-      dataIndex: "inStock",
-      key: "inStock",
+      key: "availableStock",
       align: "center",
-      render: (val) => (val ? "Yes" : "No"),
+      render: (_, record) => record.availableStock,
     },
     {
       title: "Product Price",
@@ -215,6 +233,8 @@ const Home = () => {
             icon={<PlusCircleOutlined />}
             onClick={() => updateQuantity(record.key, 1)}
             size="small"
+            disabled={record.availableStock <= 0}
+            title={record.availableStock <= 0 ? "Out of stock" : "Add to cart"}
           />
         </div>
       ),
@@ -247,8 +267,6 @@ const Home = () => {
       </div>
 
       <div className="p-4 overflow-hidden bg-gradient-to-r from-primary to-secondary rounded-xl">
-        {/* Add custom styling for pagination to fix the text color issue */}
-
         <Table
           dataSource={products}
           columns={columns}
@@ -310,7 +328,13 @@ const Home = () => {
               <div className="flex items-center justify-between">
                 <Button
                   onClick={() =>
-                    setProducts(products.map((p) => ({ ...p, quantity: 0 })))
+                    setProducts(
+                      products.map((p) => ({
+                        ...p,
+                        quantity: 0,
+                        availableStock: p.inStock, // Reset available stock to original
+                      }))
+                    )
                   }
                 >
                   Remove All

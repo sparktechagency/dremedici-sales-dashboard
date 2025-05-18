@@ -36,38 +36,36 @@
   transition: none !important;
 }
 
-
-/* Icon color on selected & hover states */
+/* Icon color on selected & hover */
 .ant-menu-item-selected .ant-menu-item-icon,
 .ant-menu-item:hover .ant-menu-item-icon,
 .ant-menu-item-selected .menu-icon,
 .ant-menu-item:hover .menu-icon {
   color: white !important;
-}
-
-/* SVG path fill on selected & hover states */
-.ant-menu-item-selected .menu-icon path,
-.ant-menu-item:hover .menu-icon path,
-.ant-menu-item-selected .menu-icon svg path,
-.ant-menu-item:hover .menu-icon svg path,
-.ant-menu-item-selected svg,
-.ant-menu-item-selected svg path,
-.ant-menu-item:hover svg,
-.ant-menu-item:hover svg path {
   fill: white !important;
-  color: white !important;
   stroke: white !important;
   transition: none !important;
 }
 
-/* Ensure nested icon elements are white */
-.ant-menu-item-selected .icon-image,
-.ant-menu-item:hover .icon-image {
-  color: white !important;
+/* SVG path fill on selected & hover */
+.ant-menu-item-selected .menu-icon path,
+.ant-menu-item:hover .menu-icon path,
+.ant-menu-item-selected .menu-icon svg path,
+.ant-menu-item:hover .menu-icon svg path,
+.ant-menu-item:hover svg,
+.ant-menu-item:hover svg path {
   fill: white !important;
-  stroke: white !important;
+  transition: none !important;
 }
 
+/* Nested text or elements */
+.ant-menu-item:hover a,
+.ant-menu-item:hover span,
+.ant-menu-item:hover p,
+.ant-menu-item:hover * {
+  color: white !important;
+  transition: none !important;
+}
 
 /* Submenu hover styles */
 .ant-menu-submenu-active > .ant-menu-submenu-title,
@@ -86,17 +84,16 @@
 
 /* SVG helper classes */
 .hover-white:hover,
-.ant-menu-item:hover .hover-white 
-.ant-menu-item-selected .icon-image {
+.ant-menu-item:hover .hover-white {
   fill: white !important;
   color: white !important;
   stroke: white !important;
 }
 
 /* Selected menu item image */
-/* .ant-menu-item-selected .icon-image {
+.ant-menu-item-selected .icon-image {
   filter: invert(1) grayscale(0) brightness(100%) !important;
-} */
+}
 
 /* Ant Badge */
 .ant-badge .ant-badge-count {
@@ -146,13 +143,13 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 .ant-pagination-item a {
   color: white !important;
 }
 
 .ant-pagination-item-active {
   background-color: white !important;
+  /* border-color: none !important; */
 }
 
 .ant-pagination-item-active a {
@@ -163,7 +160,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .ant-pagination-prev .ant-pagination-item-link,
 .ant-pagination-next .ant-pagination-item-link {
   color: white !important;
+  /* border-color: white !important; */
 }
+
 
 .ant-pagination-prev,
 .ant-pagination-next {
@@ -183,41 +182,5 @@ input[type="number"]::-webkit-inner-spin-button {
 /* Optional: Change the switch handle color */
 .custom-switch .ant-switch-inner {
   background-color:#6200EE !important; /* Change the handle color */
-}  
-
-
-/* Active pagination item */
-.ant-pagination-item-active {
-  background-color: white !important;
-  border: 1px solid #6200EE !important; /* optional colored border */
-}
-
-.ant-pagination-item-active a {
-  color: black !important;
-  font-weight: bold;
-}
-
-/* Inactive pagination items: transparent bg, border only, white text */
-.ant-pagination-item:not(.ant-pagination-item-active) {
-  background-color: transparent !important;
-  border: 1px solid #333333 !important; /* dark border */
-  border-radius: 4px;
-}
-
-.ant-pagination-item:not(.ant-pagination-item-active) a {
-  color: white !important; /* white text */
-}
-
-/* Prev/Next buttons: transparent bg, border only, white text */
-.ant-pagination-prev,
-.ant-pagination-next {
-  background-color: transparent !important;
-  border: 1px solid #333333 !important;
-  border-radius: 4px;
-}
-
-.ant-pagination-prev .ant-pagination-item-link,
-.ant-pagination-next .ant-pagination-item-link {
-  color: white !important;
 }
 

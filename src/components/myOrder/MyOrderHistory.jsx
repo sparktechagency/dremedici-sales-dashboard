@@ -1,94 +1,45 @@
-import React, { useState } from "react";
-import { Table, Input, Button, Select, Modal } from "antd";
-import GradientButton from "../common/GradiantButton";
+import React, { useState, useEffect } from "react";
+import { Table, Input, Select } from "antd";
+import { useGetMyorderHistoryQuery } from "../../redux/apiSlices/myOrderHistoryApi";
+import moment from "moment";
+import OrderDetailsModal from "./OrdersDetailsModal";
 
-// Sample data
-const data = [
-  {
-    key: "1",
-    orderId: "001",
-    productName: "Product A",
-    date: "March 03 2025",
-    quantity: "20 Boxes",
-    amount: "$2000",
-    free: 2,
-    status: "Processing",
-    image:
-      "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-    retailerName: "Kamal Ahmed", 
-  },
-  {
-    key: "2",
-    orderId: "002",
-    productName: "Product B",
-    date: "March 03 2025",
-    quantity: "20 Boxes",
-    amount: "$2000",
-    free: 2,
-    status: "Shipped",
-    image:
-      "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-    retailerName: "Jamal Khan", 
-  },
-  {
-    key: "3",
-    orderId: "003",
-    productName: "New Product",
-    date: "March 03 2025",
-    quantity: "20 Boxes",
-    amount: "$2000",
-    free: 2,
-    status: "Delivered",
-    image:
-      "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-    retailerName: "Rashid Khan", 
-  },
-  {
-    key: "4",
-    orderId: "004",
-    productName: "Pure Product",
-    date: "March 03 2025",
-    quantity: "20 Boxes",
-    amount: "$2000",
-    free: 2,
-    status: "Pending",
-    image:
-      "https://i.ibb.co.com/5WRNH1d3/fresh-healthy-fruits-straw-basket-generative-ai-188544-11999.jpg",
-    retailerName: "Hasin Hamla", 
-  },
-];
-
+const { Option } = Select;
 
 const MyOrderHistory = () => {
   const [searchText, setSearchText] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [queryParams, setQueryParams] = useState([]);
+  console.log(selectedOrder)
 
-  // Function to handle search
-  const handleSearch = (value) => {
-    setSearchText(value.toLowerCase());
-  };
+  useEffect(() => {
+    const params = [];
 
-  // Filter data based on search text and selected status
-  const filteredData = data.filter((item) => {
-    return (
-      (item.orderId.toLowerCase().includes(searchText) ||
-        item.productName.toLowerCase().includes(searchText)) &&
-      (selectedStatus ? item.status === selectedStatus : true)
-    );
-  });
+    if (searchText) {
+      params.push({ name: "searchTerm", value: searchText });
+    }
 
-  // Show details modal
-  const showDetails = (record) => {
-    setSelectedProduct(record);
-    setModalVisible(true);
-  };
+    if (selectedStatus && selectedStatus !== "all") {
+      params.push({ name: "orderStatus", value: selectedStatus.toLowerCase() });
+    }
 
-  // Handle modal close
-  const handleModalClose = () => {
-    setModalVisible(false);
-  };
+    // Add pagination params
+    params.push({ name: "page", value: currentPage });
+    params.push({ name: "limit", value: pageSize });
+
+    setQueryParams(params);
+  }, [searchText, selectedStatus, currentPage, pageSize]);
+
+  // Use the query with params
+  const { data, isLoading } = useGetMyorderHistoryQuery(queryParams);
+
+  // Safely extract orders and pagination info
+  const orders = data?.data || [];
+  const pagination = data?.pagination || { total: 0, page: 1, limit: 10 };
 
   const columns = [
     {
@@ -99,61 +50,71 @@ const MyOrderHistory = () => {
     },
     {
       title: "Retailer Name",
-      dataIndex: "retailerName",
+      dataIndex: ["userId", "name"],
       key: "retailerName",
       align: "center",
     },
     {
-      title: "Product Name",
-      dataIndex: "productName",
-      key: "productName",
+      title: "Address",
+      dataIndex: "shippingAddress",
+      key: "shippingAddress",
       align: "center",
+      render: (text) => <span>{text ? text.split(" ")[0] : "N/A"}</span>,
     },
     {
-      title: "Order date",
-      dataIndex: "date",
-      key: "date",
+      title: "Order Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
       align: "center",
+      render: (text) => <span>{moment(text).format("L")}</span>,
     },
     {
       title: "Order Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
+      dataIndex: "orderBoxs",
+      key: "orderBoxs",
       align: "center",
     },
     {
       title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
       align: "center",
+      render: (text) => `$${text}`,
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
       align: "center",
     },
     {
       title: "Action",
-      dataIndex: "",
       key: "action",
-      render: (_, record) => (
-        <div className="flex space-x-2 justify-center ">
-          <button
-            className="px-5 py-2 rounded-md border cursor-pointer border-primary"
-            onClick={() => showDetails(record)}
-            type="primary"
-          >
-            View Details
-          </button>
-          {/* <GradientButton className="px-8 py-[18px] cursor-default" type="primary">
-            Mark Complete
-          </GradientButton> */}
-        </div>
-      ),
       align: "center",
+      render: (_, record) => (
+        <button
+          className="px-5 py-2 rounded-md border cursor-pointer border-primary"
+          onClick={() => {
+            setSelectedOrder(record);
+            setModalVisible(true);
+          }}
+        >
+          View Details
+        </button>
+      ),
     },
   ];
+
+  // Modal close handler
+  const handleModalClose = () => {
+    setModalVisible(false);
+    setSelectedOrder(null);
+  };
+
+  // Handle pagination change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div>
@@ -162,103 +123,56 @@ const MyOrderHistory = () => {
         <div className="flex space-x-4">
           <Input
             placeholder="Search by Invoice ID or Product Name"
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              setCurrentPage(1); // reset to first page on search
+            }}
             className="w-64 py-2"
+            allowClear
           />
           <Select
             placeholder="Filter by Status"
-            onChange={(value) => setSelectedStatus(value)}
+            onChange={(value) => {
+              setSelectedStatus(value);
+              setCurrentPage(1); // reset to first page on filter
+            }}
             className="w-64"
             allowClear
             style={{ height: "40px" }}
           >
-            <Select.Option value="Pending">Pending</Select.Option>
-            <Select.Option value="Processing">Processing</Select.Option>
-            <Select.Option value="Shipped">Shipped</Select.Option>
-            <Select.Option value="Delivered">Delivered</Select.Option>
-            <Select.Option value="Canceled">Canceled</Select.Option>
-            {/* <Select.Option value="Refunded">Refunded</Select.Option> */}
+            <Option value="pending">Pending</Option>
+            <Option value="processing">Processing</Option>
+            <Option value="shipped">Shipped</Option>
+            <Option value="delivered">Delivered</Option>
+            <Option value="canceled">Canceled</Option>
           </Select>
         </div>
       </div>
+
       <div className="px-6 pt-6 rounded-xl bg-gradient-to-r from-primary to-secondary">
         <Table
-          dataSource={filteredData} // Display filtered data
+          loading={isLoading}
+          dataSource={orders}
           columns={columns}
-          pagination={{ pageSize: 12 }}
+          pagination={{
+            current: pagination.page,
+            pageSize: pagination.limit,
+            total: pagination.total,
+            onChange: handlePageChange,
+            showSizeChanger: false,
+          }}
           bordered={false}
           size="small"
           rowClassName="custom-table"
         />
       </div>
 
-      {/* Modal for Product Details */}
-      {selectedProduct && (
-        <Modal
-          centered
-          title="Order Overview"
-          visible={modalVisible}
-          onCancel={handleModalClose}
-          footer={null}
-        >
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Image Container */}
-            <div className="flex items-start justify-center bg-[#f8fcfe] w-6/12 min-h-[300px]">
-              {selectedProduct.image ? (
-                <img
-                  src={selectedProduct.image}
-                  alt={selectedProduct.productName}
-                  className="object-contain w-full  h-auto rounded-md"
-                />
-              ) : (
-                <div className="text-center text-gray-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-12 w-12 mx-auto mb-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 16l4-4a3 3 0 014 0l4 4m0 0l4-4a3 3 0 014 0l4 4M3 8h.01M21 8h.01"
-                    />
-                  </svg>
-                  No Image
-                </div>
-              )}
-            </div>
-
-            {/* Info Section */}
-            <div className="flex-1">
-              <p className="mb-2">
-                <strong>Invoice:</strong> #{selectedProduct.orderId}
-              </p>
-              <p className="mb-2">
-                <strong>Order Date:</strong> {selectedProduct.orderDate}
-              </p>
-              <p className="mb-2">
-                <strong>Product Name:</strong> {selectedProduct.productName}
-              </p>
-              <p className="mb-2">
-                <strong>Order Quantity:</strong> {selectedProduct.quantity}
-              </p>
-              <p className="mb-2">
-                <strong>Price:</strong> {selectedProduct.amount}
-              </p>
-              <p className="mb-2">
-                <strong>Shipping Address:</strong>{" "}
-                {selectedProduct.shippingAddress}
-              </p>
-              <p className="mb-2">
-                <strong>Order Status:</strong> {selectedProduct.status}
-              </p>
-            </div>
-          </div>
-        </Modal>
-      )}
+      {/* Using the OrderDetailsModal component */}
+      <OrderDetailsModal
+        visible={modalVisible}
+        order={selectedOrder}
+        onClose={handleModalClose}
+      />
     </div>
   );
 };

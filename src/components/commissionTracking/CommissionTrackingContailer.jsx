@@ -20,12 +20,13 @@ const CommissionTrackingContainer = () => {
   const { data, isLoading } = useGetCommissionsQuery(queryParams);
 
   const commissionData = data?.data || [];
+  console.log(commissionData)
   const paginationInfo = data?.pagination || {};
 
   const dataSource = commissionData.map((item, index) => ({
     key: item._id,
     sl: (currentPage - 1) * pageSize + index + 1,
-    productName: item.products?.[0]?.productId?.name || "N/A",
+    orderId: item.orderId || "N/A",
     quantitySold: item.products?.reduce((sum, p) => sum + p.quantity, 0),
     salesAmount: item.totalAmount,
     commissionEarned: item.totalCommission,
@@ -37,8 +38,8 @@ const CommissionTrackingContainer = () => {
     { title: "SL", dataIndex: "sl", key: "sl", align: "center" },
     {
       title: "Product Name",
-      dataIndex: "productName",
-      key: "productName",
+      dataIndex: "orderId",
+      key: "orderId",
       align: "center",
     },
     {
@@ -87,7 +88,7 @@ const CommissionTrackingContainer = () => {
 
         {/* Search Input */}
         <Input
-          placeholder="Search by product name"
+          placeholder="Search by Order ID"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           className="mb-4 w-64 py-2"

@@ -1,44 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import {  message,  } from "antd";
 import { useGetSettingQuery } from "../../redux/apiSlices/setting";
 
-const TermsAndConditions = () => {
+const PaymentForTerm = () => {
   const editor = useRef(null);
-  const { data, isLoading: isLoadingSetting, isError } = useGetSettingQuery();;
+  const { data, isLoading: isLoadingSetting, isError } = useGetSettingQuery();
 
   const [termsContent, setTermsContent] = useState("");
 
-  // Modal open state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   useEffect(() => {
-    if (data?.termsOfService) {
-      setTermsContent(data.termsOfService);
+    if (data?.packageService) {
+      setTermsContent(data.packageService);
     }
   }, [data]);
-
-  // Show modal handler
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Handle modal cancel
-  const handleCancel = () => {
-    // Reset content to original on cancel to discard changes
-    setTermsContent(data?.termsOfService || "");
-    setIsModalOpen(false);
-  };
-
-  // Handle modal OK (save)
-  const handleOk = async () => {
-    try {
-      await updateSetting({ termsOfService: termsContent }).unwrap();
-      message.success("Privacy Policy updated successfully!");
-      setIsModalOpen(false);
-    } catch (error) {
-      message.error("Failed to update Privacy Policy.");
-    }
-  };
 
   if (isLoadingSetting) return <p>Loading privacy policy...</p>;
   if (isError) return <p>Failed to load privacy policy.</p>;
@@ -61,4 +34,4 @@ const TermsAndConditions = () => {
   );
 };
 
-export default TermsAndConditions;
+export default PaymentForTerm;
