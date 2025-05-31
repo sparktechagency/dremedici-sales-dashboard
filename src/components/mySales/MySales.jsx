@@ -145,10 +145,7 @@ const MySales = () => {
             <div className="flex justify-center items-center h-64">
               <Spin size="large" />
             </div>
-          ) : isError ? (
-            <div className="text-center text-red-500 p-4">
-              Error loading sales data. Please try again.
-            </div>
+          
           ) : (
             <>
               {/* Total Sales Summary */}
