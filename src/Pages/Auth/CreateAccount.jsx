@@ -8,7 +8,7 @@ const { Title, Text, Link } = Typography;
 
 export default function CreateAccount() {
   const [form] = Form.useForm();
-  const [userType, setUserType] = useState("retailer");
+  const [userType, setUserType] = useState();
   const [createAccount, { isLoading }] = useCreateAccountMutation();
 
   const navigate = useNavigate();
@@ -166,6 +166,7 @@ export default function CreateAccount() {
               htmlType="submit"
               className="w-full bg-cyan-600 hover:bg-cyan-700 border-cyan-600 text-lg h-12 rounded"
               loading={isLoading}
+              disabled={!userType}
             >
               Sign Up
             </Button>

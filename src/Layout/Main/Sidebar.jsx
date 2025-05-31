@@ -108,7 +108,8 @@ const Sidebar = () => {
     {
       key: "/logout",
       icon: <IoIosLogOut size={24} />,
-      label: <p onClick={showLogoutConfirm}>Logout</p>,
+      label: "Logout",
+      onClick: showLogoutConfirm,
     },
   ];
 
@@ -139,35 +140,48 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mb-20 h-screen">
+    <div className="mb-20 h-screen flex flex-col mt-6">
+      {/* Logo Section */}
       <Link
         to={"/"}
         className="flex items-center justify-center py-4 border-b-2 border-primary"
       >
-        <img src={image4} alt="logo" className="w-40 h-32" />
+        <img src={image4} alt="logo" className="w-72 h-48" />
       </Link>
-      <Menu
-        mode="inline"
-        selectedKeys={[selectedKey]}
-        openKeys={openKeys}
-        onOpenChange={handleOpenChange}
-        className="font-poppins text-black sidebar-menu"
-        style={{
-          borderRightColor: "transparent",
-          background: "transparent",
-          marginTop: "30px",
-        }}
-        items={menuItems.map((item) => ({
-          ...item,
-          label: <span>{item.label}</span>,
-          children: item.children
-            ? item.children.map((subItem) => ({
-                ...subItem,
-                label: <span>{subItem.label}</span>,
-              }))
-            : undefined,
-        }))}
-      />
+
+      {/* Sidebar Menu Section */}
+      <div className="flex-1 overflow-y-auto">
+        <Menu
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          openKeys={openKeys}
+          onOpenChange={handleOpenChange}
+          onClick={({ key }) => {
+            const clickedItem = menuItems.find((item) => item.key === key);
+            if (clickedItem?.onClick) {
+              clickedItem.onClick();
+            }
+          }}
+          className="font-poppins text-black sidebar-menu"
+          style={{
+            borderRightColor: "transparent",
+            background: "transparent",
+            marginTop: 0,
+            height: "100%",
+          }}
+          items={menuItems.map((item) => ({
+            ...item,
+            label: <span>{item.label}</span>,
+            children: item.children
+              ? item.children.map((subItem) => ({
+                  ...subItem,
+                  label: <span>{subItem.label}</span>,
+                }))
+              : undefined,
+          }))}
+        />
+      </div>
+
       <Modal
         centered
         title="Confirm Logout"
@@ -176,6 +190,12 @@ const Sidebar = () => {
         onCancel={handleCancel}
         okText="Logout"
         cancelText="Cancel"
+        okButtonProps={{
+          style: {
+            backgroundColor: "#6200EE",
+            color: "white",
+          },
+        }}
       >
         <p>Are you sure you want to logout?</p>
       </Modal>

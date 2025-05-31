@@ -31,13 +31,18 @@ import CommissionTracking from "../Pages/Dashboard/CommissionTracking";
 import MySales from "../components/mySales/MySales";
 import MyOrderHistory from "../components/myOrder/MyOrderHistory";
 import CreateAccount from "../Pages/Auth/CreateAccount";
+import PrivateRoute from "./ProtectedRoute";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
   {
     path: "/",
     // element: <ProtectedRoute><Main /></ProtectedRoute> ,
-    element: <Main />,
+    element: (
+      <PrivateRoute>
+        <Main />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/",

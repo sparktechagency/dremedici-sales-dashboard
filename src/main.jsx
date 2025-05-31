@@ -34,26 +34,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
       <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#4E9DAB",
-            colorBorder: "#4E9DAB", // Default border color
-            colorText: "rgba(0, 0, 0, 0.88)", // Default text color
-            colorTextPlaceholder: "#bfbfbf", // Placeholder color
-            colorBgContainer: "#ffffff", // Background color
-            controlOutline: "rgba(232, 80, 91, 0.1)", // Focus outline color (based on your primary color)
-          },
-          components: {
-            Input: {
-              activeBorderColor: "#4E9DAB", // Active border color
-              hoverBorderColor: "#4E9DAB", // Hover border color
-              activeShadow: "0 0 0 2px rgba(232, 80, 91, 0.1)", // Focus shadow
-            },
-          },
-          Button: {
-            colorPrimary: "#4E9DAB",
-          },
-        }}
+ 
       >
         <Provider store={store}>
           <UserProvider>
