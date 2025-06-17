@@ -2,6 +2,18 @@ import { api } from "../api/baseApi";
 
 const myRetailerSlice = api.injectEndpoints({
   endpoints: (builder) => ({
+    createRetailer: builder.mutation({
+      query: (retailerData) => {
+        return {
+          url: "/admin/retailer/managment/create",
+          method: "POST",
+          body: retailerData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Retailers"],
+    }),
+
     // Get all retailers
     getRetailers: builder.query({
       query: () => ({
@@ -57,14 +69,14 @@ const myRetailerSlice = api.injectEndpoints({
     }),
 
     // Create new retailer
-    createRetailer: builder.mutation({
-      query: (data) => ({
-        url: "/retailer",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: [{ type: "Retailer", id: "LIST" }],
-    }),
+    // createRetailer: builder.mutation({
+    //   query: (data) => ({
+    //     url: "/retailer",
+    //     method: "POST",
+    //     body: data,
+    //   }),
+    //   invalidatesTags: [{ type: "Retailer", id: "LIST" }],
+    // }),
 
     // Edit/update retailer by ID
     updateRetailerInfo: builder.mutation({
@@ -97,7 +109,8 @@ export const {
   useGetRetailerMyOrderQuery,
   useGetRetailerDetailsInfoQuery,
   useGetMyRetailerOrderDetailsQuery,
-  useCreateRetailerMutation,
+  // useCreateRetailerMutation,
   useUpdateRetailerInfoMutation,
   useDeleteRetailerMutation,
+  useCreateRetailerMutation
 } = myRetailerSlice;

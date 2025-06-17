@@ -34,7 +34,7 @@ const Home = () => {
 
   const retailerData = retailers?.data || [];
   const paginationMeta = productData?.pagination;
-
+console.log(productData)
   const pagination = {
     page: paginationMeta?.page || currentPage,
     limit: paginationMeta?.limit || pageSize,
@@ -73,7 +73,8 @@ const Home = () => {
         name: product.name || "Product",
         category: product.category || "Cigar",
         inStock: product.quantity,
-        availableStock: product.quantity, // Track available stock separately
+        availableStock: product.quantity || 0,
+        size: product.size, 
         price: product.price || 100,
         quantity: 0,
       }));
@@ -198,16 +199,25 @@ const Home = () => {
       align: "center",
     },
     {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      title: "Size",
+      dataIndex: "size",
       align: "center",
+      render: (size) => size || "N/A",
     },
     {
-      title: "In Stock",
+      title: "Available Stock",
+      dataIndex: "availableStock",
       key: "availableStock",
       align: "center",
-      render: (_, record) => record.availableStock,
+      render: (_, record) => (
+        <span
+          className={`font-medium ${
+            record.availableStock > 0 ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {record.availableStock > 0 ? "Yes" : "No"}
+        </span>
+      ),
     },
     {
       title: "Product Price",

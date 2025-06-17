@@ -1,7 +1,5 @@
 import { api } from "../api/baseApi";
 
-
-
 const mySellsCompireApi = api.injectEndpoints({
   endpoints: (builder) => ({
     // Get all commissions
@@ -21,6 +19,7 @@ const mySellsCompireApi = api.injectEndpoints({
           params,
         };
       },
+      providesTags: ["MySellsCompire"], // Cache tag for sales comparison data
     }),
 
     // Get single commission details by ID
@@ -29,9 +28,8 @@ const mySellsCompireApi = api.injectEndpoints({
         url: `/sales/commission`,
         method: "GET",
       }),
+      providesTags: ["CommissionAnalysis"], // Cache tag for commission analysis data
     }),
-
-  
   }),
 });
 

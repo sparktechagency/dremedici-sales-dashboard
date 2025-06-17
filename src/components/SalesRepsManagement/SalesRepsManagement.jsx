@@ -10,14 +10,28 @@ import {
   Pagination,
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import { SyncOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  SyncOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import {
   useGetRetailerByIdQuery,
   useGetRetailersQuery,
+  
+  useDeleteRetailerMutation,
+  useUpdateRetailerInfoMutation,
 } from "../../redux/apiSlices/myRetailerApi";
+import AddRetailerModal from "./AddRetailerUnderSales";
 
 const SalesRepsManagementTable = () => {
-  const { data: retailer } = useGetRetailersQuery();
+  const { data: retailer, refetch: refetchRetailers } = useGetRetailersQuery();
+  const [updateRetailer, { isLoading: isUpdating }] =
+    useUpdateRetailerInfoMutation();
+  const [deleteRetailer, { isLoading: isDeleting }] =
+    useDeleteRetailerMutation();
+
   const retailerData = retailer?.data;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,13 +44,12 @@ const SalesRepsManagementTable = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const [form] = Form.useForm();
+  const [statusForm] = Form.useForm();
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    salesRep: "",
-    targetAmount: "",
-  });
+  // Add Retailer Modal States
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Delete confirmation modal
   const showDeleteConfirm = (record) => {
@@ -44,10 +57,19 @@ const SalesRepsManagementTable = () => {
     setIsDeleteModalVisible(true);
   };
 
-  const handleDelete = () => {
-    // In a real app, you would call an API to delete the retailer
-    setIsDeleteModalVisible(false);
-    message.success("Retailer deleted successfully");
+  const handleDelete = async () => {
+    try {
+      if (recordToDelete) {
+        await deleteRetailer(recordToDelete._id).unwrap();
+        setIsDeleteModalVisible(false);
+        setRecordToDelete(null);
+        message.success("Retailer deleted successfully");
+        refetchRetailers(); // Refresh the data
+      }
+    } catch (error) {
+      console.error("Error deleting retailer:", error);
+      message.error("Failed to delete retailer");
+    }
   };
 
   const handleDeleteCancel = () => {
@@ -55,58 +77,55 @@ const SalesRepsManagementTable = () => {
     setRecordToDelete(null);
   };
 
-  const handleClose = () => setIsModalOpen(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = () => {
-    console.log("Selected Sales Rep:", formData.salesRep);
-    console.log("Target Amount:", formData.targetAmount);
-    handleClose();
+  // Status update functions
+  const showStatusModal = (record) => {
+    setSelectedRecord(record);
+    statusForm.setFieldsValue({ status: record.status });
+    setIsStatusModalVisible(true);
   };
 
   const handleStatusCancel = () => {
     setIsStatusModalVisible(false);
-    form.resetFields();
+    setSelectedRecord(null);
+    statusForm.resetFields();
   };
 
-  const handleStatusUpdate = (values) => {
-    // In a real app, you would call an API to update the status
-    handleStatusCancel();
-    message.success("Status updated successfully");
-  };
+  const handleStatusUpdate = async (values) => {
+    try {
+      if (selectedRecord) {
+        await updateRetailer({
+          id: selectedRecord._id,
+          ...selectedRecord,
+          status: values.status,
+        }).unwrap();
 
-  const showModal = (record = null) => {
-    setEditingId(record ? record._id : null);
-    form.setFieldsValue(
-      record || {
-        name: "",
-        email: "",
-        retailer: "",
-        sales: "",
-        commission: "",
-        status: "",
+        handleStatusCancel();
+        message.success("Status updated successfully");
+        refetchRetailers();
       }
-    );
-    setIsModalVisible(true);
+    } catch (error) {
+      console.error("Error updating status:", error);
+      message.error("Failed to update status");
+    }
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
+  // Edit retailer functions
+  const showEditModal = (record = null) => {
+    setEditingId(record ? record._id : null);
+    if (record) {
+      // For editing existing retailer, open the AddRetailerModal with data
+      setSelectedUser(record);
+      setIsAddModalOpen(true);
+    } else {
+      // For adding new retailer
+      setSelectedUser(null);
+      setIsAddModalOpen(true);
+    }
   };
 
-  const handleSave = (values) => {
-    // In a real app, you would call an API to save the retailer
-    handleCancel();
-    message.success(
-      editingId
-        ? "Retailer updated successfully"
-        : "Retailer added successfully"
-    );
+  const handleAddRetailerClick = () => {
+    setSelectedUser(null);
+    setIsAddModalOpen(true);
   };
 
   const handleViewDetails = (record) => {
@@ -139,12 +158,25 @@ const SalesRepsManagementTable = () => {
       align: "center",
     },
     {
-      title: "Assigned Retailers",
-      dataIndex: "assignedRetailers",
-      key: "assignedRetailers",
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
       align: "center",
-      render: (assignedRetailers) =>
-        Array.isArray(assignedRetailers) ? assignedRetailers.length : 0,
+      render: (address) => address || "N/A",
+    },
+    {
+      title: "Sales Rep",
+      dataIndex: "salesRepId",
+      key: "salesRepId",
+      align: "center",
+      render: (salesRepId) => {
+        // If salesRepId is an object with name property
+        if (typeof salesRepId === "object" && salesRepId?.name) {
+          return salesRepId.name;
+        }
+        // If it's just an ID string
+        return salesRepId || "Not Assigned";
+      },
     },
     {
       title: "Status",
@@ -159,7 +191,7 @@ const SalesRepsManagementTable = () => {
               : "bg-red-100 text-red-800"
           }`}
         >
-          {status}
+          {status || "inactive"}
         </span>
       ),
     },
@@ -168,79 +200,57 @@ const SalesRepsManagementTable = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <div className="flex gap-4 justify-center">
-          <button
+        <div className="flex gap-2 justify-center">
+          <Button
+            size="small"
             onClick={() => handleViewDetails(record)}
-            className="cursor-pointer border border-primary px-2 py-1.5 rounded-md hover:bg-primary hover:text-white transition-colors"
+            className="border-primary text-primary hover:bg-primary hover:text-white"
           >
             View Details
-          </button>
+          </Button>
+          <Button
+            size="small"
+            icon={<EditOutlined />}
+            onClick={() => showEditModal(record)}
+            className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            icon={<SyncOutlined />}
+            onClick={() => showStatusModal(record)}
+            className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
+          >
+            Status
+          </Button>
+          <Button
+            size="small"
+            icon={<DeleteOutlined />}
+            onClick={() => showDeleteConfirm(record)}
+            danger
+          >
+            Delete
+          </Button>
         </div>
       ),
     },
   ];
 
-  // Calculate pagination
-  const paginatedData = retailerData
-    ? retailerData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-    : [];
-
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Assign Retailer</h1>
+        <div className="flex justify-between">
+          <h1 className="text-2xl font-bold">Retailer Management</h1>
         </div>
-        {/* <div className="flex gap-5 items-center">
-          <div>
-            <Modal
-              title="Assign Target to Sales Rep"
-              open={isModalOpen}
-              onOk={handleSubmit}
-              onCancel={handleClose}
-              okText="Submit"
-              cancelText="Cancel"
-            >
-              <div className="mb-2">
-                <label className="block text-sm font-medium mb-1">
-                  Set Sales Reps
-                </label>
-                <select
-                  name="salesRep"
-                  value={formData.salesRep}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                >
-                  <option value="">Select Sales Rep</option>
-                  <option value="John Doe">John Doe</option>
-                  <option value="Jane Smith">Jane Smith</option>
-                  <option value="Mark Johnson">Mark Johnson</option>
-                </select>
-              </div>
-
-              <div className="mb-2">
-                <label className="block text-sm font-medium mb-1">
-                  Target Amount
-                </label>
-                <input
-                  type="number"
-                  name="targetAmount"
-                  value={formData.targetAmount}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                  placeholder="Enter target amount"
-                />
-              </div>
-            </Modal>
-          </div>
-          <Button
-            type="primary"
-            onClick={() => setIsModalOpen(true)}
-            className="bg-gradient-to-r from-primary to-secondary h-10 font-bold flex items-center"
-          >
-            Assign Target
-          </Button>
-        </div> */}
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={handleAddRetailerClick}
+          className="py-5 text-white bg-primary hover:bg-teal-600"
+        >
+          Add Retailer
+        </Button>
       </div>
 
       <div className="bg-gradient-to-r from-primary to-secondary pt-6 px-6 rounded-xl">
@@ -257,81 +267,13 @@ const SalesRepsManagementTable = () => {
             pageSize: pageSize,
             total: retailerData?.length || 0,
             onChange: handlePageChange,
-            showSizeChanger: false, // Optional
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
           }}
         />
       </div>
-
-      {/* Add/Edit Modal */}
-      <Modal
-        title={editingId ? "Edit Sales Rep" : "Add Sales Rep"}
-        open={isModalVisible}
-        onCancel={handleCancel}
-        onOk={() => form.submit()}
-        okText={editingId ? "Save Changes" : "Add Sales Rep"}
-        okButtonProps={{
-          style: {
-            background: "linear-gradient(to right, #4E9DAB, #336C79)",
-            border: "none",
-            color: "white",
-          },
-        }}
-        cancelButtonProps={{
-          style: {
-            background: "#D32F2F",
-            border: "none",
-            color: "white",
-          },
-        }}
-      >
-        <Form form={form} layout="vertical" onFinish={handleSave}>
-          <Form.Item
-            label="Sales Rep Name"
-            name="name"
-            rules={[{ required: true, message: "Please enter name" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Please enter email" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Assigned Retailer"
-            name="retailer"
-            rules={[{ required: true, message: "Please enter retailer count" }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            label="Total Sales"
-            name="sales"
-            rules={[{ required: true, message: "Please enter total sales" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Commission"
-            name="commission"
-            rules={[{ required: true, message: "Please enter commission" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: "Please enter status" }]}
-          >
-            <Select placeholder="Select status">
-              <Select.Option value="active">Active</Select.Option>
-              <Select.Option value="inactive">Inactive</Select.Option>
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
 
       {/* Status Update Modal */}
       <Modal
@@ -339,8 +281,9 @@ const SalesRepsManagementTable = () => {
         open={isStatusModalVisible}
         onCancel={handleStatusCancel}
         footer={null}
+        width={400}
       >
-        <Form form={form} layout="vertical" onFinish={handleStatusUpdate}>
+        <Form form={statusForm} layout="vertical" onFinish={handleStatusUpdate}>
           <Form.Item
             name="status"
             label="Status"
@@ -352,14 +295,18 @@ const SalesRepsManagementTable = () => {
             </Select>
           </Form.Item>
 
-          <Button
-            type="primary"
-            htmlType="submit"
-            icon={<SyncOutlined />}
-            className="bg-gradient-to-r from-primary to-secondary h-10 font-bold"
-          >
-            Update
-          </Button>
+          <div className="flex justify-end gap-2">
+            <Button onClick={handleStatusCancel}>Cancel</Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              icon={<SyncOutlined />}
+              loading={isUpdating}
+              className="bg-gradient-to-r from-primary to-secondary"
+            >
+              Update Status
+            </Button>
+          </div>
         </Form>
       </Modal>
 
@@ -371,14 +318,27 @@ const SalesRepsManagementTable = () => {
         onCancel={handleDeleteCancel}
         okText="Delete"
         cancelText="Cancel"
+        confirmLoading={isDeleting}
         okButtonProps={{
           danger: true,
           type: "primary",
         }}
       >
-        <p>Are you sure you want to delete {recordToDelete?.name}?</p>
+        <p>
+          Are you sure you want to delete{" "}
+          <strong>{recordToDelete?.name}</strong>?
+        </p>
         <p>This action cannot be undone.</p>
       </Modal>
+
+      {/* Add/Edit Retailer Modal */}
+      <AddRetailerModal
+        isModalOpen={isAddModalOpen}
+        setIsModalOpen={setIsAddModalOpen}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+        refetchData={refetchRetailers}
+      />
     </div>
   );
 };

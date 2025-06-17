@@ -1,6 +1,5 @@
 import { api } from "../api/baseApi";
 
-
 const commissionApi = api.injectEndpoints({
   endpoints: (builder) => ({
     // Get all commissions
@@ -17,24 +16,21 @@ const commissionApi = api.injectEndpoints({
         return {
           url: `/sales/commission/order`,
           method: "GET",
-          params, 
+          params,
         };
       },
+      providesTags: ["Commissions"],
     }),
 
-    // Get single commission details by ID
     getCommissionAnalysis: builder.query({
       query: () => ({
         url: `/sales/commission`,
         method: "GET",
       }),
+      providesTags: ["Commissions"],
     }),
-
-  
   }),
 });
 
-export const {
-  useGetCommissionsQuery,
-  useGetCommissionAnalysisQuery,
-} = commissionApi;
+export const { useGetCommissionsQuery, useGetCommissionAnalysisQuery } =
+  commissionApi;
