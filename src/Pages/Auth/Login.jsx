@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
 import { useLoginMutation } from "../../redux/apiSlices/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,17 +12,26 @@ const Login = () => {
   const onFinish = async (values) => {
     try {
       const response = await login(values).unwrap();
-console.log(response)
+
       if (response.success) {
         localStorage.setItem("accessToken", response.data.accessToken);
 
-        navigate("/");
+        const decoded = jwtDecode(response.data.accessToken);
 
-        message.success("Login successful!");
+        if (decoded.role === "SALES") {
+          navigate("/");
+          message.success("Login successful!");
+        } else {
+          message.error("Sales Dashboard.So you do not have the required permissions.");
+          localStorage.removeItem("accessToken");
+        }
+
+       
       } else {
         message.error("Login failed. Please try again.");
       }
     } catch (error) {
+      console.error(error); // Log the error object for more details
       if (error?.data) {
         message.error(error?.data?.message || "Something went wrong.");
       } else {
@@ -29,11 +39,12 @@ console.log(response)
       }
     }
   };
+  
 
   return (
     <div>
       <div className="text-center mb-8">
-        <h1 className="text-[25px] font-semibold mb-6">Login</h1>
+        <h1 className="text-[25px] font-semibold mb-6">Sales Login</h1>
         <p>Please enter your email and password to continue</p>
       </div>
       <Form onFinish={onFinish} layout="vertical">
@@ -63,14 +74,14 @@ console.log(response)
 
         <div className="flex items-center justify-between">
           <a
-            className="login-form-forgot  px-4 py-1 text-black rounded-md font-semibold"
+            className="login-form-forgot px-4 py-1 text-black rounded-md font-semibold"
             href="/auth/create-account"
           >
             Create Account
           </a>
 
           <a
-            className="login-form-forgot bg-gradient-to-r from-primary  to-secondary px-4 py-1 text-white rounded-md font-semibold"
+            className="login-form-forgot bg-gradient-to-r from-primary to-secondary px-4 py-1 text-white rounded-md font-semibold"
             href="/auth/forgot-password"
           >
             Forgot password
@@ -87,10 +98,9 @@ console.log(response)
               color: "white",
               fontWeight: "400px",
               fontSize: "18px",
-
               marginTop: 20,
             }}
-            className="flex items-center justify-center bg-gradient-to-r from-primary  to-secondary rounded-lg"
+            className="flex items-center justify-center bg-gradient-to-r from-primary to-secondary rounded-lg"
           >
             Sign in
           </button>
