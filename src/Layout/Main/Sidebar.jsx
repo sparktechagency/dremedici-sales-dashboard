@@ -24,7 +24,7 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     setIsLogoutModalOpen(false);
     navigate("/auth/login");
   };
