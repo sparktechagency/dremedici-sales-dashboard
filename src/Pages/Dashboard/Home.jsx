@@ -126,7 +126,7 @@ console.log(productData)
     }
 
     if (!shippingAddress.trim()) {
-      return message.warning("Please enter a shipping address.");
+      return message.warning("Please enter a Notes.");
     }
 
     const productsToOrder = products.filter((item) => item.quantity > 0);
@@ -159,7 +159,7 @@ console.log(productData)
         source: "Retailer",
         orderBoxs,
         totalAmount,
-        shippingAddress,
+        notes: shippingAddress,
       };
 
       const res = await createOrderProduct(payload).unwrap();
@@ -320,7 +320,8 @@ console.log(productData)
 
               <Input.TextArea
                 rows={3}
-                placeholder="Enter shipping address"
+              
+                placeholder="Enter Notes"
                 value={shippingAddress}
                 onChange={(e) => setShippingAddress(e.target.value)}
                 className="mb-4"
