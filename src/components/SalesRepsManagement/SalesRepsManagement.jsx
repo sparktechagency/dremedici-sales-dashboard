@@ -265,12 +265,6 @@ const SalesRepsManagementTable = () => {
           pagination={{
             current: currentPage,
             pageSize: pageSize,
-            total: retailerData?.length || 0,
-            onChange: handlePageChange,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
           }}
         />
       </div>

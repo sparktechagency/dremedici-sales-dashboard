@@ -72,9 +72,10 @@ console.log(productData)
         productId: product._id,
         name: product.name || "Product",
         category: product.category || "Cigar",
+        perBoxQty: product.perBoxQty,
         inStock: product.quantity,
         availableStock: product.quantity || 0,
-        size: product.size, 
+        size: product.size,
         price: product.price || 100,
         quantity: 0,
       }));
@@ -203,6 +204,12 @@ console.log(productData)
       dataIndex: "size",
       align: "center",
       render: (size) => size || "N/A",
+    },
+    {
+      title: "Per Box Qty",
+      dataIndex: "perBoxQty",
+      align: "center",
+      render: (perBoxQty) => perBoxQty || 0,
     },
     {
       title: "Available Stock",

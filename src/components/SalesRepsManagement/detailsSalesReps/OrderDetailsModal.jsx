@@ -23,6 +23,7 @@ const OrderDetailsModal = ({
   // Use orderDetails when available, fall back to selectedOrder
   const displayData = orderDetails || selectedOrder;
   const loading = selectedOrder && !orderDetails;
+  console.log(orderDetails)
 
   // Get order status for styling
   const status =
@@ -44,50 +45,47 @@ const OrderDetailsModal = ({
   // Products table columns for the modal
   const productColumns = [
     {
-      title: "Product ID",
-      dataIndex: ["productId"],
-      key: "productId",
-      align: "center",
-      render: (productId) => (
-        <span className="font-medium">
-          {typeof productId === "object" ? productId.name : productId}
-        </span>
-      ),
-    },
-    {
-      title: "Image",
-      dataIndex: ["productId", "images"],
-      key: "image",
-      render: (images, record) => {
-        const firstImage = images?.[0]; // Get the first image from the array
-        return firstImage ? (
-          <img
-            src={getImageUrl(firstImage)} // Assuming `getImageUrl` generates the correct image URL
-            alt="Product"
-            style={{ width: 100, height: 50 }}
-            className="m-1 mx-auto my-0 rounded-md"
-          />
-        ) : (
-          <div
-            style={{
-              width: 100,
-              height: 50,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#f0f0f0",
-              borderRadius: "4px",
-            }}
-          >
-            <ShoppingOutlined
-              style={{ fontSize: 24, color: "#d9d9d9" }}
-              className="rounded-md"
-            />
-          </div>
-        );
-      },
+      title: "Product Name",
+      dataIndex: "name",
+      key: "name",
+      render: (name) => <span className="font-medium">{name}</span>,
       align: "center",
     },
+
+    // {
+    //   title: "Image",
+    //   dataIndex: ["productId", "images"],
+    //   key: "image",
+    //   render: (images, record) => {
+    //     const firstImage = images?.[0]; // Get the first image from the array
+    //     return firstImage ? (
+    //       <img
+    //         src={getImageUrl(firstImage)} // Assuming `getImageUrl` generates the correct image URL
+    //         alt="Product"
+    //         style={{ width: 100, height: 50 }}
+    //         className="m-1 mx-auto my-0 rounded-md"
+    //       />
+    //     ) : (
+    //       <div
+    //         style={{
+    //           width: 100,
+    //           height: 50,
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //           backgroundColor: "#f0f0f0",
+    //           borderRadius: "4px",
+    //         }}
+    //       >
+    //         <ShoppingOutlined
+    //           style={{ fontSize: 24, color: "#d9d9d9" }}
+    //           className="rounded-md"
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   align: "center",
+    // },
     {
       title: "Quantity",
       dataIndex: "quantity",
@@ -108,8 +106,8 @@ const OrderDetailsModal = ({
     },
     {
       title: "Total",
-      dataIndex: "totalAmout",
-      key: "totalAmout",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
       render: (amount) => (
         <span className="font-semibold text-green-600">${amount}</span>
       ),
