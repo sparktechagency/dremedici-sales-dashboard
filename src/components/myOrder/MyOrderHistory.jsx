@@ -37,8 +37,10 @@ const MyOrderHistory = () => {
   // Use the query with params
   const { data, isLoading } = useGetMyorderHistoryQuery(queryParams);
 
+
   // Safely extract orders and pagination info
   const orders = data?.data || [];
+  console.log(orders)
   const pagination = data?.pagination || { total: 0, page: 1, limit: 10 };
 
   const columns = [

@@ -21,6 +21,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [queryParams, setQueryParams] = useState([]);
+  const [terms, setTerms] = useState("Due on Receipt"); // New state for terms
 
   // Get products data
   const { data: productData, isLoading: productsLoading } = useGetProductsQuery(
@@ -34,7 +35,6 @@ const Home = () => {
 
   const retailerData = retailers?.data || [];
   const paginationMeta = productData?.pagination;
-console.log(productData)
   const pagination = {
     page: paginationMeta?.page || currentPage,
     limit: paginationMeta?.limit || pageSize,
@@ -161,6 +161,7 @@ console.log(productData)
         orderBoxs,
         totalAmount,
         notes: shippingAddress,
+        orderTerms: terms, 
       };
 
       const res = await createOrderProduct(payload).unwrap();
@@ -177,6 +178,7 @@ console.log(productData)
         );
         setRetailerId(null);
         setShippingAddress("");
+        setTerms("Due on Receipt"); // Reset terms
       } else {
         message.error(res.message || "Failed to place order.");
       }
@@ -314,7 +316,7 @@ console.log(productData)
               <Select
                 value={retailerId}
                 onChange={setRetailerId}
-                className="w-full mb-4"
+                className="w-full mb-1 h-10"
                 placeholder="Select Retailer"
                 allowClear
               >
@@ -324,10 +326,23 @@ console.log(productData)
                   </Option>
                 ))}
               </Select>
+              {/* Add Terms Dropdown */}
+              <div>
+                <h3 className="mb-2 text-xl font-semibold text-white">Terms</h3>
+                <Select
+                  value={terms}
+                  onChange={setTerms}
+                  className="w-full mb-4 h-10"
+                  placeholder="Select Terms"
+                >
+                  <Option value="Due on Receipt">Due on Receipt</Option>
+                  <Option value="Net 15">Net 15</Option>
+                  <Option value="Net 30">Net 30</Option>
+                </Select>
+              </div>
 
               <Input.TextArea
-                rows={3}
-              
+                rows={2}
                 placeholder="Enter Notes"
                 value={shippingAddress}
                 onChange={(e) => setShippingAddress(e.target.value)}
@@ -336,7 +351,7 @@ console.log(productData)
             </div>
 
             {/* Shopping Cart Summary */}
-            <div>
+            <div className="mt-20">
               <h3 className="mb-4 text-xl font-semibold text-white">
                 Shopping Cart
               </h3>

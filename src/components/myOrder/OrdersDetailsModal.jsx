@@ -157,20 +157,16 @@ const OrderDetailsModal = ({ visible, order, onClose }) => {
                   </div>
                 </div>
 
-                {order.commission && (
-                  <>
-                    <Divider className="my-3" />
-                    <div className="flex items-center">
-                      <CalendarOutlined className="text-primary text-lg mr-3" />
-                      <div>
-                        <p className="text-gray-500 text-sm">Order Date</p>
-                        <p className="text-gray-800 font-medium">
-                          {formatDate(order.createdAt)}
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                )}
+                <Divider className="my-3" />
+                <div className="flex items-center">
+                  <CalendarOutlined className="text-primary text-lg mr-3" />
+                  <div>
+                    <p className="text-gray-500 text-sm">Order Terms</p>
+                    <p className="text-gray-800 font-medium">
+                      {order.orderTerms}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

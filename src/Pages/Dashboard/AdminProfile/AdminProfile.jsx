@@ -18,7 +18,7 @@ const AdminProfile = () => {
     },
     {
       key: "3",
-      label: "Payment Method",
+      label: "My Territory",
       children: <Payment />,
     },
   ];
