@@ -3,7 +3,7 @@ export const getImageUrl = (path) => {
     return path;
   } else {
     const baseUrl = "https://api.elmagocigarsapp.com";
-    // const baseUrl = "http://10.0.60.126:5003";
+    // const baseUrl = "http://10.10.7.37:5003";
     return `${baseUrl}/${path}`;
   }
 };

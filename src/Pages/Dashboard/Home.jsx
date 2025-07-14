@@ -208,7 +208,7 @@ const Home = () => {
       render: (size) => size || "N/A",
     },
     {
-      title: "Per Box Qty",
+      title: "Box Count",
       dataIndex: "perBoxQty",
       align: "center",
       render: (perBoxQty) => perBoxQty || 0,
@@ -218,16 +218,26 @@ const Home = () => {
       dataIndex: "availableStock",
       key: "availableStock",
       align: "center",
-      render: (_, record) => (
-        <span
-          className={`font-medium ${
-            record.availableStock > 0 ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {record.availableStock > 0 ? "Yes" : "No"}
-        </span>
-      ),
+      render: (_, record) => {
+        let stockStatus = "No";  // Default to "No"
+        let stockColor = "text-red-600";  // Default color
+    
+        if (record.availableStock > 100) {
+          stockStatus = "Yes";
+          stockColor = "text-green-600";  // Green color for Yes
+        } else if (record.availableStock > 0 && record.availableStock <= 100) {
+          stockStatus = "Low";
+          stockColor = "text-yellow-600";  // Yellow color for Low
+        }
+    
+        return (
+          <span className={`font-medium ${stockColor}`}>
+            {stockStatus}
+          </span>
+        );
+      },
     },
+    
     {
       title: "Product Price",
       dataIndex: "price",
