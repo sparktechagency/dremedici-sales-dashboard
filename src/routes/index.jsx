@@ -20,10 +20,9 @@ import Notifications from "../Pages/Dashboard/Notifications";
 import SubCategory from "../Pages/Dashboard/SubCategory";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
 import RetailerTable from "../Pages/Dashboard/Retailer";
-import WholesealerTable from "../Pages/Dashboard/Wholesealer";
 import SalesManagement from "../Pages/Dashboard/SalesManagement";
 import Retailer from "../Pages/Dashboard/Retailer";
-import SaleRepsManagement from "../Pages/Dashboard/SaleRepsManagement";
+import SaleRepsManagementPage from "../Pages/Dashboard/SaleRepsManagement";
 import ViewSalesReps from "../components/SalesRepsManagement/detailsSalesReps/ViewSalesReps";
 import Products from "../Pages/Dashboard/Products";
 import LoyaltyProgram from "../Pages/Dashboard/LoyaltyProgram";
@@ -32,6 +31,9 @@ import MySales from "../components/mySales/MySales";
 import MyOrderHistory from "../components/myOrder/MyOrderHistory";
 import CreateAccount from "../Pages/Auth/CreateAccount";
 import PrivateRoute from "./ProtectedRoute";
+// import SubscriptionManagement from "../Pages/Dashboard/SubscriptionManagement";
+import Subscription from "../Pages/Dashboard/Subscription";
+import { SubscriptionManagement } from "../components/common/Svg";
 // import SalesRepsManagementTable from "../components/SalesRepsManagement/SalesRepsManagement";
 
 const router = createBrowserRouter([
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/retailer",
-        element: <SaleRepsManagement />,
+        element: <SaleRepsManagementPage />,
       },
       {
         path: "/retailer/:id",
@@ -116,6 +118,14 @@ const router = createBrowserRouter([
       {
         path: "/notification",
         element: <Notifications />,
+      },
+      {
+        path: "/subscription-management",
+        element: <SubscriptionManagement />,
+      },
+      {
+        path: "/subscription",
+        element: <Subscription />,
       },
     ],
   },

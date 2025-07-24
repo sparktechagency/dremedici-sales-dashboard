@@ -31,6 +31,7 @@ export const api = createApi({
     "Settings",
     "Subscriptions",
     "SubscriptionUser",
+    "RetailerManagement",
   ],
   endpoints: () => ({}),
 });
