@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     host: "31.97.128.5",
     // host: "10.10.7.104",
-    port: 4173,
+    // port: 4173,
   },
   build: {
     sourcemap: false,        

@@ -1,0 +1,20 @@
+// vite.config.js
+import react from "file:///D:/projects/dremedici-sales-dashboard/node_modules/@vitejs/plugin-react/dist/index.mjs";
+import { defineConfig } from "file:///D:/projects/dremedici-sales-dashboard/node_modules/vite/dist/node/index.js";
+var vite_config_default = defineConfig({
+  plugins: [react()],
+  server: {
+    // host: "31.97.128.5",
+    host: "10.10.7.104",
+    port: 4173
+  },
+  build: {
+    sourcemap: false,
+    minify: "esbuild",
+    chunkSizeWarningLimit: 600
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJEOlxcXFxwcm9qZWN0c1xcXFxkcmVtZWRpY2ktc2FsZXMtZGFzaGJvYXJkXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ZpbGVuYW1lID0gXCJEOlxcXFxwcm9qZWN0c1xcXFxkcmVtZWRpY2ktc2FsZXMtZGFzaGJvYXJkXFxcXHZpdGUuY29uZmlnLmpzXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ltcG9ydF9tZXRhX3VybCA9IFwiZmlsZTovLy9EOi9wcm9qZWN0cy9kcmVtZWRpY2ktc2FsZXMtZGFzaGJvYXJkL3ZpdGUuY29uZmlnLmpzXCI7aW1wb3J0IHJlYWN0IGZyb20gXCJAdml0ZWpzL3BsdWdpbi1yZWFjdFwiO1xyXG5pbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tIFwidml0ZVwiO1xyXG4gXHJcbmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7XHJcbiAgcGx1Z2luczogW3JlYWN0KCldLFxyXG4gIHNlcnZlcjoge1xyXG4gICAgLy8gaG9zdDogXCIzMS45Ny4xMjguNVwiLFxyXG4gICAgaG9zdDogXCIxMC4xMC43LjEwNFwiLFxyXG4gICAgcG9ydDogNDE3MyxcclxuICB9LFxyXG4gIGJ1aWxkOiB7XHJcbiAgICBzb3VyY2VtYXA6IGZhbHNlLCAgICAgICAgXHJcbiAgICBtaW5pZnk6IFwiZXNidWlsZFwiLCAgICAgICBcclxuICAgIGNodW5rU2l6ZVdhcm5pbmdMaW1pdDogNjAwLCBcclxuICB9LFxyXG59KTsiXSwKICAibWFwcGluZ3MiOiAiO0FBQXVTLE9BQU8sV0FBVztBQUN6VCxTQUFTLG9CQUFvQjtBQUU3QixJQUFPLHNCQUFRLGFBQWE7QUFBQSxFQUMxQixTQUFTLENBQUMsTUFBTSxDQUFDO0FBQUEsRUFDakIsUUFBUTtBQUFBO0FBQUEsSUFFTixNQUFNO0FBQUEsSUFDTixNQUFNO0FBQUEsRUFDUjtBQUFBLEVBQ0EsT0FBTztBQUFBLElBQ0wsV0FBVztBQUFBLElBQ1gsUUFBUTtBQUFBLElBQ1IsdUJBQXVCO0FBQUEsRUFDekI7QUFDRixDQUFDOyIsCiAgIm5hbWVzIjogW10KfQo=

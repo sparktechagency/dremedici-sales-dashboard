@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  useAddExtraBoxesMutation, 
   useGeAllSubscriptionQuery, 
   useGetAllRetailersQuery, 
-  useRetailerSubscribedPackageQuery,
-  useUpdateSubscribedPackageMutation, 
-  useUpdateSubscriptionMutation
+  useRetailerSubscribedPackageQuery
 } from '../../redux/apiSlices/retailerManagementApi';
 import { useGetProductsQuery } from '../../redux/apiSlices/homeSlice';
 import { 
-  Table, Button, Modal, Form, Input, Select, DatePicker, 
-  Space, Card, Tag, Checkbox, Spin, Alert, Badge, Divider, 
-  Typography, Row, Col, message, Descriptions, Statistic, Image
+  Table, Button, Space, Card, Tag, Badge, Spin, 
+  Typography, Row, Col, message
 } from 'antd';
 import { 
-  EditOutlined, ShoppingCartOutlined, ClockCircleOutlined,
-  DeleteOutlined, PlusOutlined, CheckCircleOutlined
+  EditOutlined, ShoppingCartOutlined, ClockCircleOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
+import ExtraBoxesModal from './ExtraBoxesModal';
+import SubscriptionFormModal from './SubscriptionFormModal';
 
-const { Title, Text } = Typography;
-const { Option } = Select;
+const { Title } = Typography;
 
 const RetailerSubscriptionManager = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,69 +24,18 @@ const RetailerSubscriptionManager = () => {
   const [editingRecord, setEditingRecord] = useState(null);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [form] = Form.useForm();
-  const [boxSelectionForm] = Form.useForm();
 
   // API calls
-  const { data: retailers, isLoading: isRetailersLoading } = useGetAllRetailersQuery();
+  const { data: retailers, isLoading: isRetailersLoading, refetch: refetchRetailers } = useGetAllRetailersQuery();
   const { data: allSubscriptions, isLoading: isSubscriptionsLoading } = useGeAllSubscriptionQuery();
   const { data: products, isLoading: isProductLoading } = useGetProductsQuery();
   const { data: retailerSubscribedPackage, isLoading: isRetailerSubscribedPackageLoading } = useRetailerSubscribedPackageQuery();
-  const [updateSubscription, { isLoading: isUpdateLoading }] = useUpdateSubscriptionMutation();
-  
-  const [addExtraBoxes, { isLoading: isAddExtraBoxesLoading }] = useAddExtraBoxesMutation();
-  const [updateSubscribedPackage, { isLoading: isUpdateLoadingPackage }] = useUpdateSubscribedPackageMutation();
 
   // Data from APIs
   const availableProducts = products?.data || [];
   const retailersList = retailers?.data || [];
   const subscriptionPackages = allSubscriptions?.data || [];
   const subscribedPackages = retailerSubscribedPackage?.data || [];
-
-  console.log(retailersList)
-  console.log(retailersList?.activeSubscription?.tier)
-  console.log(subscriptionPackages)
-  console.log(subscribedPackages)
-  console.log(availableProducts)
-  
-
-  // Form states
-  const [formData, setFormData] = useState({
-    userId: '',
-    tier: '',
-    subscription: '',
-    freeShipping: '',
-    noCreditCardFee: '',
-    exclusiveProducts: '',
-    limitedReleases: '',
-    termsAndConditionsAccepted: true,
-    card: {
-      cardHolderName: '',
-      cardNumber: '',
-      expiryDate: '',
-      cvv: '',
-      zipCode: ''
-    },
-    status: 'running',
-    billingDate: new Date().toISOString()
-  });
-  
-  const [boxSelectionData, setBoxSelectionData] = useState({
-    selectedBoxes: []
-  });
-  
-  // Function to extract minimum boxes required from tier string
-  const getMinimumBoxesRequired = (tierString) => {
-    if (!tierString) return 0;
-    
-    // Extract number before "box" or "boxes"
-    const boxMatch = tierString.match(/(\d+)\s*box(?:es)?/i);
-    if (boxMatch && boxMatch[1]) {
-      return parseInt(boxMatch[1], 10);
-    }
-    
-    return 0;
-  };
 
   // Update current time every minute
   useEffect(() => {
@@ -100,7 +45,7 @@ const RetailerSubscriptionManager = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Check if selection window is open (1st to 22nd of every month)
+  // Check if selection window is open (1st to 3rd of every month)
   const isSelectionWindowOpen = () => {
     const today = new Date();
     const dayOfMonth = today.getDate();
@@ -110,7 +55,6 @@ const RetailerSubscriptionManager = () => {
   // Check if edit is allowed (until 25th after selection)
   const isEditAllowed = (subscription) => {
     if (!subscription) return false;
-    
     const today = new Date();
     const dayOfMonth = today.getDate();
     return dayOfMonth <= 25;
@@ -124,7 +68,7 @@ const RetailerSubscriptionManager = () => {
     const currentYear = today.getFullYear();
     
     if (dayOfMonth >= 1 && dayOfMonth <= 3) {
-      const closeDate = new Date(currentYear, currentMonth, 3);
+      const closeDate = new Date(currentYear, currentMonth, 4);
       const timeDiff = closeDate.getTime() - today.getTime();
       const daysLeft = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hoursLeft = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -155,24 +99,6 @@ const RetailerSubscriptionManager = () => {
     }
   };
 
-  const getSelectionStatus = (subscription) => {
-    const timeInfo = getSelectionTimeInfo();
-    
-    if (!subscription) {
-      return { status: 'none', color: 'default', text: 'No Subscription' };
-    }
-    
-    if (!timeInfo?.isOpen) {
-      return { status: 'closed', color: 'default', text: 'Selection Window Closed' };
-    }
-    
-    if (subscription?.extraBox?.length > 0) {
-      return { status: 'completed', color: 'success', text: 'Selection Complete' };
-    }
-    
-    return { status: 'pending', color: 'warning', text: 'Selection Pending' };
-  };
-
   const showModal = (record = null, retailer = null) => {
     if (!record) {
       setIsModalVisible(false);
@@ -181,42 +107,9 @@ const RetailerSubscriptionManager = () => {
     
     setEditingRecord({
       ...record,
-      retailerId: retailer?._id // Store retailer ID
-    });
-    
-    // Find the selected subscription package to populate other fields
-    const selectedPackage = subscriptionPackages.find(pkg => pkg.tier === record.tier);
-    
-    const initialValues = {
-      userId: record.userId,
-      retailerId: retailer?._id, // Add retailer ID to form values
-      subscription: record.subscription,
-      tier: record.tier,
-      freeShipping: selectedPackage?.freeShipping || record.freeShipping,
-      noCreditCardFee: selectedPackage?.noCreditCardFee || record.noCreditCardFee,
-      exclusiveProducts: selectedPackage?.exclusiveProducts || record.exclusiveProducts,
-      limitedReleases: selectedPackage?.limitedReleases || record.limitedReleases,
-      termsAndConditionsAccepted: record.termsAndConditionsAccepted || true,
-      status: record.status || 'running',
-      billingDate: record.billingDate ? moment(record.billingDate) : moment(),
-      cardHolderName: record.card?.cardHolderName || '',
-      cardNumber: record.card?.cardNumber || '',
-      expiryDate: record.card?.expiryDate || '',
-      cvv: record.card?.cvv || '',
-      zipCode: record.card?.zipCode || ''
-    };
-    
-    form.setFieldsValue(initialValues);
-    setFormData({
-      ...record,
       retailerId: retailer?._id,
-      card: record.card || {
-        cardHolderName: '',
-        cardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        zipCode: ''
-      }
+      retailerName: retailer?.name,
+      retailerEmail: retailer?.email
     });
     
     setIsModalVisible(true);
@@ -224,181 +117,43 @@ const RetailerSubscriptionManager = () => {
 
   const showBoxSelection = (subscription, retailer) => {
     if (!subscription) {
+      message.warning('No active subscription found for this retailer');
       return;
     }
     
     setSelectedSubscription({
       ...subscription,
-      retailerId: retailer?._id // Store retailer ID
-    });
-    
-    const selectedBoxes = subscription?.extraBox?.map(box => {
-      const fullProduct = availableProducts.find(p => p._id === box.productId) || {};
-      return {
-        ...fullProduct,
-        ...box
-      };
-    }) || [];
-    
-    setBoxSelectionData({
-      selectedBoxes: selectedBoxes
-    });
-    
-    boxSelectionForm.setFieldsValue({
-      selectedProducts: selectedBoxes.map(box => box._id)
+      retailerId: retailer?._id,
+      retailerName: retailer?.name,
+      retailerEmail: retailer?.email,
+      userId: retailer?._id // for compatibility
     });
     
     setIsBoxSelectionVisible(true);
   };
 
-  const handleCancel = () => {
+  const handleModalCancel = () => {
     setIsModalVisible(false);
     setEditingRecord(null);
-    form.resetFields();
   };
 
   const handleBoxSelectionCancel = () => {
     setIsBoxSelectionVisible(false);
     setSelectedSubscription(null);
-    setBoxSelectionData({ selectedBoxes: [] });
-    boxSelectionForm.resetFields();
   };
 
-  // Handle subscription selection and auto-populate fields
-  const handleSubscriptionChange = (selectedSubscription) => {
-    const selectedPackage = subscriptionPackages.find(pkg => pkg.subscription === selectedSubscription);
-    
-    if (selectedPackage) {
-      form.setFieldsValue({
-        tier: selectedPackage.tier,
-        freeShipping: selectedPackage.freeShipping,
-        noCreditCardFee: selectedPackage.noCreditCardFee,
-        exclusiveProducts: selectedPackage.exclusiveProducts,
-        limitedReleases: selectedPackage.limitedReleases
-      });
-      
-      setFormData(prev => ({
-        ...prev,
-        subscription: selectedSubscription,
-        tier: selectedPackage.tier,
-        freeShipping: selectedPackage.freeShipping,
-        noCreditCardFee: selectedPackage.noCreditCardFee,
-        exclusiveProducts: selectedPackage.exclusiveProducts,
-        limitedReleases: selectedPackage.limitedReleases
-      }));
-    }
+  // Refresh data after successful operations
+  const handleSuccessfulUpdate = () => {
+    refetchRetailers();
+    handleModalCancel();
   };
 
-  const handleSubmit = async (values) => {
-    if (!values.subscription || !values.tier) {
-      message.error('Please fill all required fields');
-      return;
-    }
-
-    // Format the data
-    const formattedData = {
-      ...values,
-      billingDate: values.billingDate ? values.billingDate.toISOString() : new Date().toISOString(),
-      card: {
-        cardHolderName: values.cardHolderName || '',
-        cardNumber: values.cardNumber || '',
-        expiryDate: values.expiryDate || '',
-        cvv: values.cvv || '',
-        zipCode: values.zipCode || ''
-      }
-    };
-    
-    // Remove card fields from root level
-    delete formattedData.cardHolderName;
-    delete formattedData.cardNumber;
-    delete formattedData.expiryDate;
-    delete formattedData.cvv;
-    delete formattedData.zipCode;
-
-    try {
-      if (editingRecord) {
-        // Use retailer ID instead of subscription ID
-        await updateSubscribedPackage({
-          id: editingRecord.retailerId || values.retailerId,
-          data: {
-            ...formattedData
-          }
-        }).unwrap();
-        message.success('Subscription updated successfully');
-      } else {
-        // For new subscription creation
-        message.info('New subscription functionality not implemented yet');
-      }
-      handleCancel();
-    } catch (error) {
-      message.error('Failed to save subscription');
-      console.error('Error:', error);
-    }
-  };
-
-  const handleBoxSelection = async (values) => {
-    const { selectedProducts } = values;
-    const minBoxesRequired = getMinimumBoxesRequired(selectedSubscription?.tier);
-    
-    if (!selectedProducts || selectedProducts.length === 0) {
-      message.error('Please select at least one product');
-      return;
-    }
-    
-    if (selectedProducts.length < minBoxesRequired) {
-      message.error(`You must select at least ${minBoxesRequired} boxes based on your tier`);
-      return;
-    }
-
-    try {
-      // Map selected IDs to full product objects
-      const selectedBoxes = selectedProducts.map(id => {
-        const product = availableProducts.find(p => p._id === id);
-        return {
-          productId: product._id,
-          name: product.name,
-          size: product.size,
-          price: product.price
-        };
-      });
-
-      // Send data in the exact format required by the backend
-      // Use retailer ID instead of subscription ID
-      await addExtraBoxes({
-        id: selectedSubscription.retailerId,
-        data: { extraBoxes: selectedBoxes }
-      }).unwrap();
-
-      message.success('Extra boxes added successfully');
-      handleBoxSelectionCancel();
-    } catch (error) {
-      message.error('Failed to add extra boxes');
-      console.error('Error:', error);
-    }
-  };
-
-  const handleProductSelection = (checkedValues) => {
-    const selectedBoxes = checkedValues.map(id => {
-      return availableProducts.find(product => product._id === id);
-    }).filter(Boolean);
-    
-    setBoxSelectionData({
-      selectedBoxes
-    });
+  const handleSuccessfulBoxUpdate = () => {
+    refetchRetailers();
+    handleBoxSelectionCancel();
   };
 
   const timeInfo = getSelectionTimeInfo();
-
-  // Get retailer name by userId
-  const getRetailerName = (userId) => {
-    const retailer = retailersList.find(r => r._id === userId);
-    return retailer?.name || 'Unknown';
-  };
-
-  const getRetailerEmail = (userId) => {
-    const retailer = retailersList.find(r => r._id === userId);
-    return retailer?.email || 'Unknown';
-  };
 
   // Table columns
   const columns = [
@@ -413,26 +168,30 @@ const RetailerSubscriptionManager = () => {
       title: 'Retailer Name',
       dataIndex: 'name',
       key: 'retailerName',
-      // render: (userId) => (
-      //   <>
-      //     <Text strong>{getRetailerName(userId)}</Text>
-      //     <br />
-      //     <Text type="secondary" style={{ fontSize: '12px' }}>{userId}</Text>
-      //   </>
-      // )
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      // render: (userId) => getRetailerEmail(userId)
     },
     {
       title: 'Tier',
       dataIndex: 'activeSubscription',
       key: 'tier',
-      render: (activeSubscription) => activeSubscription?.tier ? <Tag color="blue">{activeSubscription.tier}</Tag> : '-'
+      render: (activeSubscription) => {
+        if (!activeSubscription?.tier) return '-';
+        return <Tag color="blue">{activeSubscription.tier}</Tag>;
+      }
     },
+    // {
+    //   title: 'Subscription',
+    //   dataIndex: 'activeSubscription',
+    //   key: 'subscription',
+    //   render: (activeSubscription) => {
+    //     if (!activeSubscription?.subscription) return '-';
+    //     return <Tag color="green">{activeSubscription.subscription}</Tag>;
+    //   }
+    // },
     // {
     //   title: 'Status',
     //   dataIndex: 'activeSubscription',
@@ -447,22 +206,45 @@ const RetailerSubscriptionManager = () => {
     //     return <Tag color={color}>{activeSubscription.status?.toUpperCase()}</Tag>;
     //   }
     // },
-    {
-      title: 'Extra Boxes',
-      dataIndex: 'activeSubscription',
-      key: 'extraBox',
-      render: (activeSubscription) => (
-        <Badge count={activeSubscription?.extraBox?.length || 0} showZero style={{ backgroundColor: '#1890ff' }} />
-      )
-    },
     // {
-    //   title: 'Selection Status',
-    //   key: 'selectionStatus',
-    //   render: (_, record) => {
-    //     const status = getSelectionStatus(record.activeSubscription || {});
-    //     return <Tag color={status.color}>{status.text}</Tag>;
+    //   title: 'Extra Boxes',
+    //   dataIndex: 'activeSubscription',
+    //   key: 'extraBox',
+    //   render: (activeSubscription) => {
+    //     const count = activeSubscription?.extraBox?.length || 0;
+    //     return (
+    //       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    //         <Badge count={count} showZero style={{ backgroundColor: '#1890ff' }} />
+    //         {count > 0 && (
+    //           <span style={{ fontSize: '12px', color: '#666' }}>
+    //             ({activeSubscription.extraBox.reduce((total, box) => total + (box.quantity || 1), 0)} total)
+    //           </span>
+    //         )}
+    //       </div>
+    //     );
     //   }
     // },
+    {
+      title: 'Selection Status',
+      key: 'selectionStatus',
+      render: (_, record) => {
+        const timeInfo = getSelectionTimeInfo();
+        
+        if (!record.activeSubscription) {
+          return <Tag color="default">No Subscription</Tag>;
+        }
+        
+        if (!timeInfo?.isOpen) {
+          return <Tag color="default">Selection Window Closed</Tag>;
+        }
+        
+        if (record.activeSubscription?.extraBox?.length > 0) {
+          return <Tag color="success">Selection Complete</Tag>;
+        }
+        
+        return <Tag color="warning">Selection Pending</Tag>;
+      }
+    },
     {
       title: 'Billing Date',
       dataIndex: 'activeSubscription',
@@ -495,7 +277,7 @@ const RetailerSubscriptionManager = () => {
               style={{ backgroundColor: (timeInfo.isOpen || canEdit) && record.activeSubscription ? '#52c41a' : undefined }}
               onClick={() => showBoxSelection(record.activeSubscription, record)}
             >
-              Extra Boxes
+              Select Boxes
             </Button>
           </Space>
         );
@@ -534,258 +316,22 @@ const RetailerSubscriptionManager = () => {
       />
       
       {/* Subscription Form Modal */}
-      <Modal
-        title={editingRecord ? 'Edit Subscription' : 'Add Subscription'}
+      <SubscriptionFormModal
         visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-        width={800}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={{
-            status: 'running',
-            billingDate: moment(),
-            termsAndConditionsAccepted: true
-          }}
-        >
-          {/* Hidden retailer ID field */}
-          <Form.Item name="retailerId" hidden>
-            <Input />
-          </Form.Item>
-          
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="subscription"
-                label="Subscription"
-                rules={[{ required: true, message: 'Please select a subscription' }]}
-              >
-                <Select 
-                  placeholder="Select Subscription" 
-                  onChange={handleSubscriptionChange}
-                >
-                  {subscriptionPackages.map(pkg => (
-                    <Option key={pkg._id} value={pkg.subscription}>
-                      {pkg.subscription}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
-          
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item 
-                name="tier" 
-                label="Tier"
-                rules={[{ required: true, message: 'Please enter tier' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="noCreditCardFee" label="No Credit Card Fee">
-                <Input disabled />
-              </Form.Item>
-            </Col>
-          </Row>
-          
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="exclusiveProducts" label="Exclusive Products">
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="limitedReleases" label="Limited Releases">
-                <Input disabled />
-              </Form.Item>
-            </Col>
-          </Row>
-          
-          <Form.Item>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '16px' }}>
-              <Button onClick={handleCancel}>Cancel</Button>
-              <Button 
-                type="primary" 
-                htmlType="submit" 
-                loading={isUpdateLoadingPackage}
-              >
-                {editingRecord ? 'Update' : 'Create'}
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+        onCancel={handleModalCancel}
+        onSuccess={handleSuccessfulUpdate}
+        editingRecord={editingRecord}
+        subscriptionPackages={subscriptionPackages}
+      />
       
-      {/* Box Selection Modal */}
-      <Modal
-        title={`Select Extra Boxes - ${selectedSubscription ? selectedSubscription.userId : ''}`}
+      {/* Extra Boxes Modal */}
+      <ExtraBoxesModal
         visible={isBoxSelectionVisible}
         onCancel={handleBoxSelectionCancel}
-        footer={null}
-        width={1000}
-      >
-        <Alert
-          message={
-            <div>
-              <p><strong>Current Tier:</strong> {selectedSubscription?.tier}</p>
-              <p><strong>Minimum Boxes Required:</strong> {getMinimumBoxesRequired(selectedSubscription?.tier)}</p>
-              <p><strong>Selection Window:</strong> 1st to 22nd of every month</p>
-              <p><strong>Edit Window:</strong> Until 4th of the month after selection</p>
-            </div>
-          }
-          description="Select additional products for this subscription."
-          type="info"
-          showIcon
-          style={{ marginBottom: 16 }}
-        />
-        
-        <Form
-          form={boxSelectionForm}
-          onFinish={handleBoxSelection}
-          layout="vertical"
-        >
-          <Form.Item 
-            name="selectedProducts" 
-            label="Available Products"
-            rules={[{ required: true, message: 'Please select at least one product' }]}
-          >
-            <Checkbox.Group 
-              onChange={handleProductSelection} 
-              style={{ width: '100%' }}
-            >
-              <Row gutter={[16, 16]}>
-                {availableProducts.map(product => {
-                  const isSelected = boxSelectionData.selectedBoxes.some(p => p._id === product._id);
-                  
-                  return (
-                    <Col span={8} key={product._id}>
-                      <Card 
-                        hoverable 
-                        size="small" 
-                        style={{ 
-                          borderColor: isSelected ? '#1890ff' : undefined,
-                          backgroundColor: isSelected ? '#e6f7ff' : undefined
-                        }}
-                      >
-                        <Checkbox value={product._id} style={{ marginRight: 8 }}>
-                          <div>
-                            <Text strong>{product.name}</Text>
-                            <div>
-                              <Text type="secondary">Size: {product.size}</Text>
-                            </div>
-                            <div>
-                              <Text type="secondary">Qty: {product.quantity}</Text>
-                            </div>
-                            <div>
-                              <Text type="success" strong>${product.price}</Text>
-                            </div>
-                            {/* {product.image && product.image.length > 0 && (
-                              <div style={{ marginTop: 8 }}>
-                                <Image 
-                                  src={product.image[0]} 
-                                  alt={product.name} 
-                                  width={64}
-                                  height={64}
-                                  style={{ objectFit: 'cover' }}
-                                  fallback="https://via.placeholder.com/100?text=No+Image"
-                                />
-                              </div>
-                            )} */}
-                          </div>
-                        </Checkbox>
-                      </Card>
-                    </Col>
-                  );
-                })}
-              </Row>
-            </Checkbox.Group>
-          </Form.Item>
-          
-          {boxSelectionData.selectedBoxes.length > 0 && (
-            <>
-              <Divider>Selected Products</Divider>
-              <Table
-                dataSource={boxSelectionData.selectedBoxes}
-                rowKey="_id"
-                pagination={false}
-                size="small"
-                columns={[
-                  {
-                    title: 'Product',
-                    dataIndex: 'name',
-                    key: 'name'
-                  },
-                  {
-                    title: 'Size',
-                    dataIndex: 'size',
-                    key: 'size'
-                  },
-                  {
-                    title: 'Price',
-                    dataIndex: 'price',
-                    key: 'price',
-                    render: (price) => `$${price}`
-                  },
-                  // {
-                  //   title: 'Action',
-                  //   key: 'action',
-                  //   render: (_, record) => (
-                  //     <Button 
-                  //       type="text" 
-                  //       danger
-                  //       icon={<DeleteOutlined />}
-                  //       onClick={() => {
-                  //         const newSelectedBoxes = boxSelectionData.selectedBoxes.filter(p => p._id !== record._id);
-                  //         setBoxSelectionData({ selectedBoxes: newSelectedBoxes });
-                  //         boxSelectionForm.setFieldsValue({
-                  //           selectedProducts: newSelectedBoxes.map(p => p._id)
-                  //         });
-                  //       }}
-                  //     />
-                  //   )
-                  // }
-                ]}
-                summary={() => (
-                  <Table.Summary.Row>
-                    <Table.Summary.Cell index={0} colSpan={2}>
-                      <Text strong>Total</Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={1}>
-                      <Text strong>
-                        ${boxSelectionData.selectedBoxes.reduce((sum, product) => sum + Number(product.price), 0).toFixed(2)}
-                      </Text>
-                    </Table.Summary.Cell>
-                    <Table.Summary.Cell index={2} />
-                  </Table.Summary.Row>
-                )}
-              />
-            </>
-          )}
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 16 }}>
-            <Text>Selected: {boxSelectionData.selectedBoxes.length} items</Text>
-            <Space>
-              <Button onClick={handleBoxSelectionCancel}>
-                Cancel
-              </Button>
-              <Button 
-                type="primary" 
-                htmlType="submit" 
-                loading={isAddExtraBoxesLoading}
-                disabled={boxSelectionData.selectedBoxes.length < getMinimumBoxesRequired(selectedSubscription?.tier)}
-              >
-                Save Selection
-              </Button>
-            </Space>
-          </div>
-        </Form>
-      </Modal>
+        onSuccess={handleSuccessfulBoxUpdate}
+        selectedSubscription={selectedSubscription}
+        availableProducts={availableProducts}
+      />
     </Card>
   );
 };
